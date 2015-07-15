@@ -173,7 +173,7 @@ public class ProductSpecCharacteristicValue {
      * 
      * @param charValue
      */
-    public intd dissociate(ProductSpecCharacteristicValue charValue) {
+    public int dissociate(ProductSpecCharacteristicValue charValue) {
         // TODO - implement ProductSpecCharacteristicValue.dissociate
         throw new UnsupportedOperationException();
     }

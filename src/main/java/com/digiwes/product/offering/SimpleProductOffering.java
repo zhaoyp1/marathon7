@@ -21,8 +21,8 @@ public class SimpleProductOffering extends ProductOffering {
      * @param prodSpec
      */
     public SimpleProductOffering(String id, String name, String description, TimePeriod validFor, ProductSpecification prodSpec) {
-        // TODO - implement SimpleProductOffering.SimpleProductOffering
-        throw new UnsupportedOperationException();
+         super(id,name,description,validFor);
+        this.productSpecification = prodSpec;
     }
 
     /**

@@ -17,8 +17,8 @@ public class ProdOfferingEnum {/**
          * @param name
          */
         ProductOfferingStatus(String value, String name) {
-            // TODO - implement ProductOfferingStatus.ProductOfferingStatus
-            throw new UnsupportedOperationException();
+            this.value = value;
+            this.name = name;
         }
 
         public String getValue() {
@@ -33,7 +33,7 @@ public class ProdOfferingEnum {/**
          * 
          * @param value
          */
-        public static String getName(String value) {
+        public  String getName(String value) {
             return this.name;
         }
 
@@ -72,7 +72,7 @@ public class ProdOfferingEnum {/**
          * 
          * @param value
          */
-        public static String getName(String value) {
+        public  String getName(String value) {
             return this.name;
         }
 
@@ -108,7 +108,7 @@ public class ProdOfferingEnum {/**
          * 
          * @param value
          */
-        public static String getName(String value) {
+        public  String getName(String value) {
             return this.name;
         }
 

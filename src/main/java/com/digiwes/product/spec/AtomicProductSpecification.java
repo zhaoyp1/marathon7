@@ -14,8 +14,7 @@ public class AtomicProductSpecification extends ProductSpecification {
      * @param brand
      */
     public AtomicProductSpecification(String productNumber, String name, String brand) {
-        // TODO - implement AtomicProductSpecification.AtomicProductSpecification
-        throw new UnsupportedOperationException();
+        super(productNumber,name,brand);
     }
 
     /**
@@ -27,8 +26,7 @@ public class AtomicProductSpecification extends ProductSpecification {
      * @param validFor
      */
     public AtomicProductSpecification(String productNumber, String name, String brand, String description, TimePeriod validFor) {
-        // TODO - implement AtomicProductSpecification.AtomicProductSpecification
-        throw new UnsupportedOperationException();
+         super(productNumber,name,brand,validFor,description);
     }
 
 }

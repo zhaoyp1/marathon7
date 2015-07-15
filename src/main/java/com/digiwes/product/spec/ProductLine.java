@@ -11,8 +11,7 @@ public class ProductLine extends ProductSpecificationType {
      * @param description
      */
     public ProductLine(String type, String description) {
-        // TODO - implement ProductLine.ProductLine
-        throw new UnsupportedOperationException();
+        super(type,description);
     }
 
 }
