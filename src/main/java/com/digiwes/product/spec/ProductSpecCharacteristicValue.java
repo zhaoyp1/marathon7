@@ -1,19 +1,19 @@
 package com.digiwes.product.spec;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 import com.digiwes.basetype.*;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * A number or text that can be assigned to a ProductSpecCharacteristic.
  */
 public class ProductSpecCharacteristicValue {
-    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(ProductSpecCharacteristicValue.class);
+    private static final Logger logger = Logger.getLogger(ProductSpecCharacteristicValue.class);
 
     private List<ProdSpecCharValueRelationship> prodSpecCharValueRelationship = new ArrayList<ProdSpecCharValueRelationship>();
     /**
@@ -126,6 +126,8 @@ public class ProductSpecCharacteristicValue {
     public ProductSpecCharacteristicValue(String valueType, boolean isDefault, String unitOfMeasure, TimePeriod validFor, String value) {
         assert  !StringUtils.isEmpty(valueType):"valueType must not be null.";
         assert  !StringUtils.isEmpty(value):"value must not be null.";
+        assert  !ParameterUtil.checkParameterIsNull(validFor):"valid must not be null";
+
         this.valueType = valueType;
         this.unitOfMeasure = unitOfMeasure;
         this.validFor = validFor;
@@ -145,6 +147,7 @@ public class ProductSpecCharacteristicValue {
      */
     public ProductSpecCharacteristicValue(String valueType, boolean isDefault, String unitOfMeasure, TimePeriod validFor, String valueFrom, String valueTo, String rangeInterval) {
         assert  !StringUtils.isEmpty(valueType):"valueType must not be null.";
+        assert  !ParameterUtil.checkParameterIsNull(validFor):"valid must not be null";
         assert  !(StringUtils.isEmpty(valueFrom) && StringUtils.isEmpty(valueTo)):"valueFrom and valueTo must not be null at the same time.";
         assert  !StringUtils.isEmpty(valueFrom) :"valueFrom must not be null.";
         if(StringUtils.isEmpty(valueTo)){
@@ -188,7 +191,7 @@ public class ProductSpecCharacteristicValue {
      */
     public int associate(ProductSpecCharacteristicValue charValue, String relationType, TimePeriod validFor) {
         if (ParameterUtil.checkParameterIsNull(relationType)) {
-            logger.error(" relationType must not be null.");
+            logger.warn(" relationType must not be null.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_RELATIONSHIP_TYPE_IS_NULL.getCode();
         }
         if(this.equals(charValue)){
@@ -261,10 +264,7 @@ public class ProductSpecCharacteristicValue {
      * @param charValue
      */
     private ProdSpecCharValueRelationship retrieveRelatedCharacteristicValue(ProductSpecCharacteristicValue charValue ){
-        if (ParameterUtil.checkParameterIsNull(charValue)) {
-            logger.error("charValue must not be null .");
-            throw new IllegalArgumentException("charValue must not be null .");
-        }
+        ParameterUtil.checkParameterIsNulForException(charValue,"ProductSpecCharacteristicValue");
         if (null != this.prodSpecCharValueRelationship) {
             for (ProdSpecCharValueRelationship productSpecCharRelationship : prodSpecCharValueRelationship) {
                 if ( productSpecCharRelationship.getProductSpecCharacteristicValue().equals(charValue)) {
