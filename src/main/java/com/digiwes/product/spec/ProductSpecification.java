@@ -391,7 +391,7 @@ public abstract class ProductSpecification {
      * @param revisionDate
      * @param validFor
      */
-    private int specifyVersion(String verType, String curTypeVersion, String description, int revisionDate, TimePeriod validFor) {
+    private int specifyVersion(String verType, String curTypeVersion, String description, Date revisionDate, TimePeriod validFor) {
         // TODO - implement ProductSpecification.specifyVersion
         throw new UnsupportedOperationException();
     }
@@ -403,7 +403,7 @@ public abstract class ProductSpecification {
      * @param revisionDate
      * @param validFor
      */
-    public int specifyVersion(String version, String description, int revisionDate, TimePeriod validFor) {
+    public int specifyVersion(String version, String description, Date revisionDate, TimePeriod validFor) {
         // TODO - implement ProductSpecification.specifyVersion
         throw new UnsupportedOperationException();
     }
