@@ -64,6 +64,29 @@ public class ProductOfferingRelationship {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductOfferingRelationship that = (ProductOfferingRelationship) o;
+
+        if (!targetOffering.equals(that.targetOffering)) return false;
+        if (!sourceOffering.equals(that.sourceOffering)) return false;
+        if (!typeRelationship.equals(that.typeRelationship)) return false;
+        return validFor.equals(that.validFor);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = targetOffering.hashCode();
+        result = 31 * result + sourceOffering.hashCode();
+        result = 31 * result + typeRelationship.hashCode();
+        result = 31 * result + validFor.hashCode();
+        return result;
+    }
+
     public String toString() {
         // TODO - implement ProductOfferingRelationship.toString
         throw new UnsupportedOperationException();
