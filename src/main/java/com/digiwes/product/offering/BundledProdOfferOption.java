@@ -65,4 +65,19 @@ public class BundledProdOfferOption {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BundledProdOfferOption that = (BundledProdOfferOption) o;
+
+        return productOffering.equals(that.productOffering);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return productOffering.hashCode();
+    }
 }
