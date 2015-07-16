@@ -1,5 +1,6 @@
 package com.digiwes.product.offering;
 
+import com.digiwes.common.utils.ParameterUtil;
 import com.digiwes.product.spec.*;
 import com.digiwes.basetype.*;
 
@@ -21,7 +22,9 @@ public class SimpleProductOffering extends ProductOffering {
      * @param prodSpec
      */
     public SimpleProductOffering(String id, String name, String description, TimePeriod validFor, ProductSpecification prodSpec) {
-         super(id,name,description,validFor);
+        super(id,name,description,validFor);
+        assert !ParameterUtil.checkParameterIsNull(prodSpec):"productSpecification must not be null or empty .";
+        assert !prodSpec.getValidFor().isInTimePeriod(validFor):"productOffering's validFor must not be greater than productSpecification's validFor .";
         this.productSpecification = prodSpec;
     }
 

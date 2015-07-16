@@ -42,6 +42,20 @@ public class ProductSpecCharUse {
      */
     private boolean extensible;
 
+    private TimePeriod validFor;
+
+    public boolean isPackage() {
+        return isPackage;
+    }
+
+    public TimePeriod getValidFor() {
+        return validFor;
+    }
+
+    public void setValidFor(TimePeriod validFor) {
+        this.validFor = validFor;
+    }
+
     public ProductSpecCharacteristic getProdSpecChar() {
         return this.prodSpecChar;
     }
