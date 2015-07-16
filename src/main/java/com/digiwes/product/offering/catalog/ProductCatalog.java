@@ -4,6 +4,7 @@ import com.digiwes.common.catalog.*;
 import java.util.*;
 import com.digiwes.basetype.*;
 import com.digiwes.common.enums.CommonErrorCode;
+import com.digiwes.common.enums.ProdCatalog;
 import com.digiwes.common.enums.ProdCatalogErrorCode;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
@@ -89,13 +90,14 @@ public class ProductCatalog extends Catalog {
         if(ParameterUtil.checkParameterIsNull(validFor))  {
             return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
         }
-        ProdCatalogProdOffer prodCatalogProdOffer = this.retrieveProdCatalogProdOffer(offering,validFor);
+        ProdCatalogProdOffer prodCatalogProdOffer = this.retrieveProdCatalogProdOffer(offering, validFor);
         if( null != prodCatalogProdOffer) {
             validFor.setEndDateTime(new Date());
             prodCatalogProdOffer.setValidFor(validFor);
+            return CommonErrorCode.SUCCESS.getCode() ;
         }
         logger.warn("offering have not been publish");
-        return CommonErrorCode.SUCCESS.getCode();
+        return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_NOT_BE_PUBLISH.getCode();
     }
 
     /**
@@ -106,14 +108,24 @@ public class ProductCatalog extends Catalog {
         if(ParameterUtil.checkParameterIsNull(offering)){
             return ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode();
         }
+        boolean isUsed = false;
         for (ProdCatalogProdOffer prodCatalogProdOffer:this.prodCatalogProdOffer){
             if(prodCatalogProdOffer.getProdOffering().equals(offering) ){
-                prodCatalogProdOffer.getValidFor().setEndDateTime(new Date());
-                prodCatalogProdOffer.setValidFor(validFor);
+                isUsed = true;
+                if(new Date().compareTo(offering.getValidFor().getEndDateTime()) == -1){
+                    prodCatalogProdOffer.getValidFor().setEndDateTime(new Date());
+                    prodCatalogProdOffer.setValidFor(validFor);
+                }
+
             }
         }
         logger.warn("offering have not been publish");
-        return CommonErrorCode.SUCCESS.getCode();
+        if(isUsed){
+            return CommonErrorCode.SUCCESS.getCode();
+        }else{
+            return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_NOT_BE_PUBLISH.getCode();
+        }
+
     }
 
     /**

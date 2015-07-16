@@ -6,7 +6,8 @@ package com.digiwes.common.enums;
 public enum ProdCatalogErrorCode {
     PROD_CATALOG_ID_IS_NULL(3001,"productCatalog must not be null"),
     PROD_CATALOG_OFFERING_IS_PUBLISHED(3002,"offering has been published "),
-    PROD_CATALOG_OFFERING_VALIDFOR_INVALID(3003,"publish offering'validFor is invalid");
+    PROD_CATALOG_OFFERING_VALIDFOR_INVALID(3003,"publish offering'validFor is invalid"),
+    PROD_CATALOG_OFFERING_NOT_BE_PUBLISH(3004,"offering not be publish");
 
     private  int code;
     private String message;
