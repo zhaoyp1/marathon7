@@ -2,13 +2,15 @@ package com.digiwes.product.spec;
 
 import java.util.*;
 import com.digiwes.basetype.*;
+import com.digiwes.common.enums.CommonErrorCode;
+import com.digiwes.common.enums.ProdSpecErrorCode;
 
 /**
  * A type of ProductSpecification that is formed by aggregating other ProductSpecifications, which may be Composite or Atomic ProductSpecifications.
  */
 public class CompositeProductSpecification extends ProductSpecification {
 
-    public List<ProductSpecification> prodSpec;
+    public List<ProductSpecification> prodSpec = new ArrayList<ProductSpecification>();
 
     /**
      * 
@@ -37,8 +39,12 @@ public class CompositeProductSpecification extends ProductSpecification {
      * @param prodSpec
      */
     public int composedOf(ProductSpecification prodSpec) {
-        // TODO - implement CompositeProductSpecification.composedOf
-        throw new UnsupportedOperationException();
+        if(this.equals(prodSpec)){
+            return ProdSpecErrorCode.PROD_SPEC_EQUALS_TO_CURRENT.getCode();
+        }
+        this.prodSpec.add(prodSpec);
+        return CommonErrorCode.SUCCESS.getCode();
+
     }
 
     /**
@@ -46,7 +52,7 @@ public class CompositeProductSpecification extends ProductSpecification {
      * @param status
      */
     public ProductSpecification[] retrieveProductSpec(String status) {
-        // TODO - implement CompositeProductSpecification.retrieveProductSpec
+
         throw new UnsupportedOperationException();
     }
 
