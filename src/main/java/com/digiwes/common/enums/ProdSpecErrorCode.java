@@ -24,7 +24,7 @@ public enum ProdSpecErrorCode{
     PROD_SPEC_CHAR_VALUE_RELATIONSHIP_TYPE_IS_NULL(1017,"relationshipType is null"),
     PROD_SPEC_CHAR_VALUE_EQUALS_TO_CURRENT(1018,"the designated productSpecCharacteristicValue equal to current value"),
     PROD_SPEC_CHAR_VALUE_HAS_RELATED_TO_CURRENT(1019,"CharacteristicValue has been established associate relationship in the specified time"),
-    PROD_SPEC_CHAR_USE_NAME_IS_NULL(1020,"ProductSpecCharUse'name is null"),
+    PROD_SPEC_CHAR_USE_NAME_IS_NULL_OR_EMPTY(1020,"ProductSpecCharUse'name is null or empty"),
     PROD_SPEC_CHAR_USE_TIME_NOT_BELONG_OF_CHAR_TIME(1021,"the specify time not belong of ProductSPecifcationChar's validFor"),
     PROD_SPEC_CHAR_HAS_ATTACHED_TO_SPEC(1022,"the char has benn attached to the ProdSpec"),
     PROD_SPEC_CHAR_VALUE_USE_TIME_NOT_BELONG_OF_CHARVALUE_TIME(1023,"the specify time not belong of ProductSPecifcationCharValue's validFor"),
