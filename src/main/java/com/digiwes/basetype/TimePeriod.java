@@ -78,7 +78,7 @@ public class TimePeriod {
     }
     public boolean isInTimePeriod(TimePeriod validFor){
         if (this.startDateTime != null && this.endDateTime != null) {
-            if((validFor.getStartDateTime().compareTo(this.startDateTime) == 1 ||validFor.getStartDateTime().compareTo(this.startDateTime) == 0 )&& (validFor.getEndDateTime().compareTo(this.endDateTime) == -1 ||validFor.getEndDateTime().compareTo(this.endDateTime) == 0 )){
+            if((validFor.getStartDateTime().compareTo(this.startDateTime) != -1 )&& (validFor.getEndDateTime().compareTo(this.endDateTime) != 1)){
                 return true;
             }else{
                 return false;
