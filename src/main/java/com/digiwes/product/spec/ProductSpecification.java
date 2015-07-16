@@ -175,7 +175,7 @@ public abstract class ProductSpecification {
 
     private int checkCharacteristic(String charName, ProductSpecCharacteristic specChar, TimePeriod validFor) {
         if(StringUtils.isEmpty(charName)){
-           return ProdSpecErrorCode.PROD_SPEC_CHAR_USE_NAME_IS_NULL.getCode();
+           return ProdSpecErrorCode.PROD_SPEC_CHAR_USE_NAME_IS_NULL_OR_EMPTY.getCode();
         }
         if(ParameterUtil.checkParameterIsNull(specChar)){
             return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
@@ -244,7 +244,7 @@ public abstract class ProductSpecification {
 
     private int validParameter(String charName, ProductSpecCharacteristic specChar, ProductSpecCharacteristicValue charValue) {
         if(StringUtils.isEmpty(charName)){
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_USE_NAME_IS_NULL.getCode();
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_USE_NAME_IS_NULL_OR_EMPTY.getCode();
         }
         if(ParameterUtil.checkParameterIsNull(specChar)){
             return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
