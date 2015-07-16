@@ -5,7 +5,7 @@ package com.digiwes.common.utils;
  */
 public class ParameterUtil {
     public static boolean checkParameterIsNull(Object obj){
-        if(obj == null){
+        if(null == obj){
             return true;
         }
         return false;
