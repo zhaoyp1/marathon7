@@ -8,11 +8,10 @@ import com.digiwes.basetype.*;
  */
 public abstract class ProductSpecification {
 
-    public List<ProductSpecificationCost> productSpecificationCost;
-    public List<ProductSpecificationRelationship> prodSpecRelationship;
-    public List<ProductSpecificationVersion> prodSpecVersion;
-    public List<ProductSpecCharUse> prodSpecChar;
-    public List<CompositeProductSpecification> compositeProdSpec;
+    private List<ProductSpecificationCost> productSpecificationCost;
+    private List<ProductSpecificationRelationship> prodSpecRelationship;
+    private List<ProductSpecificationVersion> prodSpecVersion;
+    private List<ProductSpecCharUse> prodSpecChar;
     /**
      * The name of the product specification.
      */
@@ -111,7 +110,7 @@ public abstract class ProductSpecification {
      * @param charName
      * @param specChar A characteristic quality or distinctive feature of a ProductSpecification. The object must exist in the system
      * @param canBeOveridden An indicator that specifies that the CharacteristicSpecValues associated with the CharacteristicSpec cannot be changed when instantiating a ServiceCharacteristicValue. For example, a bandwidth of 64 MB cannot be changed.
-     * @param isPackage An indicator that specifies if the associated CharacteristicSpecification is a composite. true£ºis a composite one
+     * @param isPackage An indicator that specifies if the associated CharacteristicSpecification is a composite. trueï¼šis a composite one
      * @param validFor The period of time for which the use of the CharacteristicSpecification is applicable.
      */
     public int attachCharacteristic(String charName, ProductSpecCharacteristic specChar, boolean canBeOveridden, boolean isPackage, TimePeriod validFor) {
@@ -170,7 +169,7 @@ public abstract class ProductSpecification {
      * @param charName
      * @param specChar A characteristic quality or distinctive feature of a ProductSpecification. The object must exist in the system
      * @param charValue A number or text that be assigned to a ProductSpecCharacteristic. The value must be in the characterisc's values.
-     * @param isDefault Indicates if the value is the default value for a characteristic. true£ºis default value
+     * @param isDefault Indicates if the value is the default value for a characteristic. trueï¼šis default value
      * @param validFor The period of time for which the use of the CharacteristicValue is applicable.
      */
     public int assignCharacteristicValue(String charName, ProductSpecCharacteristic specChar, ProductSpecCharacteristicValue charValue, boolean isDefault, TimePeriod validFor) {
@@ -412,9 +411,9 @@ public abstract class ProductSpecification {
     }
 
     /**
-     * return a ProductSpecCharUse ?by ProductSpecCharUse and ProductCharacteristic object.
+     * return a ProductSpecCharUse Â by ProductSpecCharUse and ProductCharacteristic object.
      * 
-     * callers are whose parameters including ?charName(use to ?uniqidentify ?uniquely a ProductSpecCharUse ) and ProductspecCharUse Object
+     * callers are whose parameters including Â charName(use to Â uniqidentify Â uniquely a ProductSpecCharUse ) and ProductspecCharUse Object
      * @param charName
      * @param characteristic
      */

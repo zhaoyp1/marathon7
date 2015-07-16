@@ -7,8 +7,8 @@ import com.digiwes.basetype.*;
  */
 public class ProductSpecificationRelationship {
 
-    ProductSpecification targetProdSpec;
-    ProductSpecification sourceSpec;
+    private ProductSpecification targetProdSpec;
+    private ProductSpecification sourceSpec;
     /**
      * A categorization of the relationship, such as migration, substitution, dependency, exclusivity.
      */

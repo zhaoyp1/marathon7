@@ -4,8 +4,8 @@ import com.digiwes.basetype.*;
 
 public class ProdSpecCharValueRelationship {
 
-    public ProductSpecCharacteristicValue sourceCharValue;
-    public ProductSpecCharacteristicValue productSpecCharacteristicValue;
+    private ProductSpecCharacteristicValue sourceCharValue;
+    private ProductSpecCharacteristicValue productSpecCharacteristicValue;
     /**
      * A categorization of the relationship between values, such as aggregation, migration, substitution, dependency, exclusivity.
      */

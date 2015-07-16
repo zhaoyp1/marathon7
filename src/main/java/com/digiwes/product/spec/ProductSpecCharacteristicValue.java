@@ -8,7 +8,7 @@ import com.digiwes.basetype.*;
  */
 public class ProductSpecCharacteristicValue {
 
-    public List<ProdSpecCharValueRelationship> prodSpecCharValueRelationship;
+    private List<ProdSpecCharValueRelationship> prodSpecCharValueRelationship;
     /**
      * A kind of value that the characteristic can take on, such as numeric, text, and so forth.
      */

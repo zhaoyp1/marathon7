@@ -5,8 +5,8 @@ import com.digiwes.basetype.*;
 
 public class ProductSpecCharUse {
 
-    ProductSpecCharacteristic prodSpecChar;
-    public List<ProdSpecCharValueUse> prodSpecCharValue;
+    private ProductSpecCharacteristic prodSpecChar;
+    private List<ProdSpecCharValueUse> prodSpecCharValue;
     /**
      * A word, term, or phrase by which the CharacteristicSpecification is known and distinguished from other CharacteristicSpecifications.
      */

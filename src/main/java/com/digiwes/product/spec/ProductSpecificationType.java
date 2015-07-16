@@ -7,7 +7,7 @@ import java.util.*;
  */
 public abstract class ProductSpecificationType {
 
-    public List<ProductSpecification> prodSpec;
+    private List<ProductSpecification> prodSpec;
     /**
      * The name of the product specification type.
      */

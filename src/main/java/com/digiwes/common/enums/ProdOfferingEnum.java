@@ -1,6 +1,7 @@
 package com.digiwes.common.enums;
 
-public class ProdOfferingEnum {/**
+public enum ProdOfferingEnum {
+    ;/**
      * OfferingStatus
      */
     public enum ProductOfferingStatus {

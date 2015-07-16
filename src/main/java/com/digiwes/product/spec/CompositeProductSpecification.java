@@ -8,7 +8,7 @@ import com.digiwes.basetype.*;
  */
 public class CompositeProductSpecification extends ProductSpecification {
 
-    public List<ProductSpecification> prodSpec;
+    private List<ProductSpecification> prodSpec;
 
     /**
      * 
