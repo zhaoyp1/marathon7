@@ -10,7 +10,7 @@ import com.digiwes.common.enums.ProdSpecErrorCode;
  */
 public class CompositeProductSpecification extends ProductSpecification {
 
-    private List<ProductSpecification> prodSpec = new ArrayList<ProductSpecification>();
+    private List<ProductSpecification> prodSpec  = new ArrayList<ProductSpecification>();
 
     /**
      * 
