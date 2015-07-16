@@ -9,7 +9,8 @@ public enum ProdOfferingErrorCode {
     PROD_OFFERING_RELATIONSHIP_TYPE_IS_NULL_OR_EMPTY(2003,"relationshpType is null or empty"),
     PROD_OFFERING_RELATIONSHIP_ALREADY_EXISTING(2004,"relationship is already existing"),
     PROD_OFFERING_ASSOCIATE_ITSELF(2005,"Its associated himself"),
-    BUNDLED_PROD_OFFERING_LOWERLIMIT_GREATER_UPPERLIMIT(2006,"lowerlimit is greater than upperlimit");
+    BUNDLED_PROD_OFFERING_LOWERLIMIT_GREATER_UPPERLIMIT(2006,"lowerlimit is greater than upperlimit"),
+    PROD_OFFERING_OFFERING_IS_INVALID(2007,"Offering is invalid");
     private  int code;
     private String message;
     private ProdOfferingErrorCode(int code,String message){
