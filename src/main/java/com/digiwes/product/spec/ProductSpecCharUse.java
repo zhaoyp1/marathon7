@@ -1,12 +1,20 @@
 package com.digiwes.product.spec;
 
-import java.util.*;
-import com.digiwes.basetype.*;
+import com.digiwes.basetype.TimePeriod;
+import com.digiwes.common.enums.CommonErrorCode;
+import com.digiwes.common.enums.ProdSpecErrorCode;
+import com.digiwes.common.utils.ParameterUtil;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductSpecCharUse {
+    private static final Logger logger = Logger.getLogger(ProductSpecCharUse.class);
 
     private ProductSpecCharacteristic prodSpecChar;
-    private List<ProdSpecCharValueUse> prodSpecCharValue;
+    private List<ProdSpecCharValueUse> prodSpecCharValue = new ArrayList<ProdSpecCharValueUse>();
     /**
      * A word, term, or phrase by which the CharacteristicSpecification is known and distinguished from other CharacteristicSpecifications.
      */
@@ -145,8 +153,13 @@ public class ProductSpecCharUse {
      * @param name
      */
     public ProductSpecCharUse(ProductSpecCharacteristic specChar,String name, boolean canBeOveridden, boolean isPackage, TimePeriod validFor ) {
-        // TODO - implement ProductSpecCharUse.ProductSpecCharUse
-        throw new UnsupportedOperationException();
+        assert !ParameterUtil.checkParameterIsNull(specChar) :"specChar must not be null";
+        assert !StringUtils.isEmpty(name) : "name must not be null";
+        this.name = name;
+        this.prodSpecChar =specChar;
+        this.canBeOveridden=canBeOveridden;
+        this.isPackage = isPackage;
+        this.validFor = validFor;
     }
 
     /**
@@ -163,8 +176,10 @@ public class ProductSpecCharUse {
      * @param description
      */
     public ProductSpecCharUse(ProductSpecCharacteristic specChar, String name,boolean canBeOveridden, boolean isPackage, TimePeriod validFor, String unique, int minCardinality, int maxCardinality, boolean extensible, String description) {
-        // TODO - implement ProductSpecCharUse.ProductSpecCharUse
-        throw new UnsupportedOperationException();
+        this(specChar, name, canBeOveridden, isPackage, validFor);
+        this.unique = unique;
+        this.minCardinality = minCardinality;
+        this.maxCardinality = maxCardinality;
     }
 
     /**
@@ -173,8 +188,13 @@ public class ProductSpecCharUse {
      * @param maxCardinality
      */
     public int specifyCardinality(int minCardinality, int maxCardinality) {
-        // TODO - implement ProductSpecCharUse.specifyCardinality
-        throw new UnsupportedOperationException();
+        if(minCardinality > maxCardinality){
+            logger.error("maxCardinality is less than minCardinality.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_MAX_LESS_THAN_MAX.getCode();
+        }
+        this.minCardinality = minCardinality;
+        this.maxCardinality = maxCardinality;
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
     /**
@@ -184,8 +204,15 @@ public class ProductSpecCharUse {
      * @param validFor
      */
     public int assignValue(ProductSpecCharacteristicValue charValue, boolean isDefault, TimePeriod validFor) {
-        // TODO - implement ProductSpecCharUse.assignValue
-        throw new UnsupportedOperationException();
+        if(ParameterUtil.checkParameterIsNull(charValue)){
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+        }
+        if(null != this.prodSpecChar.getProdSpecCharValue() && !this.prodSpecChar.getProdSpecCharValue().contains(charValue)){
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
+        }
+        ProdSpecCharValueUse prodSpecCharValueUse = new ProdSpecCharValueUse(charValue, isDefault, validFor);
+        this.prodSpecCharValue.add(prodSpecCharValueUse);
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
     /**
@@ -202,11 +229,26 @@ public class ProductSpecCharUse {
      * @param defaultValue
      */
     public int specifyDefaultCharacteristicValue(ProductSpecCharacteristicValue defaultValue) {
-        // TODO - implement ProductSpecCharUse.specifyDefaultCharacteristicValue
-        throw new UnsupportedOperationException();
+        if(ParameterUtil.checkParameterIsNull(defaultValue)){
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+        }
+        if(null != this.prodSpecCharValue){
+            if(null != this.prodSpecChar.getProdSpecCharValue() && !this.prodSpecChar.getProdSpecCharValue().contains(defaultValue)){
+                return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
+            }
+            for(ProdSpecCharValueUse prodSpecCharValueUse : this.prodSpecCharValue){
+                if(prodSpecCharValueUse.getProdSpecCharValue().equals(defaultValue)){
+                    prodSpecCharValueUse.setIsDefault(true);
+                    return CommonErrorCode.SUCCESS.getCode();
+                }
+            }
+
+        }
+        logger.warn("this value is not belong to current char.");
+        return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
     }
 
-    public ProdSpecCharValueUse[] retrieveDefaultValueUse() {
+    public List<ProdSpecCharValueUse> retrieveDefaultValueUse() {
         // TODO - implement ProductSpecCharUse.retrieveDefaultValueUse
         throw new UnsupportedOperationException();
     }
@@ -216,8 +258,23 @@ public class ProductSpecCharUse {
      * @param defaultValue
      */
     public int clearDefaultValueUse(ProductSpecCharacteristicValue defaultValue) {
-        // TODO - implement ProductSpecCharUse.clearDefaultValueUse
-        throw new UnsupportedOperationException();
+        if(ParameterUtil.checkParameterIsNull(defaultValue)){
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+        }
+        if(null != this.prodSpecCharValue){
+            if(null != this.prodSpecChar.getProdSpecCharValue() && !this.prodSpecChar.getProdSpecCharValue().contains(defaultValue)){
+                return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
+            }
+            for(ProdSpecCharValueUse prodSpecCharValueUse : this.prodSpecCharValue){
+                if(prodSpecCharValueUse.getProdSpecCharValue().equals(defaultValue)){
+                    prodSpecCharValueUse.setIsDefault(false);
+                    return CommonErrorCode.SUCCESS.getCode();
+                }
+            }
+
+        }
+        logger.warn("this value is not belong to current char.");
+        return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
     }
 
     /**
@@ -229,18 +286,23 @@ public class ProductSpecCharUse {
         throw new UnsupportedOperationException();
     }
 
-    public int hashCode() {
-        // TODO - implement ProductSpecCharUse.hashCode
-        throw new UnsupportedOperationException();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductSpecCharUse that = (ProductSpecCharUse) o;
+
+        if (prodSpecChar != null ? !prodSpecChar.equals(that.prodSpecChar) : that.prodSpecChar != null) return false;
+        return !(name != null ? !name.equals(that.name) : that.name != null);
+
     }
 
-    /**
-     * 
-     * @param o
-     */
-    public boolean equals(Object o) {
-        // TODO - implement ProductSpecCharUse.equals
-        throw new UnsupportedOperationException();
+    @Override
+    public int hashCode() {
+        int result = prodSpecChar != null ? prodSpecChar.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
     }
 
     public String toString() {

@@ -140,6 +140,10 @@ public class ProductSpecCharacteristic {
         this.validFor = validFor;
     }
 
+    public List<ProductSpecCharacteristicValue> getProdSpecCharValue() {
+        return prodSpecCharValue;
+    }
+
     /**
      * 
      * @param id

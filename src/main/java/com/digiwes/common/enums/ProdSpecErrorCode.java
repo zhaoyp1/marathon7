@@ -28,7 +28,8 @@ public enum ProdSpecErrorCode{
     PROD_SPEC_CHAR_USE_TIME_NOT_BELONG_OF_CHAR_TIME(1021,"the specify time not belong of ProductSPecifcationChar's validFor"),
     PROD_SPEC_CHAR_HAS_ATTACHED_TO_SPEC(1022,"the char has benn attached to the ProdSpec"),
     PROD_SPEC_CHAR_VALUE_USE_TIME_NOT_BELONG_OF_CHARVALUE_TIME(1023,"the specify time not belong of ProductSPecifcationCharValue's validFor"),
-    PROD_SPEC_NOT_USED_CURRENT_CHAR(1024,"the char not be used by this Spec")  ;
+    PROD_SPEC_NOT_USED_CURRENT_CHAR(1024,"the char not be used by this Spec"),
+    PROD_SPEC_CHAR_NOT_INCLUDE_VALUE(1025,"the char not include this value");
 
 
     private  int code;

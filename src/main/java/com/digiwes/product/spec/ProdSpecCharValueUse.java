@@ -33,6 +33,14 @@ public class ProdSpecCharValueUse {
         this.validFor = validFor;
     }
 
+    public ProductSpecCharacteristicValue getProdSpecCharValue() {
+        return prodSpecCharValue;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
     /**
      * 
      * @param charVal
