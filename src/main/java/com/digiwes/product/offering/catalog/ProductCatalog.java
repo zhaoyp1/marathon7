@@ -263,8 +263,9 @@ public class ProductCatalog extends Catalog {
         }
 
         if(!offering.getValidFor().isInTimePeriod(validFor)){
-            return ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_INVALID.getCode();
+            return ProdCatalogErrorCode.PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID.getCode();
         }
+
         return CommonErrorCode.SUCCESS.getCode();
     }
 

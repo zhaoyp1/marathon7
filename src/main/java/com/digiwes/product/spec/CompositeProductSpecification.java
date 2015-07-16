@@ -21,8 +21,8 @@ public class CompositeProductSpecification extends ProductSpecification {
      * @param name
      * @param brand
      */
-    public CompositeProductSpecification(String productNumber, String name, String brand) {
-        super(productNumber,name,brand);
+    public CompositeProductSpecification(String productNumber, String name, String brand,TimePeriod validFor) {
+        super(productNumber,name,brand,validFor);
     }
 
     /**
