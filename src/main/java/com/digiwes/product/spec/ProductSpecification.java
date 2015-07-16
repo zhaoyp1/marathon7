@@ -6,15 +6,30 @@ import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * A detailed description of a tangible or intangible object made available externally in the form of a ProductOffering to Customers or other Parties playing a PartyRole. A ProductSpecification may consist of other ProductSpecifications supplied together as a collection. Members of the collection may be offered in their own right. ProductSpecifications may also exist within groupings, such as ProductCategories, ProductLines, and ProductTypes.
  */
 public abstract class ProductSpecification {
 
+    private static Logger logger= Logger.getLogger(ProductSpecification.class);
     private List<ProductSpecificationCost> productSpecificationCost;
-    private List<ProductSpecificationRelationship> prodSpecRelationship;
+    private List<ProductSpecificationRelationship> prodSpecRelationship = new ArrayList<ProductSpecificationRelationship>();
     private List<ProductSpecificationVersion> prodSpecVersion;
+
+    public List<ProductSpecCharUse> getProdSpecChar() {
+        return prodSpecChar;
+    }
+
+    public List<ProductSpecificationRelationship> getProdSpecRelationship() {
+        return prodSpecRelationship;
+    }
+
+    public void setProdSpecRelationship(List<ProductSpecificationRelationship> prodSpecRelationship) {
+        this.prodSpecRelationship = prodSpecRelationship;
+    }
+
     private List<ProductSpecCharUse> prodSpecChar = new ArrayList<ProductSpecCharUse>();
     /**
      * The name of the product specification.
@@ -125,27 +140,13 @@ public abstract class ProductSpecification {
      * @param validFor The period of time for which the use of the CharacteristicSpecification is applicable.
      */
     public int attachCharacteristic(String charName, ProductSpecCharacteristic specChar, boolean canBeOveridden, boolean isPackage, TimePeriod validFor) {
-        if(StringUtils.isEmpty(charName)){
-
+        int errorCode = checkCharacteristic(charName, specChar, validFor);
+        if(errorCode == CommonErrorCode.SUCCESS.getCode() ){
+            ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,name,canBeOveridden,isPackage,validFor);
+            this.prodSpecChar.add(productSpecCharUse);
+            return CommonErrorCode.SUCCESS.getCode();
         }
-        if(ParameterUtil.checkParameterIsNull(specChar)){
-
-        }
-        if( null == this.prodSpecChar){
-
-        }
-        if( !specChar.getValidFor().isInTimePeriod(validFor)){
-
-        }
-        for(ProductSpecCharUse productSpecCharUse:this.prodSpecChar){
-            if(specChar.equals(productSpecCharUse.getProdSpecChar()) && name.equals(charName) && productSpecCharUse.getValidFor().isOverlap(validFor)){
-
-                return 1;
-            }
-        }
-        ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,name,canBeOveridden,isPackage,validFor);
-        this.prodSpecChar.add(productSpecCharUse);
-        return CommonErrorCode.SUCCESS.getCode();
+        return errorCode;
     }
 
     /**
@@ -162,6 +163,17 @@ public abstract class ProductSpecification {
      * @param description A narrative that explains the CharacteristicSpecification.
      */
     public int attachCharacteristic(String charName, ProductSpecCharacteristic specChar, boolean canBeOveridden, boolean isPackage, TimePeriod validFor, String unique, int minCardinality, int maxCardinality, boolean extensible, String description) {
+        int errorCode = checkCharacteristic(charName, specChar, validFor);
+        if(errorCode == CommonErrorCode.SUCCESS.getCode() ){
+            ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,name,canBeOveridden,isPackage,validFor,unique,minCardinality,maxCardinality,extensible,description);
+            this.prodSpecChar.add(productSpecCharUse);
+            return CommonErrorCode.SUCCESS.getCode();
+        }
+        return errorCode;
+
+    }
+
+    private int checkCharacteristic(String charName, ProductSpecCharacteristic specChar, TimePeriod validFor) {
         if(StringUtils.isEmpty(charName)){
            return ProdSpecErrorCode.PROD_SPEC_CHAR_USE_NAME_IS_NULL.getCode();
         }
@@ -176,8 +188,6 @@ public abstract class ProductSpecification {
                 return ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_ATTACHED_TO_SPEC.getCode();
             }
         }
-        ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,name,canBeOveridden,isPackage,validFor,unique,minCardinality,maxCardinality,extensible,description);
-        this.prodSpecChar.add(productSpecCharUse);
         return CommonErrorCode.SUCCESS.getCode();
     }
 
@@ -218,8 +228,40 @@ public abstract class ProductSpecification {
      * @param validFor The period of time for which the use of the CharacteristicValue is applicable.
      */
     public int assignCharacteristicValue(String charName, ProductSpecCharacteristic specChar, ProductSpecCharacteristicValue charValue, boolean isDefault, TimePeriod validFor) {
-        // TODO - implement ProductSpecification.assignCharacteristicValue
-        throw new UnsupportedOperationException();
+        int errorCode = validParameter(charName, specChar, charValue);
+        if(errorCode == CommonErrorCode.SUCCESS.getCode()){
+            if(charValue.getValidFor().isInTimePeriod(validFor)){
+                return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_USE_TIME_NOT_BELONG_OF_CHARVALUE_TIME.getCode();
+            }
+            ProductSpecCharUse productSpecCharUse = retrieveProdSpecCharUse(charName, specChar);
+            if(productSpecCharUse!=null){
+                return productSpecCharUse.assignValue(charValue,isDefault,validFor);
+            }
+            return   ProdSpecErrorCode.PROD_SPEC_NOT_USED_CURRENT_CHAR.getCode();
+        }
+        return errorCode;
+    }
+
+    private int validParameter(String charName, ProductSpecCharacteristic specChar, ProductSpecCharacteristicValue charValue) {
+        if(StringUtils.isEmpty(charName)){
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_USE_NAME_IS_NULL.getCode();
+        }
+        if(ParameterUtil.checkParameterIsNull(specChar)){
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
+        }
+        if(ParameterUtil.checkParameterIsNull(charValue)){
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+        }
+        return CommonErrorCode.SUCCESS.getCode();
+    }
+
+    private ProductSpecCharUse retrieveProdSpecCharUse(String charName, ProductSpecCharacteristic specChar) {
+        for (ProductSpecCharUse productSpecCharUse :this.prodSpecChar){
+            if(charName.equals(productSpecCharUse.getName()) && specChar.equals(productSpecCharUse.getProdSpecChar())){
+                return  productSpecCharUse;
+            }
+        }
+        return null;
     }
 
     /**
@@ -240,8 +282,12 @@ public abstract class ProductSpecification {
      * @param defaultCharValue
      */
     public int specifyDefaultCharacteristicValue(String charName, ProductSpecCharacteristic specChar, ProductSpecCharacteristicValue defaultCharValue) {
-        // TODO - implement ProductSpecification.specifyDefaultCharacteristicValue
-        throw new UnsupportedOperationException();
+        int errorCode = this.validParameter(charName, specChar, defaultCharValue);
+        if(errorCode == CommonErrorCode.SUCCESS.getCode()){
+            specChar.specifyDefaultValue(defaultCharValue);
+        }
+        return  errorCode;
+
     }
 
     /**
@@ -260,18 +306,27 @@ public abstract class ProductSpecification {
      * @param charName
      * @param characteristic
      */
-    public ProdSpecCharValueUse[] retrieveDefaultValue(String charName, ProductSpecCharacteristic characteristic) {
-        // TODO - implement ProductSpecification.retrieveDefaultValue
-        throw new UnsupportedOperationException();
+    public List<ProdSpecCharValueUse> retrieveDefaultValue(String charName, ProductSpecCharacteristic characteristic) {
+       ParameterUtil.checkParameterIsNulForException(charName,"charName") ;
+       ParameterUtil.checkParameterIsNulForException(characteristic,"ProductSpecCharacteristic");
+       ProductSpecCharUse charUse = this.retrieveProdSpecCharUse(charName, characteristic);
+       List<ProdSpecCharValueUse> defaults= charUse.retrieveDefaultValueUse();
+       return defaults;
     }
 
     /**
      * 
      * @param time
      */
-    public ProductSpecCharUse[] retrieveCharacteristic(Date time) {
-        // TODO - implement ProductSpecification.retrieveCharacteristic
-        throw new UnsupportedOperationException();
+    public List<ProductSpecCharUse> retrieveCharacteristic(Date time) {
+       ParameterUtil.checkParameterIsNulForException(time,"time");
+       List<ProductSpecCharUse> productSpecCharUseList=new ArrayList<ProductSpecCharUse>();
+       for(ProductSpecCharUse charUse : prodSpecChar ){
+           if(charUse.getValidFor().isInTimePeriod(time)){
+               productSpecCharUseList.add(charUse);
+           }
+       }
+        return productSpecCharUseList;
     }
 
     /**
@@ -280,9 +335,24 @@ public abstract class ProductSpecification {
      * @param specChar
      * @param time
      */
-    public ProdSpecCharValueUse[] retrieveCharacteristicValue(String charName, ProductSpecCharacteristic specChar, Date time) {
-        // TODO - implement ProductSpecification.retrieveCharacteristicValue
-        throw new UnsupportedOperationException();
+    public List<ProdSpecCharValueUse> retrieveCharacteristicValue(String charName, ProductSpecCharacteristic specChar, Date time) {
+        ParameterUtil.checkParameterIsNulForException(charName,"charName") ;
+        ParameterUtil.checkParameterIsNulForException(specChar,"ProductSpecCharacteristic");
+        ParameterUtil.checkParameterIsNulForException(time,"time");
+        List<ProdSpecCharValueUse>   validProdSpecCharValueUse= new ArrayList<ProdSpecCharValueUse>();
+        ProductSpecCharUse productSpecCharUse=this.retrieveProdSpecCharUse(charName, specChar);
+        if( null != productSpecCharUse) {
+            if(productSpecCharUse.getValidFor().isInTimePeriod(time)){
+                for (ProdSpecCharValueUse prodSpecCharValueUse : productSpecCharUse.getProdSpecCharValue()) {
+                    if(prodSpecCharValueUse.getValidFor().isInTimePeriod(time)){
+                        validProdSpecCharValueUse.add(prodSpecCharValueUse);
+                    }
+                }
+            }
+        }else {
+            logger.warn(" specChar not be used");
+        }
+        return  validProdSpecCharValueUse ;
     }
 
     public ProductSpecCharUse[] retrieveRootCharacteristic() {
@@ -412,8 +482,35 @@ public abstract class ProductSpecification {
      * @param validFor
      */
     public int associate(ProductSpecification prodSpec, String type, TimePeriod validFor) {
-        // TODO - implement ProductSpecification.associate
-        throw new UnsupportedOperationException();
+        if (StringUtils.isEmpty(type)) {
+            return ProdSpecErrorCode.PROD_SPEC_HAS_RELATED_TO_CURRENT.getCode();
+        }
+        if(!ParameterUtil.checkParameterIsNull(prodSpec)) {
+            return ProdSpecErrorCode.PROD_SPEC_IS_NULL.getCode();
+        }
+        if(this.equals(prodSpec)){
+            return ProdSpecErrorCode.PROD_SPEC_EQUALS_TO_CURRENT.getCode();
+        }
+        //checkout time is in period
+        ProductSpecificationRelationship prodSpecRealtionship = this.retrieveRelatedProdSpecBySpec(prodSpec);
+        if(null != prodSpecRealtionship){
+            if(prodSpecRealtionship.getValidFor().isOverlap(validFor)){
+                return ProdSpecErrorCode.PROD_SPEC_HAS_RELATED_TO_CURRENT.getCode();
+            }
+        }
+        ProductSpecificationRelationship ship =new ProductSpecificationRelationship(this, prodSpec, type, validFor);
+        this.prodSpecRelationship.add(ship);
+        return CommonErrorCode.SUCCESS.getCode();
+    }
+    private ProductSpecificationRelationship retrieveRelatedProdSpecBySpec(ProductSpecification targetProdSpec){
+        if(null != this.prodSpecRelationship){
+            for(ProductSpecificationRelationship prodSpecShip : prodSpecRelationship){
+                if(prodSpecShip.equals(targetProdSpec)){
+                    return prodSpecShip;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -429,9 +526,17 @@ public abstract class ProductSpecification {
      * 
      * @param type
      */
-    public ProductSpecification[] retrieveRelatedProdSpec(String type) {
-        // TODO - implement ProductSpecification.retrieveRelatedProdSpec
-        throw new UnsupportedOperationException();
+    public List<ProductSpecification> retrieveRelatedProdSpec(String type) {
+        ParameterUtil.checkParameterIsNulForException(type,"type");
+        List<ProductSpecification> validProductSpecification = new ArrayList<ProductSpecification>();
+        if(null != this.prodSpecRelationship){
+            for (ProductSpecificationRelationship prodSpecRelate : this.prodSpecRelationship) {
+                if(prodSpecRelate.getType().equals(type)){
+                    validProductSpecification.add(prodSpecRelate.getTargetProdSpec());
+                }
+            }
+        }
+        return validProductSpecification;
     }
 
     /**
@@ -439,9 +544,16 @@ public abstract class ProductSpecification {
      * @param type
      * @param time
      */
-    public ProductSpecification[] retrieveRelatedProdSpec(String type, Date time) {
-        // TODO - implement ProductSpecification.retrieveRelatedProdSpec
-        throw new UnsupportedOperationException();
+    public List<ProductSpecification> retrieveRelatedProdSpec(String type, Date time) {
+        ParameterUtil.checkParameterIsNulForException(type,"type");
+        ParameterUtil.checkParameterIsNulForException(time,"time");
+        List<ProductSpecification> validProductSpecification = new ArrayList<ProductSpecification>();
+        for (ProductSpecificationRelationship prodSpecRelate : this.prodSpecRelationship) {
+            if(prodSpecRelate.getValidFor().isInTimePeriod(time) && prodSpecRelate.getType().equals(type)){
+                 validProductSpecification.add(prodSpecRelate.getTargetProdSpec());
+            }
+        }
+        return validProductSpecification;
     }
 
     /**
@@ -455,17 +567,6 @@ public abstract class ProductSpecification {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * return a ProductSpecCharUse  by ProductSpecCharUse and ProductCharacteristic object.
-     * 
-     * callers are whose parameters including  charName(use to  uniqidentify  uniquely a ProductSpecCharUse ) and ProductspecCharUse Object
-     * @param charName
-     * @param characteristic
-     */
-    private ProductSpecCharUse retrieveProdSpecCharUse(String charName, ProductSpecCharacteristic characteristic) {
-        // TODO - implement ProductSpecification.retrieveProdSpecCharUse
-        throw new UnsupportedOperationException();
-    }
 
     /**
      * 
@@ -473,22 +574,31 @@ public abstract class ProductSpecification {
      * @param characteristic
      */
     private boolean contains(String charName, ProductSpecCharacteristic characteristic) {
-        // TODO - implement ProductSpecification.contains
-        throw new UnsupportedOperationException();
+        for (ProductSpecCharUse productSpecCharUse :this.prodSpecChar){
+            if(charName.equals(productSpecCharUse.getName()) && characteristic.equals(productSpecCharUse.getProdSpecChar())){
+                return  true;
+            }
+        }
+        return false;
     }
 
-    /**
-     * 
-     * @param o
-     */
+    @Override
     public boolean equals(Object o) {
-        // TODO - implement ProductSpecification.equals
-        throw new UnsupportedOperationException();
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductSpecification that = (ProductSpecification) o;
+
+        if (!prodSpecVersion.equals(that.prodSpecVersion)) return false;
+        return productNumber.equals(that.productNumber);
+
     }
 
+    @Override
     public int hashCode() {
-        // TODO - implement ProductSpecification.hashCode
-        throw new UnsupportedOperationException();
+        int result = prodSpecVersion.hashCode();
+        result = 31 * result + productNumber.hashCode();
+        return result;
     }
 
     /**

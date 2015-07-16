@@ -9,6 +9,31 @@ public class ProductSpecificationRelationship {
 
     private ProductSpecification targetProdSpec;
     private ProductSpecification sourceSpec;
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setValidFor(TimePeriod validFor) {
+        this.validFor = validFor;
+    }
+
+    public ProductSpecification getTargetProdSpec() {
+        return targetProdSpec;
+    }
+
+    public ProductSpecification getSourceSpec() {
+        return sourceSpec;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public TimePeriod getValidFor() {
+        return validFor;
+    }
+
     /**
      * A categorization of the relationship, such as migration, substitution, dependency, exclusivity.
      */
