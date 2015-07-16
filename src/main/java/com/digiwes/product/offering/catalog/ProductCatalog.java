@@ -23,8 +23,7 @@ public class ProductCatalog extends Catalog {
      * @param type
      */
     public ProductCatalog(String id, String name, String type) {
-        // TODO - implement ProductCatalog.ProductCatalog
-        throw new UnsupportedOperationException();
+      super(id,name,type,null);
     }
 
     /**
@@ -35,8 +34,7 @@ public class ProductCatalog extends Catalog {
      * @param validFor
      */
     public ProductCatalog(String id, String name, String type, TimePeriod validFor) {
-        // TODO - implement ProductCatalog.ProductCatalog
-        throw new UnsupportedOperationException();
+        super(id,name,type,validFor);
     }
 
     /**
