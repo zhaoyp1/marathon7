@@ -71,18 +71,23 @@ public class CompositeProductSpecification extends ProductSpecification {
      * 
      * @param time
      */
-    public ProductSpecification[] retrieveProductSpec(Date time) {
+    public List<ProductSpecification> retrieveProductSpec(Date time) {
 
-        throw new UnsupportedOperationException();
+        ParameterUtil.checkParameterIsNulForException(time,"time"); //validParameter
+        List<ProductSpecification> validProductSpecification = new ArrayList<ProductSpecification>();
+        if( null != this.prodSpec && this.prodSpec.size() >0){
+            for (ProductSpecification productSpecification:this.prodSpec){
+                if( null == productSpecification.getValidFor() || productSpecification.getValidFor().isInTimePeriod(time) ){
+                    validProductSpecification.add(productSpecification);
+                }
+            }
+        }
+       return validProductSpecification;
     }
 
     public String toString() {
-        // TODO - implement CompositeProductSpecification.toString
+         //TODO
         throw new UnsupportedOperationException();
-    }
-    public static  void main(String args[]){
-        CompositeProductSpecification specification = new CompositeProductSpecification("aa","aa","a");
-        specification.retrieveProductSpec("aa");
     }
 
 }

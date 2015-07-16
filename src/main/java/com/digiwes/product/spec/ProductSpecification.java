@@ -2,6 +2,7 @@ package com.digiwes.product.spec;
 
 import java.util.*;
 import com.digiwes.basetype.*;
+import com.digiwes.common.utils.ParameterUtil;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -12,7 +13,7 @@ public abstract class ProductSpecification {
     private List<ProductSpecificationCost> productSpecificationCost;
     private List<ProductSpecificationRelationship> prodSpecRelationship;
     private List<ProductSpecificationVersion> prodSpecVersion;
-    private List<ProductSpecCharUse> prodSpecChar;
+    private List<ProductSpecCharUse> prodSpecChar = new ArrayList<ProductSpecCharUse>();
     /**
      * The name of the product specification.
      */
@@ -89,6 +90,10 @@ public abstract class ProductSpecification {
      * @param brand The manufacturer or trademark of the specification.
      */
     public ProductSpecification(String productNumber, String name, String brand) {
+        assert !StringUtils.isEmpty(productNumber):"productNumber must not be null";
+        assert !StringUtils.isEmpty(name):"name must not be null";
+        assert !StringUtils.isEmpty(brand):"brand must not be null";
+
         this.productNumber=productNumber;
         this.name=name;
         this.brand=brand;
@@ -103,8 +108,9 @@ public abstract class ProductSpecification {
      * @param description A narrative that explains in detail what the product spec is.
      */
     public ProductSpecification(String productNumber, String name, String brand, TimePeriod validFor, String description) {
-        // TODO - implement ProductSpecification.ProductSpecification
-        throw new UnsupportedOperationException();
+         this(productNumber,name,brand);
+         this.validFor=validFor;
+         this.description=description;
     }
 
     /**
@@ -116,7 +122,16 @@ public abstract class ProductSpecification {
      * @param validFor The period of time for which the use of the CharacteristicSpecification is applicable.
      */
     public int attachCharacteristic(String charName, ProductSpecCharacteristic specChar, boolean canBeOveridden, boolean isPackage, TimePeriod validFor) {
-        // TODO - implement ProductSpecification.attachCharacteristic
+        if(StringUtils.isEmpty(charName)){
+
+        }
+        if(ParameterUtil.checkParameterIsNull(specChar)){
+
+        }
+        if( null == this.prodSpecChar){
+
+        }
+
         throw new UnsupportedOperationException();
     }
 
