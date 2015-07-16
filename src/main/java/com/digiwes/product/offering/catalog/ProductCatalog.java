@@ -20,8 +20,12 @@ import org.apache.log4j.Logger;
  */
 public class ProductCatalog extends Catalog {
     private static final Logger logger = Logger.getLogger(ProductCatalog.class);
+
     private List<ProdCatalogProdOffer> prodCatalogProdOffer = new ArrayList<ProdCatalogProdOffer>();
 
+    public List<ProdCatalogProdOffer> getProdCatalogProdOffer() {
+        return prodCatalogProdOffer;
+    }
     /**
      * 
      * @param id
