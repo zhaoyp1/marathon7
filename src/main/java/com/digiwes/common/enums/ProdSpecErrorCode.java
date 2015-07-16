@@ -10,7 +10,10 @@ public enum ProdSpecErrorCode{
     PROD_SPEC_IS_NULL(1004,"productSpecification is null"),
     PROD_SPEC_RELATIONSHIP_TYPE_IS_NULL(1003,"relationshipType is null"),
     PROD_SPEC_EQUALS_TO_CURRENT(1005,"the designated productSpecification equal to current value"),
-    PROD_SPEC_HAS_RELATED_TO_CURRENT(1006,"the designated productSpecification equal to current value");
+    PROD_SPEC_HAS_RELATED_TO_CURRENT(1006,"the designated productSpecification equal to current value"),
+    PROD_SPEC_CHAR_MAX_LESS_THAN_MAX(1007,"maxCardinality is less than minCardinality"),
+    PROD_SPEC_CHAR_VALUE_IS_NULL(1008,"charVal is null"),
+    PROD_SPEC_CHAR_TYPE_DIFFERENT_CHAR_VALUE_TYPE(1009,"The valueType of Character and the valueType of CharacterValue are the same");
 
     private  int code;
     private String message;

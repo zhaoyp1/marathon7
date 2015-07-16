@@ -5,7 +5,8 @@ package com.digiwes.common.enums;
  */
 public enum  CommonErrorCode {
 
-    SUCCESS(0,"SUCCESS");
+    SUCCESS(0,"SUCCESS"),
+    TIME_IS_NULL(1,"Time is null.");
 
     private  int code;
     private String message;
