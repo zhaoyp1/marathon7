@@ -1,18 +1,24 @@
 package com.digiwes.product.spec;
 
 import java.util.*;
+
 import com.digiwes.basetype.*;
+import com.digiwes.common.enums.CommonErrorCode;
+import com.digiwes.common.enums.ProdSpecErrorCode;
+import com.digiwes.common.utils.ParameterUtil;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 /**
  * A characteristic quality or distinctive feature of a ProductSpecification. The characteristic can be take on a discrete value, such as color, can take on a range of values, (for example, sensitivity of 100-240 mV), or can be derived from a formula (for example, usage time (hrs) = 30 - talk time *3). Certain characteristics, such as color, may be configured during the ordering or some other process.
  */
 public class ProductSpecCharacteristic {
+    private static final Logger logger = Logger.getLogger(ProductSpecCharacteristic.class);
 
-    private List<ProductSpecCharacteristicValue> prodSpecCharValue;
-    private List<ProductSpecCharRelationship> prodSpecCharRelationship;
+    private List<ProductSpecCharacteristicValue> prodSpecCharValue = new ArrayList<ProductSpecCharacteristicValue>();
+    private List<ProductSpecCharRelationship> prodSpecCharRelationship = new ArrayList<ProductSpecCharRelationship>();
     /**
      * A unique identifier for the ProductSpecCharacteristic.
-     *  
      */
     private String ID;
     /**
@@ -141,8 +147,11 @@ public class ProductSpecCharacteristic {
      * @param valueType
      */
     public ProductSpecCharacteristic(String id, String name, String valueType) {
-        // TODO - implement ProductSpecCharacteristic.ProductSpecCharacteristic
-        throw new UnsupportedOperationException();
+        assert !StringUtils.isEmpty(id):"id must not be null";
+        assert !StringUtils.isEmpty(name):"name must not be null";
+        this.ID = id;
+        this.name = name;
+        this.valueType = valueType;
     }
 
     /**
@@ -159,8 +168,14 @@ public class ProductSpecCharacteristic {
      * @param derivationFormula
      */
     public ProductSpecCharacteristic(String id, String name, String valueType, TimePeriod validFor, String unique, int minCardinality, int maxCardinality, boolean extensible, String description, String derivationFormula) {
-        // TODO - implement ProductSpecCharacteristic.ProductSpecCharacteristic
-        throw new UnsupportedOperationException();
+        this(id, name, valueType);
+        this.validFor = validFor;
+        this.unique = unique;
+        this.minCardinality = minCardinality;
+        this.maxCardinality = maxCardinality;
+        this.extensible = extensible;
+        this.description = description;
+        this.derivationFormula = derivationFormula;
     }
 
     /**
@@ -169,8 +184,13 @@ public class ProductSpecCharacteristic {
      * @param maxCardinality
      */
     public int specifyCardinality(int minCardinality, int maxCardinality) {
-        // TODO - implement ProductSpecCharacteristic.specifyCardinality
-        throw new UnsupportedOperationException();
+        if (minCardinality > maxCardinality) {
+            logger.warn("maxCardinality is less than minCardinality.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_MAX_LESS_THAN_MAX.getCode();
+        }
+        this.minCardinality = minCardinality;
+        this.maxCardinality = maxCardinality;
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
     /**
@@ -178,8 +198,16 @@ public class ProductSpecCharacteristic {
      * @param charVal
      */
     public int assignValue(ProductSpecCharacteristicValue charVal) {
-        // TODO - implement ProductSpecCharacteristic.assignValue
-        throw new UnsupportedOperationException();
+        if (ParameterUtil.checkParameterIsNull(charVal)) {
+            logger.error("charVal must not be null.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+        }
+        if (null != charVal.getValueType() && !this.getValueType().equals(charVal.getValueType())) {
+            logger.error("The valueType of Character and the valueType of CharacterValue are different.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_TYPE_DIFFERENT_CHAR_VALUE_TYPE.getCode();
+        }
+        this.prodSpecCharValue.add(charVal);
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
     /**
@@ -187,17 +215,40 @@ public class ProductSpecCharacteristic {
      * @param charVal
      */
     public int removeValue(ProductSpecCharacteristicValue charVal) {
-        // TODO - implement ProductSpecCharacteristic.removeValue
-        throw new UnsupportedOperationException();
+        if (ParameterUtil.checkParameterIsNull(charVal)) {
+            logger.error("charValue must not be null.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+        }
+        if (null != prodSpecCharValue && prodSpecCharValue.size() > 0) {
+            if (prodSpecCharValue.contains(charVal)) {
+                prodSpecCharValue.remove(charVal);
+                return CommonErrorCode.SUCCESS.getCode();
+            }
+            logger.warn("The charValue do not belong to this char.");
+        }
+        logger.warn("Current Char without this charValue.");
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
     /**
      * 
      * @param time
      */
-    public ProductSpecCharacteristicValue[] retrieveValue(int time) {
-        // TODO - implement ProductSpecCharacteristic.retrieveValue
-        throw new UnsupportedOperationException();
+    public List<ProductSpecCharacteristicValue> retrieveValue(Date time) {
+        List<ProductSpecCharacteristicValue> productSpecCharValues = new ArrayList<ProductSpecCharacteristicValue>();
+        if (ParameterUtil.checkParameterIsNull(time)) {
+            logger.error("DateTime must not be null.");
+            throw new IllegalArgumentException("DateTime must not be null.");
+        }
+        ParameterUtil.checkParameterIsNulForException(time, "time");
+        if ( null != this.prodSpecCharValue ) {
+            for (ProductSpecCharacteristicValue charValue : prodSpecCharValue) {
+                if (null != charValue.getValidFor() && charValue.getValidFor().isInTimePeriod(time)) {
+                    productSpecCharValues.add(charValue);
+                }
+            }
+        }
+        return productSpecCharValues;
     }
 
     /**
@@ -205,8 +256,25 @@ public class ProductSpecCharacteristic {
      * @param defaultCharVal
      */
     public int specifyDefaultValue(ProductSpecCharacteristicValue defaultCharVal) {
-        // TODO - implement ProductSpecCharacteristic.specifyDefaultValue
-        throw new UnsupportedOperationException();
+        if (null == defaultCharVal) {
+            logger.error("charVal must not be null.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+        }
+        if (null == this.prodSpecCharValue || !prodSpecCharValue.contains(defaultCharVal)) {
+            logger.warn("The charValue do not belong to this char.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_NOT_BELONG_TO_CHAR.getCode();
+        }
+        for (ProductSpecCharacteristicValue charValue : prodSpecCharValue) {
+            if (charValue.equals(defaultCharVal)) {
+                if (defaultCharVal.isIsDefault()) {
+                    logger.warn("The current charValue is the default value" + charValue.toString());
+                } else {
+                    defaultCharVal.setIsDefault(true);
+                }
+                break;
+            }
+        }
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
     /**
@@ -214,13 +282,33 @@ public class ProductSpecCharacteristic {
      * @param value
      */
     public int clearDefaultValue(ProductSpecCharacteristicValue value) {
-        // TODO - implement ProductSpecCharacteristic.clearDefaultValue
-        throw new UnsupportedOperationException();
+        if (ParameterUtil.checkParameterIsNull(value)) {
+            logger.error("charVal must not be null.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+        }
+        if (null == this.prodSpecCharValue || !prodSpecCharValue.contains(value)) {
+            logger.warn("no charValue under the current char.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_NO_CHAR_VALUE.getCode();
+        }
+        for (ProductSpecCharacteristicValue productSpecCharacteristicValue : prodSpecCharValue) {
+            if (productSpecCharacteristicValue.equals(value)) {
+                productSpecCharacteristicValue.setIsDefault(false);
+                break;
+            }
+        }
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
-    public ProductSpecCharacteristicValue[] retrieveDefaultValue() {
-        // TODO - implement ProductSpecCharacteristic.retrieveDefaultValue
-        throw new UnsupportedOperationException();
+    public List<ProductSpecCharacteristicValue> retrieveDefaultValue() {
+        List<ProductSpecCharacteristicValue> defaultSpecCharValue = new ArrayList<ProductSpecCharacteristicValue>();
+        if (null != this.prodSpecCharValue) {
+            for (ProductSpecCharacteristicValue charValue : prodSpecCharValue) {
+                if (charValue.isIsDefault()) {
+                    defaultSpecCharValue.add(charValue);
+                }
+            }
+        }
+        return defaultSpecCharValue;
     }
 
     /**
@@ -230,8 +318,13 @@ public class ProductSpecCharacteristic {
      * @param validFor
      */
     public int associate(ProductSpecCharacteristic specChar, String type, TimePeriod validFor) {
-        // TODO - implement ProductSpecCharacteristic.associate
-        throw new UnsupportedOperationException();
+        Integer validResult = checkAssociateParam(specChar, type, validFor);
+        if (validResult != null) {
+            return validResult;
+        }
+        ProductSpecCharRelationship productSpecCharValueRelationShip = new ProductSpecCharRelationship(this, specChar, type, validFor);
+        this.prodSpecCharRelationship.add(productSpecCharValueRelationShip);
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
     /**
@@ -242,8 +335,51 @@ public class ProductSpecCharacteristic {
      * @param charSpecSeq
      */
     public int associate(ProductSpecCharacteristic specChar, String type, TimePeriod validFor, int charSpecSeq) {
-        // TODO - implement ProductSpecCharacteristic.associate
-        throw new UnsupportedOperationException();
+        Integer validResult = checkAssociateParam(specChar, type, validFor);
+        if (validResult != null) {
+            return validResult;
+        }
+        ProductSpecCharRelationship productSpecCharValueRelationShip = new ProductSpecCharRelationship(this, specChar, type, validFor, charSpecSeq);
+        this.prodSpecCharRelationship.add(productSpecCharValueRelationShip);
+        return CommonErrorCode.SUCCESS.getCode();
+    }
+
+    private Integer checkAssociateParam(ProductSpecCharacteristic specChar, String type, TimePeriod validFor) {
+        if (ParameterUtil.checkParameterIsNull(specChar)) {
+            logger.error("specChar must not be null.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
+        }
+        if (ParameterUtil.checkParameterIsNull(type)) {
+            logger.error("type must not be null.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_RELATIONSHIP_TYPE_IS_NULL.getCode();
+        }
+        if (this.equals(specChar)) {
+            logger.error("The srcChar and targetCharValue is the same.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_EQUALS_TO_CURRENT.getCode();
+        }
+        ProductSpecCharRelationship relationship = this.retrieveRelatedCharacteristicByChar(specChar);
+        if (relationship != null) {
+            //compare the time is valid
+            if (relationship.getValidFor().isOverlap(validFor)) {
+                logger.warn("Characteristic has been established associate relationship in the specified time.");
+                return ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT.getCode();
+            }
+        }
+        return null;
+    }
+    private ProductSpecCharRelationship retrieveRelatedCharacteristicByChar(ProductSpecCharacteristic characteristic ){
+        if ( ParameterUtil.checkParameterIsNull(characteristic) ) {
+            logger.error("characteristic must not be null");
+            throw new IllegalArgumentException("characteristic must not be null");
+        }
+        if (null !=prodSpecCharRelationship) {
+            for (ProductSpecCharRelationship productSpecCharRelationship : prodSpecCharRelationship) {
+                if( productSpecCharRelationship.getTargetProdSpecChar().equals(characteristic)){
+                    return productSpecCharRelationship;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -251,17 +387,38 @@ public class ProductSpecCharacteristic {
      * @param specChar
      */
     public int dissociate(ProductSpecCharacteristic specChar) {
-        // TODO - implement ProductSpecCharacteristic.dissociate
-        throw new UnsupportedOperationException();
+        if ( ParameterUtil.checkParameterIsNull(specChar) ) {
+            logger.error("specChar must not be null");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
+        }
+        if ( ParameterUtil.checkParameterIsNull(this.prodSpecCharRelationship) ) {
+            logger.warn("The association has not been created");
+        }
+        Iterator<ProductSpecCharRelationship> iterator = prodSpecCharRelationship.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().getTargetProdSpecChar().equals(specChar)) {
+                iterator.remove();
+                break;
+            }
+        }
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
     /**
      * 
      * @param charRelationshipType
      */
-    public ProductSpecCharacteristic[] retrieveRelatedCharacteristic(String charRelationshipType) {
-        // TODO - implement ProductSpecCharacteristic.retrieveRelatedCharacteristic
-        throw new UnsupportedOperationException();
+    public List<ProductSpecCharacteristic> retrieveRelatedCharacteristic(String charRelationshipType) {
+        ParameterUtil.checkParameterIsNulForException(charRelationshipType, "charRelationshipType");
+        List<ProductSpecCharacteristic>  characteristics = new ArrayList<ProductSpecCharacteristic>();;
+        if (null !=prodSpecCharRelationship ) {
+            for (ProductSpecCharRelationship productSpecCharRelationship : prodSpecCharRelationship) {
+                if (charRelationshipType.equals(productSpecCharRelationship.getCharRelationshipType())) {
+                    characteristics.add(productSpecCharRelationship.getTargetProdSpecChar());
+                }
+            }
+        }
+        return characteristics;
     }
 
     /**
@@ -269,20 +426,18 @@ public class ProductSpecCharacteristic {
      * @param charRelationshipType
      * @param time
      */
-    public ProductSpecCharacteristic[] retrieveRelatedCharacteristic(String charRelationshipType, Date time) {
-        // TODO - implement ProductSpecCharacteristic.retrieveRelatedCharacteristic
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Search the association that has existed between Characteristic. 
-     * 
-     * avoid to duplicate.
-     * @param characteristic
-     */
-    private ProductSpecCharRelationship retrieveCharRelationship(ProductSpecCharacteristic characteristic) {
-        // TODO - implement ProductSpecCharacteristic.retrieveCharRelationship
-        throw new UnsupportedOperationException();
+    public List<ProductSpecCharacteristic> retrieveRelatedCharacteristic(String charRelationshipType, Date time) {
+        ParameterUtil.checkParameterIsNulForException(charRelationshipType, "charRelationshipType");
+        ParameterUtil.checkParameterIsNulForException(time, "time");
+        List<ProductSpecCharacteristic>  characteristics = new ArrayList<ProductSpecCharacteristic>();;
+        if (null !=prodSpecCharRelationship ) {
+            for (ProductSpecCharRelationship productSpecCharRelationship : prodSpecCharRelationship) {
+                if (charRelationshipType.equals(productSpecCharRelationship.getCharRelationshipType()) &&  productSpecCharRelationship.getValidFor().isInTimePeriod(time)) {
+                    characteristics.add(productSpecCharRelationship.getTargetProdSpecChar());
+                }
+            }
+        }
+        return characteristics;
     }
 
     /**
@@ -290,23 +445,45 @@ public class ProductSpecCharacteristic {
      * @param prodSpecChar
      * @param validFor
      */
-    public int modifyRelationshipValidPeriod(ProductSpecCharacteristic prodSpecChar, TimePeriod validFor) {
-        // TODO - implement ProductSpecCharacteristic.modifyRelationshipValidPeriod
-        throw new UnsupportedOperationException();
+    public int modifyRelationshipValidPeriod(ProductSpecCharacteristic prodSpecChar, TimePeriod oldValidFor, TimePeriod validFor) {
+        if (ParameterUtil.checkParameterIsNull(prodSpecChar)) {
+            logger.error("prodSpecChar must not be null.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
+        }
+        if (ParameterUtil.checkParameterIsNull(oldValidFor)){
+            logger.error("oldValidFor must not be null.");
+            return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
+        }
+        if (ParameterUtil.checkParameterIsNull(validFor) ){
+            logger.error("validFor must not be null.");
+            return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
+        }
+        if ( null != this.prodSpecCharRelationship ) {
+            for (ProductSpecCharRelationship productSpecRelationship : this.prodSpecCharRelationship) {
+                if ( productSpecRelationship.getTargetProdSpecChar().equals(prodSpecChar) && productSpecRelationship.getValidFor().equals(oldValidFor) ) {
+                    productSpecRelationship.setValidFor(validFor);
+                    return CommonErrorCode.SUCCESS.getCode();
+                }
+            }
+        }
+        logger.warn("the current Char has been to create associate relationships with the specified char.");
+        return ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT.getCode();
     }
 
-    public int hashCode() {
-        // TODO - implement ProductSpecCharacteristic.hashCode
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * 
-     * @param o
-     */
+    @Override
     public boolean equals(Object o) {
-        // TODO - implement ProductSpecCharacteristic.equals
-        throw new UnsupportedOperationException();
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductSpecCharacteristic that = (ProductSpecCharacteristic) o;
+
+        return !(ID != null ? !ID.equals(that.ID) : that.ID != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return ID != null ? ID.hashCode() : 0;
     }
 
     /**

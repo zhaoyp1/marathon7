@@ -19,7 +19,11 @@ public enum ProdSpecErrorCode{
     PROD_SPEC_CHAR_HAS_NO_CHAR_VALUE(1012,"no charValue under the current char"),
     PROD_SPEC_CHAR_RELATIONSHIP_TYPE_IS_NULL(1013,"relationshipType is null"),
     PROD_SPEC_CHAR_EQUALS_TO_CURRENT(1014,"the designated productSpecCharacteristic equal to current value"),
-    PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT(1015,"Characteristic has been established associate relationship in the specified time"),;
+    PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT(1015,"Characteristic has been established associate relationship in the specified time"),
+    PROD_SPEC_CHAR_VALUE_VALUE_IS_NULL(1016,"value is null"),
+    PROD_SPEC_CHAR_VALUE_RELATIONSHIP_TYPE_IS_NULL(1017,"relationshipType is null"),
+    PROD_SPEC_CHAR_VALUE_EQUALS_TO_CURRENT(1018,"the designated productSpecCharacteristicValue equal to current value"),
+    PROD_SPEC_CHAR_VALUE_HAS_RELATED_TO_CURRENT(1019,"CharacteristicValue has been established associate relationship in the specified time");
 
     private  int code;
     private String message;

@@ -1,6 +1,8 @@
 package com.digiwes.product.spec;
 
 import com.digiwes.basetype.*;
+import com.digiwes.common.utils.ParameterUtil;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * A aggregation, migration, substitution, dependency, or exclusivity relationship between/among ProductSpecCharacteristics.
@@ -48,43 +50,61 @@ public class ProductSpecCharRelationship {
         this.validFor = validFor;
     }
 
+    public ProductSpecCharacteristic getTargetProdSpecChar() {
+        return targetProdSpecChar;
+    }
+
     /**
-     * 
-     * @param srourceSpecChar
+     *
+     * @param sourceSpecChar
      * @param targetSpecChar
      * @param relationType
      * @param validFor
      */
-    public ProductSpecCharRelationship(ProductSpecCharacteristic srourceSpecChar, ProductSpecCharacteristic targetSpecChar, String relationType, TimePeriod validFor) {
-        // TODO - implement ProductSpecCharRelationship.ProductSpecCharRelationship
-        throw new UnsupportedOperationException();
+    public ProductSpecCharRelationship(ProductSpecCharacteristic sourceSpecChar, ProductSpecCharacteristic targetSpecChar, String relationType, TimePeriod validFor) {
+        assert !ParameterUtil.checkParameterIsNull(sourceSpecChar):"sourceSpecChar must not be null.";
+        assert !ParameterUtil.checkParameterIsNull(targetSpecChar):"targetSpecChar must not be null.";
+        assert !sourceSpecChar.equals(targetSpecChar):"the designated sourceSpecChar equal to targetSpecChar.";
+        this.sourceProdSpecChar = sourceSpecChar;
+        this.targetProdSpecChar = targetSpecChar;
+        this.charRelationshipType = relationType;
+        this.validFor = validFor;
     }
 
     /**
-     * 
-     * @param srourceSpecChar
+     *
+     * @param sourceSpecChar
      * @param targetSpecChar
      * @param relationType
      * @param validFor
      * @param specSeq
      */
-    public ProductSpecCharRelationship(ProductSpecCharacteristic srourceSpecChar, ProductSpecCharacteristic targetSpecChar, String relationType, TimePeriod validFor, int specSeq) {
-        // TODO - implement ProductSpecCharRelationship.ProductSpecCharRelationship
-        throw new UnsupportedOperationException();
+    public ProductSpecCharRelationship(ProductSpecCharacteristic sourceSpecChar, ProductSpecCharacteristic targetSpecChar, String relationType, TimePeriod validFor, int specSeq) {
+        this(sourceSpecChar, targetSpecChar, relationType, validFor);
+        this.charSpecSeq = specSeq;
     }
 
-    public int hashCode() {
-        // TODO - implement ProductSpecCharRelationship.hashCode
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * 
-     * @param o
-     */
+    @Override
     public boolean equals(Object o) {
-        // TODO - implement ProductSpecCharRelationship.equals
-        throw new UnsupportedOperationException();
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductSpecCharRelationship that = (ProductSpecCharRelationship) o;
+
+        if (targetProdSpecChar != null ? !targetProdSpecChar.equals(that.targetProdSpecChar) : that.targetProdSpecChar != null)
+            return false;
+        if (charRelationshipType != null ? !charRelationshipType.equals(that.charRelationshipType) : that.charRelationshipType != null)
+            return false;
+        return !(validFor != null ? !validFor.equals(that.validFor) : that.validFor != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = targetProdSpecChar != null ? targetProdSpecChar.hashCode() : 0;
+        result = 31 * result + (charRelationshipType != null ? charRelationshipType.hashCode() : 0);
+        result = 31 * result + (validFor != null ? validFor.hashCode() : 0);
+        return result;
     }
 
     public String toString() {

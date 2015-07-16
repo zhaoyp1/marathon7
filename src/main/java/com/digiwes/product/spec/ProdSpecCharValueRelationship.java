@@ -15,6 +15,14 @@ public class ProdSpecCharValueRelationship {
      */
     private TimePeriod validFor;
 
+    public ProductSpecCharacteristicValue getProductSpecCharacteristicValue() {
+        return productSpecCharacteristicValue;
+    }
+
+    public ProductSpecCharacteristicValue getSourceCharValue() {
+        return sourceCharValue;
+    }
+
     public String getCharValueRelationshipType() {
         return this.charValueRelationshipType;
     }
