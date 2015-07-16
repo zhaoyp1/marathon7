@@ -4,6 +4,9 @@ import java.util.*;
 import com.digiwes.basetype.*;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecErrorCode;
+import com.digiwes.common.utils.ParameterUtil;
+import com.sun.research.ws.wadl.Param;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * A type of ProductSpecification that is formed by aggregating other ProductSpecifications, which may be Composite or Atomic ProductSpecifications.
@@ -31,7 +34,7 @@ public class CompositeProductSpecification extends ProductSpecification {
      * @param validFor
      */
     public CompositeProductSpecification(String productNumber, String name, String brand, String description, TimePeriod validFor) {
-        super(productNumber,name,brand,validFor,description);
+        super(productNumber, name, brand, validFor, description);
     }
 
     /**
@@ -51,9 +54,17 @@ public class CompositeProductSpecification extends ProductSpecification {
      * 
      * @param status
      */
-    public ProductSpecification[] retrieveProductSpec(String status) {
-
-        throw new UnsupportedOperationException();
+    public List<ProductSpecification> retrieveProductSpec(String status) {
+        ParameterUtil.checkParameterIsNulForException(status,"lifecycleStatus"); //validParameter
+        List<ProductSpecification> validProductSpecification = new ArrayList<ProductSpecification>();
+        if( null != this.prodSpec && this.prodSpec.size() >0){
+             for (ProductSpecification productSpecification:this.prodSpec){
+                 if(status.equals(productSpecification.getLifecycleStatus())){
+                     validProductSpecification.add(productSpecification);
+                 }
+             }
+        }
+        return validProductSpecification;
     }
 
     /**
@@ -61,13 +72,17 @@ public class CompositeProductSpecification extends ProductSpecification {
      * @param time
      */
     public ProductSpecification[] retrieveProductSpec(Date time) {
-        // TODO - implement CompositeProductSpecification.retrieveProductSpec
+
         throw new UnsupportedOperationException();
     }
 
     public String toString() {
         // TODO - implement CompositeProductSpecification.toString
         throw new UnsupportedOperationException();
+    }
+    public static  void main(String args[]){
+        CompositeProductSpecification specification = new CompositeProductSpecification("aa","aa","a");
+        specification.retrieveProductSpec("aa");
     }
 
 }

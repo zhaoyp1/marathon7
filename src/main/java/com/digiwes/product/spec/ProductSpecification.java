@@ -89,8 +89,9 @@ public abstract class ProductSpecification {
      * @param brand The manufacturer or trademark of the specification.
      */
     public ProductSpecification(String productNumber, String name, String brand) {
-        // TODO - implement ProductSpecification.ProductSpecification
-        throw new UnsupportedOperationException();
+        this.productNumber=productNumber;
+        this.name=name;
+        this.brand=brand;
     }
 
     /**
