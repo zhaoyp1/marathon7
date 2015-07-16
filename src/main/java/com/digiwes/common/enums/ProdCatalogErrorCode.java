@@ -7,7 +7,8 @@ public enum ProdCatalogErrorCode {
     PROD_CATALOG_ID_IS_NULL(3001,"productCatalog must not be null"),
     PROD_CATALOG_OFFERING_IS_PUBLISHED(3002,"offering has been published "),
     PROD_CATALOG_OFFERING_VALIDFOR_INVALID(3003,"publish offering'validFor is invalid"),
-    PROD_CATALOG_OFFERING_NOT_BE_PUBLISH(3004,"offering not be publish");
+    PROD_CATALOG_OFFERING_NOT_BE_PUBLISH(3004,"offering not be publish"),
+    PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID(3005,"publish offering validFor is invalid");
 
     private  int code;
     private String message;
