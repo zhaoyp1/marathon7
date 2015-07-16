@@ -3,14 +3,12 @@ package com.digiwes.product.offering;
 import com.digiwes.product.spec.*;
 import com.digiwes.basetype.*;
 
-import java.util.Map;
-
 /**
  * A type of ProductOffering that does not have any subordinate ProductOfferings, that is, an SimpleProductOffering is a leaf-level ProductOffering.
  */
 public class SimpleProductOffering extends ProductOffering {
 
-    ProductSpecification productSpecification;
+    private ProductSpecification productSpecification;
 
     /**
      * 

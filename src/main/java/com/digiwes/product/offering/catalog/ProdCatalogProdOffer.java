@@ -10,8 +10,8 @@ import com.digiwes.basetype.*;
  */
 public class ProdCatalogProdOffer {
 
-    public ProductOffering prodOffering;
-    public List<ProductOfferingPrice> productOfferingPrice;
+    private ProductOffering prodOffering;
+    private List<ProductOfferingPrice> productOfferingPrice;
     /**
      * The period during which the ProductOffering appears in the ProductCatalog.
      */

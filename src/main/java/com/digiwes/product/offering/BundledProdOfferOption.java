@@ -7,7 +7,7 @@ package com.digiwes.product.offering;
  */
 public class BundledProdOfferOption {
 
-    public ProductOffering productOffering;
+    private ProductOffering productOffering;
     /**
      * The lower limit of related ProductOfferings that can be procured as part of the BundledProductOffering.
      * 

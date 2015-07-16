@@ -7,8 +7,8 @@ import com.digiwes.basetype.*;
  */
 public class ProductSpecCharRelationship {
 
-    public ProductSpecCharacteristic targetProdSpecChar;
-    public ProductSpecCharacteristic sourceProdSpecChar;
+    private ProductSpecCharacteristic targetProdSpecChar;
+    private ProductSpecCharacteristic sourceProdSpecChar;
     /**
      * A categorization of the relationship, such as aggregation, migration, substitution, dependency, exclusivity.
      */

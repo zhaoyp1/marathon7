@@ -7,8 +7,8 @@ import com.digiwes.basetype.*;
  */
 public class ProductOfferingRelationship {
 
-    public ProductOffering targetOffering;
-    public ProductOffering sourceOffering;
+    private ProductOffering targetOffering;
+    private ProductOffering sourceOffering;
     /**
      * A categorization of the relationship, such as supplier/partner equivalent, alternate, and so forth.
      */

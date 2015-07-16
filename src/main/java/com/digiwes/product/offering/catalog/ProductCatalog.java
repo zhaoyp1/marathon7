@@ -10,11 +10,11 @@ import com.digiwes.product.offering.price.*;
  * A list of ProductOfferings for sale, with prices and illustrations, for example in book form or on the web. ProductCatalogs can be used by Customers during a self-care ordering process and may be used across one or more DistributionChannels.
  *  
  * A list of ProductOfferings for sale, with prices and illustrations, for example in book form or on the web. ProductCatalogs can be used by Customers during a self-care ordering process and may be used across one or more DistributionChannels.
- * ?
+ *  
  */
 public class ProductCatalog extends Catalog {
 
-    public List<ProdCatalogProdOffer> prodCatalogProdOffer;
+    private List<ProdCatalogProdOffer> prodCatalogProdOffer;
 
     /**
      * 
@@ -23,7 +23,8 @@ public class ProductCatalog extends Catalog {
      * @param type
      */
     public ProductCatalog(String id, String name, String type) {
-        super(id,name,type,null);
+        // TODO - implement ProductCatalog.ProductCatalog
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -34,7 +35,8 @@ public class ProductCatalog extends Catalog {
      * @param validFor
      */
     public ProductCatalog(String id, String name, String type, TimePeriod validFor) {
-        super(id,name,type,validFor);
+        // TODO - implement ProductCatalog.ProductCatalog
+        throw new UnsupportedOperationException();
     }
 
     /**
