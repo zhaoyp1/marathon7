@@ -15,8 +15,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public abstract class ProductOffering {
 
-    private List<ProductOfferingPrice> productOfferingPrice;
-    private List<ProductOfferingRelationship> prodOfferingRelationship;
+    private List<ProductOfferingPrice> productOfferingPrice = new ArrayList<ProductOfferingPrice>();
+    private List<ProductOfferingRelationship> prodOfferingRelationship = new ArrayList<ProductOfferingRelationship>();;
     /**
      * A unique identifier for the ProductOffering.
      */
@@ -90,8 +90,6 @@ public abstract class ProductOffering {
         this.description = description;
         this.validFor = validFor;
         this.status = ProdOfferingEnum.ProductOfferingStatus.ACTIVE.getValue();
-        this.prodOfferingRelationship = new ArrayList<ProductOfferingRelationship>();
-        this.productOfferingPrice = new ArrayList<ProductOfferingPrice>();
     }
 
     /**

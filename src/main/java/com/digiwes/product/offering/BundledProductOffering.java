@@ -8,7 +8,7 @@ import com.digiwes.common.utils.ParameterUtil;
 
 public class BundledProductOffering extends ProductOffering {
 
-    private List<BundledProdOfferOption> bundledProdOfferOption;
+    private List<BundledProdOfferOption> bundledProdOfferOption = new ArrayList<BundledProdOfferOption>();;
 
     public List<BundledProdOfferOption> getBundledProdOfferOption() {
         return this.bundledProdOfferOption;
@@ -27,7 +27,6 @@ public class BundledProductOffering extends ProductOffering {
      */
     public BundledProductOffering(String id, String name, String description, TimePeriod validFor) {
          super(id,name,description,validFor);
-        bundledProdOfferOption = new ArrayList<BundledProdOfferOption>();
     }
 
     /**
