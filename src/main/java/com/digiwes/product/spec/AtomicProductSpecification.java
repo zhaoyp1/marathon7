@@ -13,8 +13,8 @@ public class AtomicProductSpecification extends ProductSpecification {
      * @param name
      * @param brand
      */
-    public AtomicProductSpecification(String productNumber, String name, String brand) {
-        super(productNumber,name,brand);
+    public AtomicProductSpecification(String productNumber, String name, String brand,TimePeriod validFor) {
+        super(productNumber,name,brand,validFor);
     }
 
     /**
