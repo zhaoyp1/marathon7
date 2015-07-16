@@ -2,6 +2,8 @@ package com.digiwes.product.spec;
 
 import java.util.*;
 import com.digiwes.basetype.*;
+import com.digiwes.common.enums.CommonErrorCode;
+import com.digiwes.common.enums.ProdSpecErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
 import org.apache.commons.lang.StringUtils;
 
@@ -89,14 +91,16 @@ public abstract class ProductSpecification {
      * @param name The name of the product specification.
      * @param brand The manufacturer or trademark of the specification.
      */
-    public ProductSpecification(String productNumber, String name, String brand) {
+    public ProductSpecification(String productNumber, String name, String brand,TimePeriod validFor) {
         assert !StringUtils.isEmpty(productNumber):"productNumber must not be null";
         assert !StringUtils.isEmpty(name):"name must not be null";
         assert !StringUtils.isEmpty(brand):"brand must not be null";
+        assert !ParameterUtil.checkParameterIsNull(validFor):"validFor must not be null";
 
         this.productNumber=productNumber;
         this.name=name;
         this.brand=brand;
+        this.validFor=validFor;
     }
 
     /**
@@ -108,9 +112,8 @@ public abstract class ProductSpecification {
      * @param description A narrative that explains in detail what the product spec is.
      */
     public ProductSpecification(String productNumber, String name, String brand, TimePeriod validFor, String description) {
-         this(productNumber,name,brand);
-         this.validFor=validFor;
-         this.description=description;
+        this(productNumber,name,brand,validFor);
+        this.description=description;
     }
 
     /**
@@ -118,7 +121,7 @@ public abstract class ProductSpecification {
      * @param charName
      * @param specChar A characteristic quality or distinctive feature of a ProductSpecification. The object must exist in the system
      * @param canBeOveridden An indicator that specifies that the CharacteristicSpecValues associated with the CharacteristicSpec cannot be changed when instantiating a ServiceCharacteristicValue. For example, a bandwidth of 64 MB cannot be changed.
-     * @param isPackage An indicator that specifies if the associated CharacteristicSpecification is a composite. true：is a composite one
+     * @param isPackage An indicator that specifies if the associated CharacteristicSpecification is a composite. true a composite one
      * @param validFor The period of time for which the use of the CharacteristicSpecification is applicable.
      */
     public int attachCharacteristic(String charName, ProductSpecCharacteristic specChar, boolean canBeOveridden, boolean isPackage, TimePeriod validFor) {
@@ -131,8 +134,18 @@ public abstract class ProductSpecification {
         if( null == this.prodSpecChar){
 
         }
+        if( !specChar.getValidFor().isInTimePeriod(validFor)){
 
-        throw new UnsupportedOperationException();
+        }
+        for(ProductSpecCharUse productSpecCharUse:this.prodSpecChar){
+            if(specChar.equals(productSpecCharUse.getProdSpecChar()) && name.equals(charName) && productSpecCharUse.getValidFor().isOverlap(validFor)){
+
+                return 1;
+            }
+        }
+        ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,name,canBeOveridden,isPackage,validFor);
+        this.prodSpecChar.add(productSpecCharUse);
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
     /**
@@ -149,8 +162,23 @@ public abstract class ProductSpecification {
      * @param description A narrative that explains the CharacteristicSpecification.
      */
     public int attachCharacteristic(String charName, ProductSpecCharacteristic specChar, boolean canBeOveridden, boolean isPackage, TimePeriod validFor, String unique, int minCardinality, int maxCardinality, boolean extensible, String description) {
-        // TODO - implement ProductSpecification.attachCharacteristic
-        throw new UnsupportedOperationException();
+        if(StringUtils.isEmpty(charName)){
+           return ProdSpecErrorCode.PROD_SPEC_CHAR_USE_NAME_IS_NULL.getCode();
+        }
+        if(ParameterUtil.checkParameterIsNull(specChar)){
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
+        }
+        if( !specChar.getValidFor().isInTimePeriod(validFor)){
+             return ProdSpecErrorCode.PROD_SPEC_CHAR_USE_TIME_NOT_BELONG_OF_CHAR_TIME.getCode();
+        }
+        for(ProductSpecCharUse productSpecCharUse:this.prodSpecChar){
+            if(specChar.equals(productSpecCharUse.getProdSpecChar()) && name.equals(charName) && productSpecCharUse.getValidFor().isOverlap(validFor)){
+                return ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_ATTACHED_TO_SPEC.getCode();
+            }
+        }
+        ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,name,canBeOveridden,isPackage,validFor,unique,minCardinality,maxCardinality,extensible,description);
+        this.prodSpecChar.add(productSpecCharUse);
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
     /**

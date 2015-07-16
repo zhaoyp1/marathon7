@@ -144,7 +144,7 @@ public class ProductSpecCharUse {
      * @param validFor
      * @param name
      */
-    public ProductSpecCharUse(ProductSpecCharacteristic specChar, boolean canBeOveridden, boolean isPackage, TimePeriod validFor, String name) {
+    public ProductSpecCharUse(ProductSpecCharacteristic specChar,String name, boolean canBeOveridden, boolean isPackage, TimePeriod validFor ) {
         // TODO - implement ProductSpecCharUse.ProductSpecCharUse
         throw new UnsupportedOperationException();
     }
@@ -162,7 +162,7 @@ public class ProductSpecCharUse {
      * @param extensible
      * @param description
      */
-    public ProductSpecCharUse(ProductSpecCharacteristic specChar, boolean canBeOveridden, boolean isPackage, TimePeriod validFor, String name, String unique, int minCardinality, int maxCardinality, boolean extensible, String description) {
+    public ProductSpecCharUse(ProductSpecCharacteristic specChar, String name,boolean canBeOveridden, boolean isPackage, TimePeriod validFor, String unique, int minCardinality, int maxCardinality, boolean extensible, String description) {
         // TODO - implement ProductSpecCharUse.ProductSpecCharUse
         throw new UnsupportedOperationException();
     }
