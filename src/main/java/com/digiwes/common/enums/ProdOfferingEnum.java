@@ -5,9 +5,9 @@ public enum ProdOfferingEnum {
      * OfferingStatus
      */
     public enum ProductOfferingStatus {
-        PLANNED("PLANNED", "PLANNED"),
-        OBSOLETE("OBSOLETE", "OBSOLETE"),
-        ACTIVE("ACTIVE", "ACTIVE");
+        PLANNED("1", "PLANNED"),
+        OBSOLETE("2", "OBSOLETE"),
+        ACTIVE("3", "ACTIVE");
 
         private String value;
         private String name;
@@ -30,13 +30,6 @@ public enum ProdOfferingEnum {
             return this.name;
         }
 
-        /**
-         * 
-         * @param value
-         */
-        public  String getName(String value) {
-            return this.name;
-        }
 
     }/**
      * OfferingStatus
@@ -69,49 +62,6 @@ public enum ProdOfferingEnum {
             return this.name;
         }
 
-        /**
-         * 
-         * @param value
-         */
-        public  String getName(String value) {
-            return this.name;
-        }
-
-    }/**
-     * OfferingStatus
-     */
-    public enum ProductCatalogType {
-        WEB("1", "web"),
-        BOOK("2", "book");
-
-        private String value;
-        private String name;
-
-        /**
-         * 
-         * @param value
-         * @param name
-         */
-        ProductCatalogType(String value, String name) {
-            // TODO - implement ProductCatalogType.ProductCatalogType
-            throw new UnsupportedOperationException();
-        }
-
-        public String getValue() {
-            return this.value;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        /**
-         * 
-         * @param value
-         */
-        public  String getName(String value) {
-            return this.name;
-        }
 
     }
 
