@@ -1,6 +1,7 @@
 package com.digiwes.product.spec;
 
 import com.digiwes.basetype.*;
+import com.digiwes.common.utils.ParameterUtil;
 
 /**
  * A use of the ProdSpecCharacteristicValue by an ProductSpecification to which additional properties (attributes) apply or override the properties of similar properties contained in ProdSpecCharacteristicValue.
@@ -48,22 +49,30 @@ public class ProdSpecCharValueUse {
      * @param validFor
      */
     public ProdSpecCharValueUse(ProductSpecCharacteristicValue charVal, boolean isDefault, TimePeriod validFor) {
-        // TODO - implement ProdSpecCharValueUse.ProdSpecCharValueUse
-        throw new UnsupportedOperationException();
+        assert  !ParameterUtil.checkParameterIsNull(charVal) :"charValue must not be null";
+        this.prodSpecCharValue = charVal;
+        this.isDefault = isDefault;
+        this.validFor = validFor;
     }
 
-    public int hashCode() {
-        // TODO - implement ProdSpecCharValueUse.hashCode
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * 
-     * @param o
-     */
+    @Override
     public boolean equals(Object o) {
-        // TODO - implement ProdSpecCharValueUse.equals
-        throw new UnsupportedOperationException();
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProdSpecCharValueUse that = (ProdSpecCharValueUse) o;
+
+        if (prodSpecCharValue != null ? !prodSpecCharValue.equals(that.prodSpecCharValue) : that.prodSpecCharValue != null)
+            return false;
+        return !(validFor != null ? !validFor.equals(that.validFor) : that.validFor != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = prodSpecCharValue != null ? prodSpecCharValue.hashCode() : 0;
+        result = 31 * result + (validFor != null ? validFor.hashCode() : 0);
+        return result;
     }
 
     public String toString() {
