@@ -195,7 +195,7 @@ public class ProductSpecCharacteristicValue {
             logger.warn("can not create relationship whit itself.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_EQUALS_TO_CURRENT.getCode();
         }
-        ProdSpecCharValueRelationship productSpecCharValueRelationShip=this.retrieveRelatedCharacteristicValue(charValue);
+        ProdSpecCharValueRelationship productSpecCharValueRelationShip = this.retrieveRelatedCharacteristicValue(charValue);
         if(null!=productSpecCharValueRelationShip){
             //compare
             if(productSpecCharValueRelationShip.getValidFor().isOverlap(validFor)){
@@ -261,12 +261,10 @@ public class ProductSpecCharacteristicValue {
      * @param charValue
      */
     private ProdSpecCharValueRelationship retrieveRelatedCharacteristicValue(ProductSpecCharacteristicValue charValue ){
-
-        if (null == charValue) {
-            logger.error("charValue  should not be null .");
-            throw new IllegalArgumentException("charValue  should not be null .");
+        if (ParameterUtil.checkParameterIsNull(charValue)) {
+            logger.error("charValue must not be null .");
+            throw new IllegalArgumentException("charValue must not be null .");
         }
-
         if (null != this.prodSpecCharValueRelationship) {
             for (ProdSpecCharValueRelationship productSpecCharRelationship : prodSpecCharValueRelationship) {
                 if ( productSpecCharRelationship.getProductSpecCharacteristicValue().equals(charValue)) {

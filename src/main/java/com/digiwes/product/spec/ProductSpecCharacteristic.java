@@ -240,10 +240,6 @@ public class ProductSpecCharacteristic {
      */
     public List<ProductSpecCharacteristicValue> retrieveValue(Date time) {
         List<ProductSpecCharacteristicValue> productSpecCharValues = new ArrayList<ProductSpecCharacteristicValue>();
-        if (ParameterUtil.checkParameterIsNull(time)) {
-            logger.error("DateTime must not be null.");
-            throw new IllegalArgumentException("DateTime must not be null.");
-        }
         ParameterUtil.checkParameterIsNulForException(time, "time");
         if ( null != this.prodSpecCharValue ) {
             for (ProductSpecCharacteristicValue charValue : prodSpecCharValue) {
@@ -270,11 +266,7 @@ public class ProductSpecCharacteristic {
         }
         for (ProductSpecCharacteristicValue charValue : prodSpecCharValue) {
             if (charValue.equals(defaultCharVal)) {
-                if (defaultCharVal.isIsDefault()) {
-                    logger.warn("The current charValue is the default value" + charValue.toString());
-                } else {
-                    defaultCharVal.setIsDefault(true);
-                }
+                charValue.setIsDefault(true);
                 break;
             }
         }
