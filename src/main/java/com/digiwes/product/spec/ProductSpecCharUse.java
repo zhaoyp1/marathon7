@@ -210,6 +210,9 @@ public class ProductSpecCharUse {
         if(null != this.prodSpecChar.getProdSpecCharValue() && !this.prodSpecChar.getProdSpecCharValue().contains(charValue)){
             return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
         }
+        if(!charValue.getValidFor().isInTimePeriod(validFor)){
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_USE_NOT_IN_VALUE.getCode();
+        }
         ProdSpecCharValueUse prodSpecCharValueUse = new ProdSpecCharValueUse(charValue, isDefault, validFor);
         this.prodSpecCharValue.add(prodSpecCharValueUse);
         return CommonErrorCode.SUCCESS.getCode();
@@ -249,8 +252,15 @@ public class ProductSpecCharUse {
     }
 
     public List<ProdSpecCharValueUse> retrieveDefaultValueUse() {
-        // TODO - implement ProductSpecCharUse.retrieveDefaultValueUse
-        throw new UnsupportedOperationException();
+        List<ProdSpecCharValueUse> resultList = new ArrayList<ProdSpecCharValueUse>();
+        if(null != this.prodSpecCharValue ){
+            for(ProdSpecCharValueUse prodSpecCharValueUse : this.prodSpecCharValue){
+                if(prodSpecCharValueUse.isDefault()){
+                    resultList.add(prodSpecCharValueUse);
+                }
+            }
+        }
+        return resultList;
     }
 
     /**
