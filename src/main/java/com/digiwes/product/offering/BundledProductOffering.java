@@ -5,7 +5,7 @@ import com.digiwes.basetype.*;
 
 public class BundledProductOffering extends ProductOffering {
 
-    public List<BundledProdOfferOption> bundledProdOfferOption;
+    private List<BundledProdOfferOption> bundledProdOfferOption;
 
     public List<BundledProdOfferOption> getBundledProdOfferOption() {
         return this.bundledProdOfferOption;

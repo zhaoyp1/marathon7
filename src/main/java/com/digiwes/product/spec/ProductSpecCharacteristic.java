@@ -8,11 +8,11 @@ import com.digiwes.basetype.*;
  */
 public class ProductSpecCharacteristic {
 
-    List<ProductSpecCharacteristicValue> prodSpecCharValue;
-    public List<ProductSpecCharRelationship> prodSpecCharRelationship;
+    private List<ProductSpecCharacteristicValue> prodSpecCharValue;
+    private List<ProductSpecCharRelationship> prodSpecCharRelationship;
     /**
      * A unique identifier for the ProductSpecCharacteristic.
-     * ?
+     *  
      */
     private String ID;
     /**

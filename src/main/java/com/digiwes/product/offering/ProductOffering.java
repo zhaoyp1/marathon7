@@ -9,8 +9,8 @@ import com.digiwes.basetype.*;
  */
 public abstract class ProductOffering {
 
-    public List<ProductOfferingPrice> productOfferingPrice;
-    public List<ProductOfferingRelationship> prodOfferingRelationship;
+    private List<ProductOfferingPrice> productOfferingPrice;
+    private List<ProductOfferingRelationship> prodOfferingRelationship;
     /**
      * A unique identifier for the ProductOffering.
      */

@@ -7,7 +7,7 @@ import com.digiwes.basetype.*;
  */
 public class ProdSpecCharValueUse {
 
-    public ProductSpecCharacteristicValue prodSpecCharValue;
+    private ProductSpecCharacteristicValue prodSpecCharValue;
     /**
      * Indicates if the value is the default value for a characteristic.
      */

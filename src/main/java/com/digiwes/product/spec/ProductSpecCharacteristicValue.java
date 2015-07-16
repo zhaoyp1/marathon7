@@ -8,7 +8,7 @@ import com.digiwes.basetype.*;
  */
 public class ProductSpecCharacteristicValue {
 
-    public List<ProdSpecCharValueRelationship> prodSpecCharValueRelationship;
+    private List<ProdSpecCharValueRelationship> prodSpecCharValueRelationship;
     /**
      * A kind of value that the characteristic can take on, such as numeric, text, and so forth.
      */
@@ -173,7 +173,7 @@ public class ProductSpecCharacteristicValue {
      * 
      * @param charValue
      */
-    public intd dissociate(ProductSpecCharacteristicValue charValue) {
+    public int dissociate(ProductSpecCharacteristicValue charValue) {
         // TODO - implement ProductSpecCharacteristicValue.dissociate
         throw new UnsupportedOperationException();
     }
