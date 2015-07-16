@@ -84,11 +84,14 @@ public abstract class ProductOffering {
     public ProductOffering(String id, String name, String description, TimePeriod validFor) {
         assert !StringUtils.isEmpty(id) : " id must not be null or empty .";
         assert !StringUtils.isEmpty(name) : " name must not be null or empty .";
+        assert !ParameterUtil.checkParameterIsNull(validFor):"validFor must not be null";
         this.id = id;
         this.name = name;
         this.description = description;
         this.validFor = validFor;
         this.status = ProdOfferingEnum.ProductOfferingStatus.ACTIVE.getValue();
+        this.prodOfferingRelationship = new ArrayList<ProductOfferingRelationship>();
+        this.productOfferingPrice = new ArrayList<ProductOfferingPrice>();
     }
 
     /**
@@ -104,9 +107,15 @@ public abstract class ProductOffering {
         if(StringUtils.isEmpty(relationType)){
             return ProdOfferingErrorCode.PROD_OFFERING_RELATIONSHIP_TYPE_IS_NULL_OR_EMPTY.getCode();
         }
+        if(ParameterUtil.checkParameterIsNull(validFor)){
+            return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
+        }
+        if(this.equals(offering)){
+            return ProdOfferingErrorCode.PROD_OFFERING_ASSOCIATE_ITSELF.getCode();
+        }
         ProductOfferingRelationship offeringRelationship = new ProductOfferingRelationship(this,offering,relationType,validFor);
-        if(null == this.prodOfferingRelationship){
-            this.prodOfferingRelationship = new ArrayList<ProductOfferingRelationship>();
+        if(this.prodOfferingRelationship.contains(offeringRelationship)){
+            return ProdOfferingErrorCode.PROD_OFFERING_RELATIONSHIP_ALREADY_EXISTING.getCode();
         }
         this.prodOfferingRelationship.add(offeringRelationship);
         return CommonErrorCode.SUCCESS.getCode();
@@ -118,7 +127,7 @@ public abstract class ProductOffering {
      */
     public int dissociate(ProductOffering offering) {
         // TODO - implement ProductOffering.dissociate
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -205,13 +214,19 @@ public abstract class ProductOffering {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * 
-     * @param o
-     */
+    @Override
     public boolean equals(Object o) {
-        // TODO - implement ProductOffering.equals
-        throw new UnsupportedOperationException();
+        if (this == o) return true;
+        if (null == o || getClass() != o.getClass()) return false;
+
+        ProductOffering that = (ProductOffering) o;
+
+        return id.equals(that.id);
+
     }
 
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }
