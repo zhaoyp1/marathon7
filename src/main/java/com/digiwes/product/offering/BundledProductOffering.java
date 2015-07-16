@@ -27,6 +27,7 @@ public class BundledProductOffering extends ProductOffering {
      */
     public BundledProductOffering(String id, String name, String description, TimePeriod validFor) {
          super(id,name,description,validFor);
+        bundledProdOfferOption = new ArrayList<BundledProdOfferOption>();
     }
 
     /**
@@ -47,12 +48,13 @@ public class BundledProductOffering extends ProductOffering {
         if(ParameterUtil.checkParameterIsNull(offering)){
             return ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode();
         }
-        if(lowerLimit>0){
-            if(lowerLimit>upperLimit){
-
-            }
+        if(lowerLimit>upperLimit){
+            return ProdOfferingErrorCode.BUNDLED_PROD_OFFERING_LOWERLIMIT_GREATER_UPPERLIMIT.getCode();
         }
         BundledProdOfferOption offerOption = new BundledProdOfferOption(offering,lowerLimit,upperLimit);
+        if(this.bundledProdOfferOption.contains(offerOption)){
+            return ProdOfferingErrorCode.BUNDLED_PROD_OFFERING_ALREADY_COMPOSED.getCode();
+        }
         bundledProdOfferOption.add(offerOption);
         return CommonErrorCode.SUCCESS.getCode();
     }
@@ -68,9 +70,12 @@ public class BundledProductOffering extends ProductOffering {
         throw new UnsupportedOperationException();
     }
 
-    public ProductOffering[] retrieveOffering() {
-        // TODO - implement BundledProductOffering.retrieveOffering
-        throw new UnsupportedOperationException();
+    public List<ProductOffering> retrieveOffering() {
+        List<ProductOffering> offeringList = new ArrayList<ProductOffering>();
+        for(BundledProdOfferOption offerOption:this.bundledProdOfferOption){
+            offeringList.add(offerOption.getProductOffering());
+        }
+        return offeringList;
     }
 
     public String toString() {

@@ -56,6 +56,7 @@ public class ProductOfferingRelationship {
         assert  !ParameterUtil.checkParameterIsNull(sourceOffering):"sourceOffering must not be null .";
         assert  !ParameterUtil.checkParameterIsNull(targetOffering):"targetOffering must not be null .";
         assert  !StringUtils.isEmpty(type):"type must not be null .";
+        assert  !ParameterUtil.checkParameterIsNull(validFor):"validFor must not be null";
         this.sourceOffering = sourceOffering;
         this.targetOffering = targetOffering;
         this.typeRelationship = type;
