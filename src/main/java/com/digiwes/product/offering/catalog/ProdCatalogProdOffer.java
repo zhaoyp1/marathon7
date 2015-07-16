@@ -1,5 +1,6 @@
 package com.digiwes.product.offering.catalog;
 
+import com.digiwes.common.utils.ParameterUtil;
 import com.digiwes.product.offering.*;
 import java.util.*;
 import com.digiwes.product.offering.price.*;
@@ -17,6 +18,14 @@ public class ProdCatalogProdOffer {
      */
     private TimePeriod validFor;
 
+    public ProductOffering getProdOffering() {
+        return prodOffering;
+    }
+
+    public List<ProductOfferingPrice> getProductOfferingPrice() {
+        return productOfferingPrice;
+    }
+
     public TimePeriod getValidFor() {
         return this.validFor;
     }
@@ -31,8 +40,11 @@ public class ProdCatalogProdOffer {
      * @param validFor
      */
     public ProdCatalogProdOffer(ProductOffering offering, TimePeriod validFor) {
-        // TODO - implement ProdCatalogProdOffer.ProdCatalogProdOffer
-        throw new UnsupportedOperationException();
+        assert !ParameterUtil.checkParameterIsNull(offering):"ProductOffering must not be null";
+        assert !ParameterUtil.checkParameterIsNull(validFor):"validFor must not be null";
+
+        this.prodOffering = offering;
+        this.validFor = validFor;
     }
 
     /**
@@ -41,9 +53,9 @@ public class ProdCatalogProdOffer {
      * @param validFor
      * @param price
      */
-    public ProdCatalogProdOffer(ProductOffering offering, TimePeriod validFor, ProductOfferingPrice[] price) {
-        // TODO - implement ProdCatalogProdOffer.ProdCatalogProdOffer
-        throw new UnsupportedOperationException();
+    public ProdCatalogProdOffer(ProductOffering offering, TimePeriod validFor, List<ProductOfferingPrice> price) {
+         this(offering,validFor);
+         this.productOfferingPrice = price;
     }
 
     /**
@@ -64,18 +76,23 @@ public class ProdCatalogProdOffer {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * 
-     * @param o
-     */
+    @Override
     public boolean equals(Object o) {
-        // TODO - implement ProdCatalogProdOffer.equals
-        throw new UnsupportedOperationException();
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProdCatalogProdOffer that = (ProdCatalogProdOffer) o;
+
+        if (!prodOffering.equals(that.prodOffering)) return false;
+        return validFor.equals(that.validFor);
+
     }
 
+    @Override
     public int hashCode() {
-        // TODO - implement ProdCatalogProdOffer.hashCode
-        throw new UnsupportedOperationException();
+        int result = prodOffering.hashCode();
+        result = 31 * result + validFor.hashCode();
+        return result;
     }
 
     public String toString() {
