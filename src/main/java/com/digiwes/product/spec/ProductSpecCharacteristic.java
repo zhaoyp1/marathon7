@@ -190,7 +190,7 @@ public class ProductSpecCharacteristic {
     public int specifyCardinality(int minCardinality, int maxCardinality) {
         if (minCardinality > maxCardinality) {
             logger.warn("maxCardinality is less than minCardinality.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_MAX_LESS_THAN_MAX.getCode();
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_MAX_LESS_THAN_MIX.getCode();
         }
         this.minCardinality = minCardinality;
         this.maxCardinality = maxCardinality;
