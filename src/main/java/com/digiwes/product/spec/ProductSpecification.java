@@ -17,6 +17,19 @@ public abstract class ProductSpecification {
     private List<ProductSpecificationCost> productSpecificationCost;
     private List<ProductSpecificationRelationship> prodSpecRelationship = new ArrayList<ProductSpecificationRelationship>();
     private List<ProductSpecificationVersion> prodSpecVersion;
+
+    public List<ProductSpecCharUse> getProdSpecChar() {
+        return prodSpecChar;
+    }
+
+    public List<ProductSpecificationRelationship> getProdSpecRelationship() {
+        return prodSpecRelationship;
+    }
+
+    public void setProdSpecRelationship(List<ProductSpecificationRelationship> prodSpecRelationship) {
+        this.prodSpecRelationship = prodSpecRelationship;
+    }
+
     private List<ProductSpecCharUse> prodSpecChar = new ArrayList<ProductSpecCharUse>();
     /**
      * The name of the product specification.
