@@ -1,8 +1,14 @@
 package com.digiwes.product.offering;
 
 import java.util.*;
+
+import com.digiwes.common.enums.CommonErrorCode;
+import com.digiwes.common.enums.ProdOfferingEnum;
+import com.digiwes.common.enums.ProdOfferingErrorCode;
+import com.digiwes.common.utils.ParameterUtil;
 import com.digiwes.product.offering.price.*;
 import com.digiwes.basetype.*;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * The presentation of one or more ProductSpecifications to the marketplace for sale, rental, or lease for a ProductOfferingPrice. A ProductOffering may target one or more MarketSegments, be included in one or more ProductCatalog, presented in support of one or more ProductStrategies, and made available in one or more Places. ProductOffering may represent a simple offering of a single ProductSpecification or could represent a bundling of one or more other ProductOffering.
@@ -76,8 +82,13 @@ public abstract class ProductOffering {
      * @param validFor
      */
     public ProductOffering(String id, String name, String description, TimePeriod validFor) {
-        // TODO - implement ProductOffering.ProductOffering
-        throw new UnsupportedOperationException();
+        assert !StringUtils.isEmpty(id) : " id must not be null or empty .";
+        assert !StringUtils.isEmpty(name) : " name must not be null or empty .";
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.validFor = validFor;
+        this.status = ProdOfferingEnum.ProductOfferingStatus.ACTIVE.getValue();
     }
 
     /**
@@ -87,8 +98,18 @@ public abstract class ProductOffering {
      * @param validFor
      */
     public int associate(ProductOffering offering, String relationType, TimePeriod validFor) {
-        // TODO - implement ProductOffering.associate
-        throw new UnsupportedOperationException();
+        if(ParameterUtil.checkParameterIsNull(offering)){
+            return ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode();
+        }
+        if(StringUtils.isEmpty(relationType)){
+            return ProdOfferingErrorCode.PROD_OFFERING_RELATIONSHIP_TYPE_IS_NULL_OR_EMPTY.getCode();
+        }
+        ProductOfferingRelationship offeringRelationship = new ProductOfferingRelationship(this,offering,relationType,validFor);
+        if(null == this.prodOfferingRelationship){
+            this.prodOfferingRelationship = new ArrayList<ProductOfferingRelationship>();
+        }
+        this.prodOfferingRelationship.add(offeringRelationship);
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
     /**
@@ -97,16 +118,22 @@ public abstract class ProductOffering {
      */
     public int dissociate(ProductOffering offering) {
         // TODO - implement ProductOffering.dissociate
-        throw new UnsupportedOperationException();
+        return 0;
     }
 
     /**
      * 
      * @param relationType
      */
-    public ProductOffering[] retrieveRelatedOffering(String relationType) {
-        // TODO - implement ProductOffering.retrieveRelatedOffering
-        throw new UnsupportedOperationException();
+    public List<ProductOffering> retrieveRelatedOffering(String relationType) {
+        ParameterUtil.checkParameterIsNulForException(relationType,"relationType");
+        List<ProductOffering> offeringList = new ArrayList<ProductOffering>();
+        for(ProductOfferingRelationship relationship : this.prodOfferingRelationship){
+            if(relationType.equals( relationship.getTypeRelationship())){
+                offeringList.add(relationship.getTargetOffering());
+            }
+        }
+        return offeringList;
     }
 
     /**
@@ -114,9 +141,16 @@ public abstract class ProductOffering {
      * @param relationType
      * @param time
      */
-    public ProductOffering[] retrieveRelatedOffering(String relationType, Date time) {
-        // TODO - implement ProductOffering.retrieveRelatedOffering
-        throw new UnsupportedOperationException();
+    public List<ProductOffering> retrieveRelatedOffering(String relationType, Date time) {
+        ParameterUtil.checkParameterIsNulForException(time,"time");
+        ParameterUtil.checkParameterIsNulForException(relationType, "relationType");
+        List<ProductOffering> offeringList = new ArrayList<ProductOffering>();
+        for(ProductOfferingRelationship relationship : this.prodOfferingRelationship){
+            if(relationType.equals( relationship.getTypeRelationship()) && relationship.getValidFor().isInTimePeriod(time)){
+                offeringList.add(relationship.getTargetOffering());
+            }
+        }
+        return offeringList;
     }
 
     /**

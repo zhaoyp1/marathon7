@@ -1,5 +1,7 @@
 package com.digiwes.product.offering;
 
+import com.digiwes.common.utils.ParameterUtil;
+
 /**
  * A set of numbers that specifies the lower and upper limits for a ProductOffering that can be procured as part of the related BundledProductOffering.
  * 
@@ -52,8 +54,10 @@ public class BundledProdOfferOption {
      * @param upperLimit
      */
     public BundledProdOfferOption(ProductOffering offering, int lowerLimit, int upperLimit) {
-        // TODO - implement BundledProdOfferOption.BundledProdOfferOption
-        throw new UnsupportedOperationException();
+        assert !ParameterUtil.checkParameterIsNull(offering):"offering must not be null .";
+        this.productOffering = offering;
+        this.numberRelOfferLowerLimit = lowerLimit;
+        this.numberRelOfferUpperLimit = upperLimit;
     }
 
     public String toString() {
