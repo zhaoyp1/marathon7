@@ -23,8 +23,7 @@ public class BundledProductOffering extends ProductOffering {
      * @param validFor
      */
     public BundledProductOffering(String id, String name, String description, TimePeriod validFor) {
-        // TODO - implement BundledProductOffering.BundledProductOffering
-        throw new UnsupportedOperationException();
+         super(id,name,description,validFor);
     }
 
     /**
