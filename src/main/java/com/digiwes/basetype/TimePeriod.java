@@ -76,6 +76,16 @@ public class TimePeriod {
         if (validFor.getStartDateTime().compareTo(endDateTime)<=0 && validFor.endDateTime.compareTo(startDateTime)>=0) return true;
         else return false;
     }
+    public boolean isInTimePeriod(TimePeriod validFor){
+        if (this.startDateTime != null && this.endDateTime != null) {
+            if((validFor.getStartDateTime().compareTo(this.startDateTime) == 1 ||validFor.getStartDateTime().compareTo(this.startDateTime) == 0 )&& (validFor.getEndDateTime().compareTo(this.endDateTime) == -1 ||validFor.getEndDateTime().compareTo(this.endDateTime) == 0 )){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        return false;
+    }
     @Override
     public String toString() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
