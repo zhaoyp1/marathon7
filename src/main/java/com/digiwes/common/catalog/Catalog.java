@@ -81,18 +81,13 @@ public class Catalog {
         Catalog catalog = (Catalog) o;
 
         if (!ID.equals(catalog.ID)) return false;
-        if (!name.equals(catalog.name)) return false;
-        if (!type.equals(catalog.type)) return false;
-        return validFor.equals(catalog.validFor);
+        return true;
 
     }
 
     @Override
     public int hashCode() {
         int result = ID.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + type.hashCode();
-        result = 31 * result + validFor.hashCode();
         return result;
     }
 }
