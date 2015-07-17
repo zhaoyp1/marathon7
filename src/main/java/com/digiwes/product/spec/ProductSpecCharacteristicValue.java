@@ -4,6 +4,7 @@ import java.util.*;
 
 import com.digiwes.basetype.*;
 import com.digiwes.common.enums.CommonErrorCode;
+import com.digiwes.common.enums.ProdSpecEnum;
 import com.digiwes.common.enums.ProdSpecErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
 import org.apache.commons.lang.StringUtils;
@@ -134,7 +135,7 @@ public class ProductSpecCharacteristicValue {
     public ProductSpecCharacteristicValue(String valueType, boolean isDefault, String unitOfMeasure, TimePeriod validFor, String value) {
         assert  !StringUtils.isEmpty(valueType):"valueType must not be null.";
         assert  !StringUtils.isEmpty(value):"value must not be null.";
-        assert  !ParameterUtil.checkParameterIsNull(validFor):"valid must not be null";
+        assert  !ParameterUtil.checkParameterIsNull(validFor):"validFor must not be null";
 
         this.valueType = valueType;
         this.unitOfMeasure = unitOfMeasure;
@@ -156,17 +157,30 @@ public class ProductSpecCharacteristicValue {
     public ProductSpecCharacteristicValue(String valueType, boolean isDefault, String unitOfMeasure, TimePeriod validFor, String valueFrom, String valueTo, String rangeInterval) {
         assert  !StringUtils.isEmpty(valueType):"valueType must not be null.";
         assert  !ParameterUtil.checkParameterIsNull(validFor):"valid must not be null";
-        assert  !(StringUtils.isEmpty(valueFrom) && StringUtils.isEmpty(valueTo)):"valueFrom and valueTo must not be null at the same time.";
-        assert  !StringUtils.isEmpty(valueFrom) :"valueFrom must not be null.";
+        assert  !(StringUtils.isEmpty(valueFrom) && StringUtils.isEmpty(valueTo)):"valueFor and valueTo must not be null at the same time.";
+        assert  !StringUtils.isEmpty(valueFrom) :"valueFor must not be null.";
         if(StringUtils.isEmpty(valueTo)){
-            valueTo=valueFrom;
+            valueTo = valueFrom;
         }
         this.valueType = valueType;
         this.unitOfMeasure = unitOfMeasure;
         this.validFor = validFor;
         this.valueFrom = valueFrom;
         this.valueTo = valueTo;
-        this.rangeInterval=rangeInterval;
+        if(ParameterUtil.checkParameterIsNull(rangeInterval)){
+            this.rangeInterval = ProdSpecEnum.RangeInterval.CLOSED.getValue();
+        }else if(!isInRangeIntervalDefined(rangeInterval)){
+            assert false :"rangeInterval is illegal.";
+        }else{
+            this.rangeInterval = rangeInterval;
+        }
+    }
+    private boolean isInRangeIntervalDefined(String rangeInterval){
+        if(rangeInterval != ProdSpecEnum.RangeInterval.CLOSED.getValue() || rangeInterval != ProdSpecEnum.RangeInterval.CLOSED_BOTTOM.getValue() ||
+                rangeInterval != ProdSpecEnum.RangeInterval.CLOSED_TOP.getValue() || rangeInterval != ProdSpecEnum.RangeInterval.OPEN.getValue()){
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -214,13 +228,15 @@ public class ProductSpecCharacteristicValue {
             logger.warn("can not create relationship whit itself.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_EQUALS_TO_CURRENT.getCode();
         }
-        ProdSpecCharValueRelationship productSpecCharValueRelationShip = this.retrieveRelatedCharacteristicValue(charValue);
-        if(null!=productSpecCharValueRelationShip){
+        List<ProdSpecCharValueRelationship> productSpecCharValueRelationShip = retrieveRelatedCharacteristicValue(charValue);
+        if(null != productSpecCharValueRelationShip){
             //compare
-            if(productSpecCharValueRelationShip.getValidFor().isOverlap(validFor)){
-                logger.warn("CharacteristicValue have been created in the specified time");
-                return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_HAS_RELATED_TO_CURRENT.getCode();
+            for(ProdSpecCharValueRelationship valueRelationship : productSpecCharValueRelationShip){
+                if(valueRelationship.getValidFor().isOverlap(validFor)){
+                    logger.warn("CharacteristicValue have been created in the specified time");
+                    return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_HAS_RELATED_TO_CURRENT.getCode();
 
+                }
             }
         }
         ProdSpecCharValueRelationship specCharValueRelationShip = new ProdSpecCharValueRelationship(this,charValue, relationType, validFor);
@@ -279,16 +295,17 @@ public class ProductSpecCharacteristicValue {
      * 
      * @param charValue
      */
-    private ProdSpecCharValueRelationship retrieveRelatedCharacteristicValue(ProductSpecCharacteristicValue charValue ){
+    private List<ProdSpecCharValueRelationship> retrieveRelatedCharacteristicValue(ProductSpecCharacteristicValue charValue ){
         ParameterUtil.checkParameterIsNulForException(charValue,"ProductSpecCharacteristicValue");
+        List<ProdSpecCharValueRelationship> resultProdSpecCharValueRelationship = new ArrayList<ProdSpecCharValueRelationship>();
         if (null != this.prodSpecCharValueRelationship) {
             for (ProdSpecCharValueRelationship productSpecCharRelationship : prodSpecCharValueRelationship) {
                 if ( productSpecCharRelationship.getProductSpecCharacteristicValue().equals(charValue)) {
-                    return productSpecCharRelationship;
+                    resultProdSpecCharValueRelationship.add(productSpecCharRelationship);
                 }
             }
         }
-        return null;
+        return resultProdSpecCharValueRelationship;
     }
 
     @Override
