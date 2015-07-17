@@ -2,6 +2,7 @@ package com.digiwes.product.offering;
 
 import java.util.*;
 import com.digiwes.basetype.*;
+import com.digiwes.common.enums.CommonEnum;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
@@ -34,7 +35,7 @@ public class BundledProductOffering extends ProductOffering {
      * @param offering
      */
     public int composedOf(ProductOffering offering) {
-       return composeOf(offering, -1, -1);
+       return composeOf(offering,CommonEnum.MIN_NOT_LIMIT.getCode(), CommonEnum.MAX_NOT_LIMIT.getCode());
     }
 
     /**
@@ -47,7 +48,7 @@ public class BundledProductOffering extends ProductOffering {
         if(ParameterUtil.checkParameterIsNull(offering)){
             return ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode();
         }
-        if(lowerLimit != -1 && upperLimit != -1 ){
+        if(CommonEnum.MIN_NOT_LIMIT.getCode() != lowerLimit && CommonEnum.MAX_NOT_LIMIT.getCode() !=  upperLimit  ){
             if(lowerLimit>upperLimit){
                 return ProdOfferingErrorCode.BUNDLED_PROD_OFFERING_LOWERLIMIT_GREATER_UPPERLIMIT.getCode();
             }
