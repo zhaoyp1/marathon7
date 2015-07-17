@@ -24,7 +24,7 @@ public class SimpleProductOffering extends ProductOffering {
     public SimpleProductOffering(String id, String name, String description, TimePeriod validFor, ProductSpecification prodSpec) {
         super(id,name,description,validFor);
         assert !ParameterUtil.checkParameterIsNull(prodSpec):"productSpecification must not be null or empty .";
-        assert !prodSpec.getValidFor().isInTimePeriod(validFor):"productOffering's validFor must not be greater than productSpecification's validFor .";
+        assert prodSpec.getValidFor().isInTimePeriod(validFor):"productOffering's validFor must not be greater than productSpecification's validFor .";
         this.productSpecification = prodSpec;
     }
 
