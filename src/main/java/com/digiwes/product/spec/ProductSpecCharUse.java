@@ -238,7 +238,7 @@ public class ProductSpecCharUse {
      * 
      * @param defaultValue
      */
-    public int specifyDefaultCharacteristicValue(ProductSpecCharacteristicValue defaultValue) {
+    public int specifyDefaultValue(ProductSpecCharacteristicValue defaultValue) {
         if(ParameterUtil.checkParameterIsNull(defaultValue)){
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
         }
@@ -258,7 +258,7 @@ public class ProductSpecCharUse {
         return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
     }
 
-    public List<ProdSpecCharValueUse> retrieveDefaultValueUse() {
+    public List<ProdSpecCharValueUse> retrieveDefaultValue() {
         List<ProdSpecCharValueUse> resultList = new ArrayList<ProdSpecCharValueUse>();
         if(null != this.prodSpecCharValue ){
             for(ProdSpecCharValueUse prodSpecCharValueUse : this.prodSpecCharValue){
@@ -274,7 +274,7 @@ public class ProductSpecCharUse {
      * 
      * @param defaultValue
      */
-    public int clearDefaultValueUse(ProductSpecCharacteristicValue defaultValue) {
+    public int clearDefaultValue(ProductSpecCharacteristicValue defaultValue) {
         if(ParameterUtil.checkParameterIsNull(defaultValue)){
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
         }
@@ -320,11 +320,6 @@ public class ProductSpecCharUse {
         int result = prodSpecChar != null ? prodSpecChar.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
-    }
-
-    public String toString() {
-        // TODO - implement ProductSpecCharUse.toString
-        throw new UnsupportedOperationException();
     }
 
 }

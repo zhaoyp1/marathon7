@@ -17,6 +17,7 @@ public abstract class ProductSpecification {
     private List<ProductSpecificationCost> productSpecificationCost;
     private List<ProductSpecificationRelationship> prodSpecRelationship = new ArrayList<ProductSpecificationRelationship>();
     private List<ProductSpecificationVersion> prodSpecVersion;
+    private List<ProductSpecCharUse> prodSpecChar = new ArrayList<ProductSpecCharUse>();
 
     public List<ProductSpecCharUse> getProdSpecChar() {
         return prodSpecChar;
@@ -30,7 +31,7 @@ public abstract class ProductSpecification {
         this.prodSpecRelationship = prodSpecRelationship;
     }
 
-    private List<ProductSpecCharUse> prodSpecChar = new ArrayList<ProductSpecCharUse>();
+
     /**
      * The name of the product specification.
      */
@@ -142,7 +143,7 @@ public abstract class ProductSpecification {
     public int attachCharacteristic(String charName, ProductSpecCharacteristic specChar, boolean canBeOveridden, boolean isPackage, TimePeriod validFor) {
         int errorCode = checkCharacteristic(charName, specChar, validFor);
         if(errorCode == CommonErrorCode.SUCCESS.getCode() ){
-            ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,name,canBeOveridden,isPackage,validFor);
+            ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,charName,canBeOveridden,isPackage,validFor);
             this.prodSpecChar.add(productSpecCharUse);
             return CommonErrorCode.SUCCESS.getCode();
         }
@@ -184,7 +185,7 @@ public abstract class ProductSpecification {
              return ProdSpecErrorCode.PROD_SPEC_CHAR_USE_TIME_NOT_BELONG_OF_CHAR_TIME.getCode();
         }
         for(ProductSpecCharUse productSpecCharUse:this.prodSpecChar){
-            if(specChar.equals(productSpecCharUse.getProdSpecChar()) && name.equals(charName) && productSpecCharUse.getValidFor().isOverlap(validFor)){
+            if(specChar.equals(productSpecCharUse.getProdSpecChar()) && productSpecCharUse.getName().equals(charName) && productSpecCharUse.getValidFor().isOverlap(validFor)){
                 return ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_ATTACHED_TO_SPEC.getCode();
             }
         }
@@ -229,15 +230,16 @@ public abstract class ProductSpecification {
      */
     public int assignCharacteristicValue(String charName, ProductSpecCharacteristic specChar, ProductSpecCharacteristicValue charValue, boolean isDefault, TimePeriod validFor) {
         int errorCode = validParameter(charName, specChar, charValue);
-        if(errorCode == CommonErrorCode.SUCCESS.getCode()){
-            if(charValue.getValidFor().isInTimePeriod(validFor)){
+        if( CommonErrorCode.SUCCESS.getCode() == errorCode){
+            ProductSpecCharUse productSpecCharUse = retrieveProdSpecCharUse(charName, specChar);
+            if( null == productSpecCharUse){
+                return   ProdSpecErrorCode.PROD_SPEC_NOT_USED_CURRENT_CHAR.getCode();
+            }
+            if(!charValue.getValidFor().isInTimePeriod(validFor)){
                 return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_USE_TIME_NOT_BELONG_OF_CHARVALUE_TIME.getCode();
             }
-            ProductSpecCharUse productSpecCharUse = retrieveProdSpecCharUse(charName, specChar);
-            if(productSpecCharUse!=null){
-                return productSpecCharUse.assignValue(charValue,isDefault,validFor);
-            }
-            return   ProdSpecErrorCode.PROD_SPEC_NOT_USED_CURRENT_CHAR.getCode();
+            return productSpecCharUse.assignValue(charValue, isDefault, validFor);
+
         }
         return errorCode;
     }
@@ -310,7 +312,7 @@ public abstract class ProductSpecification {
        ParameterUtil.checkParameterIsNulForException(charName,"charName") ;
        ParameterUtil.checkParameterIsNulForException(characteristic,"ProductSpecCharacteristic");
        ProductSpecCharUse charUse = this.retrieveProdSpecCharUse(charName, characteristic);
-       List<ProdSpecCharValueUse> defaults= charUse.retrieveDefaultValueUse();
+       List<ProdSpecCharValueUse> defaults= charUse.retrieveDefaultValue();
        return defaults;
     }
 
