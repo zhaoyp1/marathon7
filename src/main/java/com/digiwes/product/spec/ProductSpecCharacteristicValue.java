@@ -107,6 +107,14 @@ public class ProductSpecCharacteristicValue {
         this.rangeInterval = rangeInterval;
     }
 
+    public List<ProdSpecCharValueRelationship> getProdSpecCharValueRelationship() {
+        return prodSpecCharValueRelationship;
+    }
+
+    public void setProdSpecCharValueRelationship(List<ProdSpecCharValueRelationship> prodSpecCharValueRelationship) {
+        this.prodSpecCharValueRelationship = prodSpecCharValueRelationship;
+    }
+
     public TimePeriod getValidFor() {
         return this.validFor;
     }
@@ -193,6 +201,14 @@ public class ProductSpecCharacteristicValue {
         if (ParameterUtil.checkParameterIsNull(relationType)) {
             logger.warn(" relationType must not be null.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_RELATIONSHIP_TYPE_IS_NULL.getCode();
+        }
+        if(ParameterUtil.checkParameterIsNull(charValue)){
+            logger.warn(" charValue must not be null.");
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
+        }
+        if(ParameterUtil.checkParameterIsNull(validFor)){
+            logger.warn(" validFor must not be null.");
+            return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
         }
         if(this.equals(charValue)){
             logger.warn("can not create relationship whit itself.");
@@ -319,11 +335,6 @@ public class ProductSpecCharacteristicValue {
      */
     public String basicInfoToString() {
         // TODO - implement ProductSpecCharacteristicValue.basicInfoToString
-        throw new UnsupportedOperationException();
-    }
-
-    public String toString() {
-        // TODO - implement ProductSpecCharacteristicValue.toString
         throw new UnsupportedOperationException();
     }
 

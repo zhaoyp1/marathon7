@@ -15,7 +15,12 @@ import org.apache.log4j.Logger;
 public class ProductSpecCharacteristic {
     private static final Logger logger = Logger.getLogger(ProductSpecCharacteristic.class);
 
-    private List<ProductSpecCharacteristicValue> prodSpecCharValue = new ArrayList<ProductSpecCharacteristicValue>();
+    private Set<ProductSpecCharacteristicValue> prodSpecCharValue = new HashSet<ProductSpecCharacteristicValue>();
+
+    public List<ProductSpecCharRelationship> getProdSpecCharRelationship() {
+        return prodSpecCharRelationship;
+    }
+
     private List<ProductSpecCharRelationship> prodSpecCharRelationship = new ArrayList<ProductSpecCharRelationship>();
     /**
      * A unique identifier for the ProductSpecCharacteristic.
@@ -140,7 +145,7 @@ public class ProductSpecCharacteristic {
         this.validFor = validFor;
     }
 
-    public List<ProductSpecCharacteristicValue> getProdSpecCharValue() {
+    public Set<ProductSpecCharacteristicValue> getProdSpecCharValue() {
         return prodSpecCharValue;
     }
 
@@ -203,11 +208,11 @@ public class ProductSpecCharacteristic {
      */
     public int assignValue(ProductSpecCharacteristicValue charVal) {
         if (ParameterUtil.checkParameterIsNull(charVal)) {
-            logger.error("charVal must not be null.");
+            logger.warn("charVal must not be null.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
         }
         if (null != charVal.getValueType() && !this.getValueType().equals(charVal.getValueType())) {
-            logger.error("The valueType of Character and the valueType of CharacterValue are different.");
+            logger.warn("The valueType of Character and the valueType of CharacterValue are different.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_TYPE_DIFFERENT_CHAR_VALUE_TYPE.getCode();
         }
         this.prodSpecCharValue.add(charVal);
@@ -342,15 +347,15 @@ public class ProductSpecCharacteristic {
 
     private Integer checkAssociateParam(ProductSpecCharacteristic specChar, String type, TimePeriod validFor) {
         if (ParameterUtil.checkParameterIsNull(specChar)) {
-            logger.error("specChar must not be null.");
+            logger.warn("specChar must not be null.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
         }
         if (ParameterUtil.checkParameterIsNull(type)) {
-            logger.error("type must not be null.");
+            logger.warn("type must not be null.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_RELATIONSHIP_TYPE_IS_NULL.getCode();
         }
         if (this.equals(specChar)) {
-            logger.error("The srcChar and targetCharValue is the same.");
+            logger.warn("The srcChar and targetCharValue is the same.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_EQUALS_TO_CURRENT.getCode();
         }
         ProductSpecCharRelationship relationship = this.retrieveRelatedCharacteristicByChar(specChar);

@@ -1,6 +1,8 @@
 package com.digiwes.product.spec;
 
 import com.digiwes.basetype.*;
+import com.digiwes.common.utils.ParameterUtil;
+import org.apache.commons.lang.StringUtils;
 
 public class ProdSpecCharValueRelationship {
 
@@ -47,34 +49,37 @@ public class ProdSpecCharValueRelationship {
      * @param validFor
      */
     public ProdSpecCharValueRelationship(ProductSpecCharacteristicValue srourceCharValue, ProductSpecCharacteristicValue targetCharValue, String relationType, TimePeriod validFor) {
-        // TODO - implement ProdSpecCharValueRelationship.ProdSpecCharValueRelationship
-        throw new UnsupportedOperationException();
+        assert !ParameterUtil.checkParameterIsNull(srourceCharValue):"sourceCharValue must not be null";
+        assert !ParameterUtil.checkParameterIsNull(targetCharValue):"targetCharValue must not be null";
+        assert !StringUtils.isEmpty(relationType):"relationType must not be null";
+        assert !ParameterUtil.checkParameterIsNull(validFor):"validFor must not be null";
+        this.sourceCharValue = srourceCharValue;
+        this.productSpecCharacteristicValue =targetCharValue;
+        this.charValueRelationshipType = relationType ;
+        this.validFor = validFor;
     }
 
-    /**
-     * 
-     * @param srourceCharValue
-     * @param targetCharValueId
-     * @param relationType
-     * @param validFor
-     */
-    public ProdSpecCharValueRelationship(ProductSpecCharacteristicValue srourceCharValue, String targetCharValueId, String relationType, TimePeriod validFor) {
-        // TODO - implement ProdSpecCharValueRelationship.ProdSpecCharValueRelationship
-        throw new UnsupportedOperationException();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProdSpecCharValueRelationship that = (ProdSpecCharValueRelationship) o;
+
+        if (!sourceCharValue.equals(that.sourceCharValue)) return false;
+        if (!productSpecCharacteristicValue.equals(that.productSpecCharacteristicValue)) return false;
+        if (!charValueRelationshipType.equals(that.charValueRelationshipType)) return false;
+        return validFor.equals(that.validFor);
+
     }
 
+    @Override
     public int hashCode() {
-        // TODO - implement ProdSpecCharValueRelationship.hashCode
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * 
-     * @param o
-     */
-    public boolean equals(int o) {
-        // TODO - implement ProdSpecCharValueRelationship.equals
-        throw new UnsupportedOperationException();
+        int result = sourceCharValue.hashCode();
+        result = 31 * result + productSpecCharacteristicValue.hashCode();
+        result = 31 * result + charValueRelationshipType.hashCode();
+        result = 31 * result + validFor.hashCode();
+        return result;
     }
 
     public String toString() {

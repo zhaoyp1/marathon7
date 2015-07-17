@@ -50,6 +50,8 @@ public class ProdSpecCharValueUse {
      */
     public ProdSpecCharValueUse(ProductSpecCharacteristicValue charVal, boolean isDefault, TimePeriod validFor) {
         assert  !ParameterUtil.checkParameterIsNull(charVal) :"charValue must not be null";
+        assert  !ParameterUtil.checkParameterIsNull(validFor):"validFor must not be null";
+
         this.prodSpecCharValue = charVal;
         this.isDefault = isDefault;
         this.validFor = validFor;
