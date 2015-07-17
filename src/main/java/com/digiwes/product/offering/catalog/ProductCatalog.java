@@ -1,13 +1,18 @@
 package com.digiwes.product.offering.catalog;
 
 import com.digiwes.common.catalog.*;
+
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 import com.digiwes.basetype.*;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdCatalog;
 import com.digiwes.common.enums.ProdCatalogErrorCode;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
+import com.digiwes.common.utils.TimeUtils;
 import com.digiwes.product.offering.*;
 import com.digiwes.product.offering.price.*;
 import org.apache.log4j.Logger;
@@ -118,7 +123,6 @@ public class ProductCatalog extends Catalog {
                 isUsed = true;
                 if(new Date().compareTo(offering.getValidFor().getEndDateTime()) == -1){
                     prodCatalogProdOffer.getValidFor().setEndDateTime(new Date());
-                    prodCatalogProdOffer.setValidFor(validFor);
                 }
 
             }
@@ -203,7 +207,7 @@ public class ProductCatalog extends Catalog {
     private ProdCatalogProdOffer retrieveProdCatalogProdOffer(ProductOffering offering, TimePeriod validFor) {
 
         for(ProdCatalogProdOffer catalogProdOffer:prodCatalogProdOffer){
-               if(offering.equals(catalogProdOffer.getProdOffering()) && (catalogProdOffer.getValidFor().isOverlap(validFor))){
+               if(offering.equals(catalogProdOffer.getProdOffering()) && (catalogProdOffer.getValidFor().equals(validFor))){
                    return catalogProdOffer;
                }
            }
@@ -225,10 +229,12 @@ public class ProductCatalog extends Catalog {
      * @param validFor
      */
     private boolean contains(ProductOffering offering, TimePeriod validFor) {
-        if( null == retrieveProdCatalogProdOffer(offering,validFor) ){
-            return false;
+        for(ProdCatalogProdOffer catalogProdOffer:prodCatalogProdOffer){
+            if(offering.equals(catalogProdOffer.getProdOffering()) && (catalogProdOffer.getValidFor().isOverlap(validFor))){
+                return true;
+            }
         }
-        return true;
+            return false;
     }
 
     /**
@@ -242,10 +248,10 @@ public class ProductCatalog extends Catalog {
         throw new UnsupportedOperationException();
     }
 
-    public String toString() {
+ /*   public String toString() {
         // TODO - implement ProductCatalog.toString
         throw new UnsupportedOperationException();
-    }
+    }*/
 
     private int checkOffering(ProductOffering offering, TimePeriod validFor) {
         if(ParameterUtil.checkParameterIsNull(offering)){
@@ -254,7 +260,8 @@ public class ProductCatalog extends Catalog {
         if(ParameterUtil.checkParameterIsNull(validFor)) {
             return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
         }
-        Date now =new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date now = TimeUtils.parseDate(new Date());
         if(now.compareTo(validFor.getStartDateTime()) ==1){
             return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode();
         }

@@ -16,7 +16,7 @@ import org.apache.commons.lang.StringUtils;
 public abstract class ProductOffering {
 
     private List<ProductOfferingPrice> productOfferingPrice = new ArrayList<ProductOfferingPrice>();
-    private List<ProductOfferingRelationship> prodOfferingRelationship = new ArrayList<ProductOfferingRelationship>();;
+    private List<ProductOfferingRelationship> prodOfferingRelationship = new ArrayList<ProductOfferingRelationship>();
     /**
      * A unique identifier for the ProductOffering.
      */
@@ -72,6 +72,10 @@ public abstract class ProductOffering {
 
     public String getStatus() {
         return this.status;
+    }
+
+    public List<ProductOfferingRelationship> getProdOfferingRelationship() {
+        return prodOfferingRelationship;
     }
 
     /**

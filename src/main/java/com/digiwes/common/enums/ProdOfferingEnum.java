@@ -32,17 +32,12 @@ public enum ProdOfferingEnum {
 
 
     }/**
-     * OfferingStatus
+     * OfferingRelationshipType
      */
     public enum OfferingRelationshipType {
-        AGGREGATION("1", "AGGREGATION"),
-        DEPENDENCY("2", "DEPENDENCY"),
-        MIGRATION("3", "MIGRATION"),
-        SUBSTITUTION("4", "SUBSTITUTION"),
-        EXCLUSIVITY("5", "EXCLUSIVITY");
-
-        private String value;
-        private String name;
+        AGGREGATION("1", "PARTNER"),
+        DEPENDENCY("2", "EQUIVALENT"),
+        MIGRATION("3", "ALTERNATE");
 
         /**
          * 
@@ -50,9 +45,12 @@ public enum ProdOfferingEnum {
          * @param name
          */
         OfferingRelationshipType(String value, String name) {
-            // TODO - implement OfferingRelationshipType.OfferingRelationshipType
-            throw new UnsupportedOperationException();
+            this.value = value;
+            this.name = name;
         }
+
+        private String value;
+        private String name;
 
         public String getValue() {
             return this.value;
