@@ -265,9 +265,9 @@ public class ProductSpecCharacteristicValue {
         List<ProductSpecCharacteristicValue> prodSpecCharValues = new ArrayList<ProductSpecCharacteristicValue>();
         if ( null != prodSpecCharValueRelationship  && prodSpecCharValueRelationship.size() > 0) {
             for (ProdSpecCharValueRelationship relationship : prodSpecCharValueRelationship) {
-                if (relationship.getCharValueRelationshipType() != null
+                if ( null != relationship.getCharValueRelationshipType()
                         && relationType.equals(relationship.getCharValueRelationshipType())
-                        && (relationship.getValidFor() == null ||   relationship.getValidFor().isInTimePeriod(time))) {
+                        && ( null == relationship.getValidFor() ||   relationship.getValidFor().isInTimePeriod(time))) {
                     prodSpecCharValues.add(relationship.getProductSpecCharacteristicValue());
                 }
             }

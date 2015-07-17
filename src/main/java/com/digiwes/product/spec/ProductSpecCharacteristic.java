@@ -225,7 +225,7 @@ public class ProductSpecCharacteristic {
      */
     public int removeValue(ProductSpecCharacteristicValue charVal) {
         if (ParameterUtil.checkParameterIsNull(charVal)) {
-            logger.error("charValue must not be null.");
+            logger.warn("charValue must not be null.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
         }
         if (null != prodSpecCharValue && prodSpecCharValue.size() > 0) {
@@ -284,7 +284,7 @@ public class ProductSpecCharacteristic {
      */
     public int clearDefaultValue(ProductSpecCharacteristicValue value) {
         if (ParameterUtil.checkParameterIsNull(value)) {
-            logger.error("charVal must not be null.");
+            logger.warn("charVal must not be null.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
         }
         if (null == this.prodSpecCharValue || !prodSpecCharValue.contains(value)) {
@@ -369,10 +369,7 @@ public class ProductSpecCharacteristic {
         return null;
     }
     private ProductSpecCharRelationship retrieveRelatedCharacteristicByChar(ProductSpecCharacteristic characteristic ){
-        if ( ParameterUtil.checkParameterIsNull(characteristic) ) {
-            logger.error("characteristic must not be null");
-            throw new IllegalArgumentException("characteristic must not be null");
-        }
+        ParameterUtil.checkParameterIsNulForException(characteristic,"ProductSpecCharacteristic");
         if (null !=prodSpecCharRelationship) {
             for (ProductSpecCharRelationship productSpecCharRelationship : prodSpecCharRelationship) {
                 if( productSpecCharRelationship.getTargetProdSpecChar().equals(characteristic)){
@@ -389,7 +386,7 @@ public class ProductSpecCharacteristic {
      */
     public int dissociate(ProductSpecCharacteristic specChar) {
         if ( ParameterUtil.checkParameterIsNull(specChar) ) {
-            logger.error("specChar must not be null");
+            logger.warn("specChar must not be null");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
         }
         if ( ParameterUtil.checkParameterIsNull(this.prodSpecCharRelationship) ) {
@@ -412,7 +409,7 @@ public class ProductSpecCharacteristic {
     public List<ProductSpecCharacteristic> retrieveRelatedCharacteristic(String charRelationshipType) {
         ParameterUtil.checkParameterIsNulForException(charRelationshipType, "charRelationshipType");
         List<ProductSpecCharacteristic>  characteristics = new ArrayList<ProductSpecCharacteristic>();;
-        if (null !=prodSpecCharRelationship ) {
+        if (null != prodSpecCharRelationship ) {
             for (ProductSpecCharRelationship productSpecCharRelationship : prodSpecCharRelationship) {
                 if (charRelationshipType.equals(productSpecCharRelationship.getCharRelationshipType())) {
                     characteristics.add(productSpecCharRelationship.getTargetProdSpecChar());
@@ -431,7 +428,7 @@ public class ProductSpecCharacteristic {
         ParameterUtil.checkParameterIsNulForException(charRelationshipType, "charRelationshipType");
         ParameterUtil.checkParameterIsNulForException(time, "time");
         List<ProductSpecCharacteristic>  characteristics = new ArrayList<ProductSpecCharacteristic>();;
-        if (null !=prodSpecCharRelationship ) {
+        if (null != prodSpecCharRelationship ) {
             for (ProductSpecCharRelationship productSpecCharRelationship : prodSpecCharRelationship) {
                 if (charRelationshipType.equals(productSpecCharRelationship.getCharRelationshipType()) &&  productSpecCharRelationship.getValidFor().isInTimePeriod(time)) {
                     characteristics.add(productSpecCharRelationship.getTargetProdSpecChar());
@@ -448,15 +445,15 @@ public class ProductSpecCharacteristic {
      */
     public int modifyRelationshipValidPeriod(ProductSpecCharacteristic prodSpecChar, TimePeriod oldValidFor, TimePeriod validFor) {
         if (ParameterUtil.checkParameterIsNull(prodSpecChar)) {
-            logger.error("prodSpecChar must not be null.");
+            logger.warn("prodSpecChar must not be null.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
         }
         if (ParameterUtil.checkParameterIsNull(oldValidFor)){
-            logger.error("oldValidFor must not be null.");
+            logger.warn("oldValidFor must not be null.");
             return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
         }
         if (ParameterUtil.checkParameterIsNull(validFor) ){
-            logger.error("validFor must not be null.");
+            logger.warn("validFor must not be null.");
             return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
         }
         if ( null != this.prodSpecCharRelationship ) {
