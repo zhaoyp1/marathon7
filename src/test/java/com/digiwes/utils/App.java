@@ -1,15 +1,15 @@
-package com.digiwes.common.utils;
+package com.digiwes.utils;
+
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.grizzly2.servlet.GrizzlyWebContainerFactory;
+import org.glassfish.jersey.servlet.ServletContainer;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.grizzly2.servlet.GrizzlyWebContainerFactory;
-import org.glassfish.jersey.server.ServerProperties;
-import org.glassfish.jersey.servlet.ServletContainer;
 
 
 /**
