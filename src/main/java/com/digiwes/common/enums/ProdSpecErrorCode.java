@@ -30,7 +30,8 @@ public enum ProdSpecErrorCode{
     PROD_SPEC_CHAR_VALUE_USE_TIME_NOT_BELONG_OF_CHARVALUE_TIME(1023,"the specify time not belong of ProductSPecifcationCharValue's validFor"),
     PROD_SPEC_NOT_USED_CURRENT_CHAR(1024,"the char not be used by this Spec"),
     PROD_SPEC_CHAR_NOT_INCLUDE_VALUE(1025,"the char not include this value"),
-    PROD_SPEC_CHAR_VALUE_USE_NOT_IN_VALUE(1025,"validFor of prodSpecCharValueUse  is not in prodSpecCharValue's validFor");
+    PROD_SPEC_CHAR_VALUE_USE_NOT_IN_VALUE(1025,"validFor of prodSpecCharValueUse  is not in prodSpecCharValue's validFor"),
+    PROD_SPEC_CHAR_VALUE_HAS_BEEN_USED(1026,"prodSpecCharValue has been used");
 
 
     private  int code;

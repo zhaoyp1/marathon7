@@ -213,6 +213,13 @@ public class ProductSpecCharUse {
         if(!charValue.getValidFor().isInTimePeriod(validFor)){
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_USE_NOT_IN_VALUE.getCode();
         }
+        if(null != this.prodSpecCharValue && this.prodSpecCharValue.size()>0){
+            for(ProdSpecCharValueUse prdSpecCharValueUse : this.prodSpecCharValue){
+                if(prdSpecCharValueUse.getProdSpecCharValue().equals(charValue)){
+                    return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_HAS_BEEN_USED.getCode();
+                }
+            }
+        }
         ProdSpecCharValueUse prodSpecCharValueUse = new ProdSpecCharValueUse(charValue, isDefault, validFor);
         this.prodSpecCharValue.add(prodSpecCharValueUse);
         return CommonErrorCode.SUCCESS.getCode();
