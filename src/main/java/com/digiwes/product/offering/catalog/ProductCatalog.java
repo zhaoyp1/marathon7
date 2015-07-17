@@ -249,10 +249,10 @@ public class ProductCatalog extends Catalog {
         throw new UnsupportedOperationException();
     }
 
- /*   public String toString() {
+    public String toString() {
         // TODO - implement ProductCatalog.toString
         throw new UnsupportedOperationException();
-    }*/
+    }
 
     private int checkOffering(ProductOffering offering, TimePeriod validFor) {
         if(ParameterUtil.checkParameterIsNull(offering)){
