@@ -77,9 +77,4 @@ public class ProdSpecCharValueUse {
         return result;
     }
 
-    public String toString() {
-        // TODO - implement ProdSpecCharValueUse.toString
-        throw new UnsupportedOperationException();
-    }
-
 }

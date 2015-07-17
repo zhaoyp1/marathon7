@@ -61,17 +61,17 @@ public class ProductSpecificationTest extends TestCase {
         ProductSpecCharUse charUse2 = new ProductSpecCharUse( specChar2,"Colours", false, false,validFor);
         expectCharUse.add(charUse2);
         errorCode = atomicProdSpec.attachCharacteristic("Colours", specChar2, false, false,validFor);
-        assertEquals("add an exists characteristic but the charName is different ,compare to return errorCode.", ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_ATTACHED_TO_SPEC.getCode(), errorCode);
+        assertEquals("add an exists characteristic but the charName is different ,compare to return errorCode.",CommonErrorCode.SUCCESS.getCode(), errorCode);
         assertEquals("add an exists characteristic  but the charName is different ,expectCharUse compare to atomicProdSpec's characteristic.", expectCharUse, atomicProdSpec.getProdSpecChar());
 
     }
 
     @Test
     public void testAssignCharacteristicValue() throws Exception {
-        ProductSpecCharacteristic specChar = new ProductSpecCharacteristic("1", "color", "1", validFor, "unique", 1, 3, false, "description", "derivationFormula");
-        ProductSpecCharacteristic specChar2 = new ProductSpecCharacteristic("2", "color", "1", validFor, "unique", 1, 3, false, "description", "derivationFormula");
-        ProductSpecCharacteristicValue charValue = new ProductSpecCharacteristicValue("TEXT",false, "GBK", validFor, "red");
-        ProductSpecCharacteristicValue charValue2 = new ProductSpecCharacteristicValue("TEXT",false, "GBK", validFor, "green");
+        ProductSpecCharacteristic specChar = new ProductSpecCharacteristic("1", "color", ProdSpecEnum.ProdSpecType.TEXT.getName(), validFor, "unique", 1, 3, false, "description", "derivationFormula");
+        ProductSpecCharacteristic specChar2 = new ProductSpecCharacteristic("2", "color", ProdSpecEnum.ProdSpecType.TEXT.getName(), validFor, "unique", 1, 3, false, "description", "derivationFormula");
+        ProductSpecCharacteristicValue charValue = new ProductSpecCharacteristicValue(ProdSpecEnum.ProdSpecType.TEXT.getName(),false, "GBK", validFor, "red");
+        ProductSpecCharacteristicValue charValue2 = new ProductSpecCharacteristicValue(ProdSpecEnum.ProdSpecType.TEXT.getName(),false, "GBK", validFor, "green");
         specChar.assignValue(charValue);
         specChar2.assignValue(charValue2);
         atomicProdSpec.attachCharacteristic("color", specChar, false, false, validFor);
@@ -82,48 +82,52 @@ public class ProductSpecificationTest extends TestCase {
 
         int errorCode = atomicProdSpec.assignCharacteristicValue("color", specChar, null, false, validFor);
         assertEquals("add a null to characteristic ,compare to return errorCode.",ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode(),errorCode);
-        assertEquals("add a null to characteristic ,expectCharValueUse compare to charUse's value.", expectCharValueUse, atomicProdSpec.getProdSpecChar());
+        assertEquals("add a null to characteristic ,expectCharValueUse compare to charUse's value.", expectCharValueUse, atomicProdSpec.getProdSpecChar().get(0).getProdSpecCharValue());
 
         errorCode = atomicProdSpec.assignCharacteristicValue("color", null, charValue, false, validFor);
-        assertEquals("add a value to characteristic but the characteristic is null,compare to return errorCode.",ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode(),errorCode);
-        assertEquals("add a value to characteristic but the characteristic is null ,expectCharValueUse compare to charUse's value.", expectCharValueUse, atomicProdSpec.getProdSpecChar());
+        assertEquals("add a value to characteristic but the characteristic is null,compare to return errorCode.",ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode(),errorCode);
+        assertEquals("add a value to characteristic but the characteristic is null ,expectCharValueUse compare to charUse's value.", expectCharValueUse, atomicProdSpec.getProdSpecChar().get(0).getProdSpecCharValue());
 
         errorCode = atomicProdSpec.assignCharacteristicValue("", specChar, charValue, false, validFor);
-        assertEquals("add a value to characteristic but the characteristic's name is empty,compare to return errorCode.",ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode(),errorCode);
-        assertEquals("add a value to characteristic but the characteristic's name is empty ,expectCharValueUse compare to charUse's value.", expectCharValueUse, atomicProdSpec.getProdSpecChar());
+        assertEquals("add a value to characteristic but the characteristic's name is empty,compare to return errorCode.",ProdSpecErrorCode.PROD_SPEC_CHAR_USE_NAME_IS_NULL_OR_EMPTY.getCode(),errorCode);
+        assertEquals("add a value to characteristic but the characteristic's name is empty ,expectCharValueUse compare to charUse's value.", expectCharValueUse, atomicProdSpec.getProdSpecChar().get(0).getProdSpecCharValue());
 
-        errorCode = atomicProdSpec.assignCharacteristicValue("color", specChar2, charValue2, false, validFor);
-        assertEquals("add a value to characteristic but the characteristic is not belong the ProdSpec ,compare to return errorCode.",ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode(),errorCode);
-        assertEquals("add a value to characteristic but the characteristic is not belong the ProdSpec ,expectCharValueUse compare to charUse's value.", expectCharValueUse, atomicProdSpec.getProdSpecChar());
+         errorCode = atomicProdSpec.assignCharacteristicValue("color", specChar2, charValue2, false, validFor);
+        assertEquals("add a value to characteristic but the characteristic is not belong the ProdSpec ,compare to return errorCode.",ProdSpecErrorCode.PROD_SPEC_NOT_USED_CURRENT_CHAR.getCode(),errorCode);
+        assertEquals("add a value to characteristic but the characteristic is not belong the ProdSpec ,expectCharValueUse compare to charUse's value.", expectCharValueUse, atomicProdSpec.getProdSpecChar().get(0).getProdSpecCharValue());
 
         errorCode = atomicProdSpec.assignCharacteristicValue("color", specChar, charValue2, false, validFor);
-        assertEquals("add a value to characteristic but the value is not belong the characteristic ,compare to return errorCode.",ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode(),errorCode);
-        assertEquals("add a value to characteristic but the value is not belong the characteristic ,expectCharValueUse compare to charUse's value.", expectCharValueUse, atomicProdSpec.getProdSpecChar());
+        assertEquals("add a value to characteristic but the value is not belong the characteristic ,compare to return errorCode.",ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode(),errorCode);
+        assertEquals("add a value to characteristic but the value is not belong the characteristic ,expectCharValueUse compare to charUse's value.", expectCharValueUse, atomicProdSpec.getProdSpecChar().get(0).getProdSpecCharValue());
 
         ProdSpecCharValueUse valueUse = new ProdSpecCharValueUse(charValue,false,validFor);
         expectCharValueUse.add(valueUse);
         errorCode = atomicProdSpec.assignCharacteristicValue("color", specChar, charValue, false, validFor);
         assertEquals("add an value to characteristic ,compare to return errorCode.", CommonErrorCode.SUCCESS.getCode(),errorCode);
-        assertEquals("add an value to characteristic ,expectCharValueUse compare to charUse's value.",expectCharValueUse,atomicProdSpec.getProdSpecChar());
+        assertEquals("add an value to characteristic ,expectCharValueUse compare to charUse's value.",expectCharValueUse,atomicProdSpec.getProdSpecChar().get(0).getProdSpecCharValue());
 
     }
 
     @Test
     public void testRetrieveCharacteristic() throws Exception {
-        ProductSpecCharacteristic specChar = new ProductSpecCharacteristic("1", "color", "1", validFor, "unique", 1, 3, false, "description", "derivationFormula");
-        ProductSpecCharacteristic specChar2 = new ProductSpecCharacteristic("2", "color", "1", validFor, "unique", 1, 3, false, "description", "derivationFormula");
-        ProductSpecCharacteristicValue charValue = new ProductSpecCharacteristicValue("TEXT",false, "GBK", validFor, "red");
-        ProductSpecCharacteristicValue charValue2 = new ProductSpecCharacteristicValue("TEXT",false, "GBK", validFor, "green");
+        ProductSpecCharacteristic specChar = new ProductSpecCharacteristic("1", "color", ProdSpecEnum.ProdSpecType.TEXT.getName(), validFor, "unique", 1, 3, false, "description", "derivationFormula");
+        ProductSpecCharacteristic specChar2 = new ProductSpecCharacteristic("2", "color", ProdSpecEnum.ProdSpecType.TEXT.getName(), validFor, "unique", 1, 3, false, "description", "derivationFormula");
+        ProductSpecCharacteristicValue charValue = new ProductSpecCharacteristicValue(ProdSpecEnum.ProdSpecType.TEXT.getName(),false, "GBK", validFor, "red");
+        ProductSpecCharacteristicValue charValue2 = new ProductSpecCharacteristicValue(ProdSpecEnum.ProdSpecType.TEXT.getName(),false, "GBK", validFor, "green");
         TimePeriod validFor2 = new TimePeriod(DateUtils.datetimeFormat.parse("2015-08-10 23:59:59"),DateUtils.datetimeFormat.parse("2015-09-01 23:59:59"));
         specChar.assignValue(charValue);
         specChar2.assignValue(charValue2);
         atomicProdSpec.attachCharacteristic("Color", specChar, false, false, validFor);
         atomicProdSpec.attachCharacteristic("Colour", specChar2, false, false, validFor2);
         List<ProductSpecCharUse> expectCharUse = new ArrayList<ProductSpecCharUse>();
-
-        List<ProductSpecCharUse> charUseList = atomicProdSpec.retrieveCharacteristic(null);
-        assertEquals("retrieve a characteristic ,expectCharUse compare to retrieved charUseList.", expectCharUse, charUseList);
+        List<ProductSpecCharUse> charUseList = null;
         try{
+            charUseList = atomicProdSpec.retrieveCharacteristic(null);
+            fail("retrieve a characteristic ,expectCharUse compare to retrieved charUseList.");
+        }   catch (IllegalArgumentException ex) {
+
+        }
+         try{
             Date time = null;
             charUseList = atomicProdSpec.retrieveCharacteristic(null);
             fail("retrieve characteristics by time but the parameter time is null.");
@@ -145,20 +149,28 @@ public class ProductSpecificationTest extends TestCase {
 
     @Test
     public void testRetrieveCharacteristicValue() throws Exception {
-        ProductSpecCharacteristic specChar = new ProductSpecCharacteristic("1", "color", "1", validFor, "unique", 1, 3, false, "description", "derivationFormula");
-        ProductSpecCharacteristicValue charValue = new ProductSpecCharacteristicValue("TEXT",false, "GBK", validFor, "red");
+        ProductSpecCharacteristic specChar = new ProductSpecCharacteristic("1", "color", ProdSpecEnum.ProdSpecType.TEXT.getName(), validFor, "unique", 1, 3, false, "description", "derivationFormula");
+        ProductSpecCharacteristicValue charValue = new ProductSpecCharacteristicValue(ProdSpecEnum.ProdSpecType.TEXT.getName(),false, "GBK", validFor, "red");
         TimePeriod validFor2 = new TimePeriod(DateUtils.datetimeFormat.parse("2015-08-10 23:59:59"),DateUtils.datetimeFormat.parse("2015-09-01 23:59:59"));
-        ProductSpecCharacteristicValue charValue2 = new ProductSpecCharacteristicValue("TEXT",false, "GBK", validFor2, "green");
+        ProductSpecCharacteristicValue charValue2 = new ProductSpecCharacteristicValue(ProdSpecEnum.ProdSpecType.TEXT.getName(),false, "GBK", validFor2, "green");
         specChar.assignValue(charValue);
         specChar.assignValue(charValue2);
         atomicProdSpec.attachCharacteristic("Color", specChar, false, false, validFor);
         List<ProdSpecCharValueUse> expectCharValueUse = new ArrayList<ProdSpecCharValueUse>();
+        List<ProdSpecCharValueUse> charValueUses = null;
+        try{
+            charValueUses = atomicProdSpec.retrieveCharacteristicValue("Color", null, new Date());
+            fail("retrieve a characteristic's values but the characteristic is null ,expectCharValueUse compare to retrieved charValueUses.");
+        }   catch (IllegalArgumentException ex){
 
-        List<ProdSpecCharValueUse> charValueUses = atomicProdSpec.retrieveCharacteristicValue("Color", null, new Date());
-        assertEquals("retrieve a characteristic's values but the characteristic is null ,expectCharValueUse compare to retrieved charValueUses.", expectCharValueUse, charValueUses);
+        }
+        try{
+            charValueUses = atomicProdSpec.retrieveCharacteristicValue("", specChar, new Date());
+            fail("retrieve a characteristic's values but the characteristic's name is empty ,expectCharValueUse compare to retrieved charValueUses.");
 
-        charValueUses = atomicProdSpec.retrieveCharacteristicValue("", specChar, new Date());
-        assertEquals("retrieve a characteristic's values but the characteristic's name is empty ,expectCharValueUse compare to retrieved charValueUses.", expectCharValueUse, charValueUses);
+        }   catch (IllegalArgumentException ex){
+
+        }
 
         charValueUses = atomicProdSpec.retrieveCharacteristicValue("Color", specChar,DateUtils.datetimeFormat.parse("2015-01-15 23:59:59"));
         assertEquals("retrieve a characteristic's values are validFor before ,expectCharValueUse compare to retrieved charValueUses.", expectCharValueUse, charValueUses);
@@ -174,21 +186,4 @@ public class ProductSpecificationTest extends TestCase {
 
     }
 
-    public void testAssociate() throws Exception {
-
-    }
-    public void testSpecifyDefaultCharacteristicValue() throws Exception {
-
-    }
-
-    public void testRetrieveDefaultValue() throws Exception {
-
-    }
-    public void testRetrieveRelatedProdSpec() throws Exception {
-
-    }
-
-    public void testRetrieveRelatedProdSpec1() throws Exception {
-
-    }
 }

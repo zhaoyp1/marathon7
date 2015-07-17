@@ -322,9 +322,4 @@ public class ProductSpecCharUse {
         return result;
     }
 
-    public String toString() {
-        // TODO - implement ProductSpecCharUse.toString
-        throw new UnsupportedOperationException();
-    }
-
 }
