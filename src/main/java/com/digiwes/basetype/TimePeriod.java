@@ -44,23 +44,20 @@ public class TimePeriod {
     }
 
     public TimePeriod(Date startDateTime, Date endDateTime) {
-        if( null == startDateTime || null == endDateTime){
-            throw  new IllegalArgumentException("starDateTime or endDateTime can not be  null ");
-        }
-        if ( null != startDateTime ) {
-            this.startDateTime =startDateTime;
-        }
-        if (null != endDateTime ) {
-            this.endDateTime = endDateTime;
-        }
+        assert !ParameterUtil.checkParameterIsNull(startDateTime):"starDateTime must not be  null.";
+        assert !ParameterUtil.checkParameterIsNull(endDateTime):"endDateTime must not be  null.";
+        assert startDateTime.compareTo(endDateTime)!=1:"endDateTime must be greater than starDateTime.";
+        this.startDateTime =startDateTime;
+        this.endDateTime = endDateTime;
     }
     /**
      * @param time
      * @return
      */
     public boolean isInTimePeriod(Date time){
-        if (this.startDateTime != null && this.endDateTime != null) {
-            if(time.compareTo(this.startDateTime) == 1 && time.compareTo(this.endDateTime) == -1){
+        ParameterUtil.checkParameterIsNulForException(time, "time");
+        if (null != this.startDateTime && null != this.endDateTime) {
+            if(1 == time.compareTo(this.startDateTime) && -1 == time.compareTo(this.endDateTime)){
                 return true;
             }else{
                 return false;
@@ -76,13 +73,13 @@ public class TimePeriod {
         if( null == validFor){
             return true;
         }
-        if (validFor.getStartDateTime().compareTo(endDateTime)<=0 && validFor.endDateTime.compareTo(startDateTime)>=0) return true;
+        if (0 >= validFor.getStartDateTime().compareTo(endDateTime) && 0 <= validFor.endDateTime.compareTo(startDateTime)) return true;
         else return false;
     }
     public boolean isInTimePeriod(TimePeriod validFor){
         ParameterUtil.checkParameterIsNulForException(validFor, "validFor");
-        if (this.startDateTime != null && this.endDateTime != null) {
-            if((validFor.getStartDateTime().compareTo(this.startDateTime) != -1 )&& (validFor.getEndDateTime().compareTo(this.endDateTime) != 1)){
+        if (null != this.startDateTime && null != this.endDateTime) {
+            if((-1 != this.startDateTime.compareTo(validFor.getStartDateTime()) )&& (1 != this.endDateTime.compareTo(validFor.getEndDateTime()))){
                 return true;
             }else{
                 return false;
@@ -94,15 +91,15 @@ public class TimePeriod {
     public String toString() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Map<String,String> vaildFor=new HashMap<String,String>();
-        vaildFor.put("startDateTime", this.startDateTime == null ? "" : format.format(this.startDateTime));
-        vaildFor.put("endDateTime", this.endDateTime == null ? "" : format.format(this.endDateTime));
+        vaildFor.put("startDateTime", null == this.startDateTime ? "" : format.format(this.startDateTime));
+        vaildFor.put("endDateTime", null == this.endDateTime ? "" : format.format(this.endDateTime));
         return  vaildFor.toString();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (null == o  || getClass() != o.getClass()) return false;
 
         TimePeriod that = (TimePeriod) o;
 

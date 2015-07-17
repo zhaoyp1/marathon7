@@ -288,7 +288,7 @@ public abstract class ProductSpecification {
         int errorCode = this.validAttachCharValueParameter(charName, specChar, defaultCharValue);
         if( CommonErrorCode.SUCCESS.getCode() == errorCode ){
             ProductSpecCharUse charUse = retrieveProdSpecCharUse(charName,specChar);
-            charUse.specifyDefaultCharacteristicValue(defaultCharValue);
+            charUse.specifyDefaultValue(defaultCharValue);
         }
         return  errorCode;
 
@@ -316,8 +316,8 @@ public abstract class ProductSpecification {
        ProductSpecCharUse charUse = this.retrieveProdSpecCharUse(charName, characteristic) ;
         List<ProdSpecCharValueUse> defaults= new ArrayList<ProdSpecCharValueUse>();
        if( null != charUse){
-          defaults= charUse.retrieveDefaultValueUse();
-       }
+          defaults= charUse.retrieveDefaultValue();
+        }
        return defaults;
     }
 

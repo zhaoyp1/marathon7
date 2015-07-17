@@ -270,7 +270,7 @@ public class ProductCatalog extends Catalog {
             return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_IS_PUBLISHED.getCode();
         }
 
-        if(!offering.getValidFor().isInTimePeriod(validFor)){
+        if(!validFor.isInTimePeriod(offering.getValidFor())){
             return ProdCatalogErrorCode.PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID.getCode();
         }
 
