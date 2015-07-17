@@ -1,5 +1,7 @@
 package com.digiwes.utils;
 
+import com.digiwes.product.spec.data.CatalogData;
+import com.digiwes.product.spec.data.OfferingData;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.servlet.GrizzlyWebContainerFactory;
 import org.glassfish.jersey.servlet.ServletContainer;
@@ -21,6 +23,10 @@ public class App {
 
     public  static void main(String[] args) {
         try {
+
+            //busi data inlitialize
+            initBusiData();
+
             Map<String, String> initParams = new HashMap<String, String>();
             //initParams.put(ServerProperties.PROVIDER_PACKAGES,  StudentResource.class.getPackage().getName());
             
@@ -32,5 +38,9 @@ public class App {
         } catch (IOException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public static void initBusiData() {
+        OfferingData.init();
+        CatalogData.init();
     }
 }
