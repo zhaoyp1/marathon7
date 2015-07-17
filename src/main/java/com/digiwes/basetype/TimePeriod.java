@@ -1,5 +1,7 @@
 package com.digiwes.basetype;
 
+import com.digiwes.common.utils.ParameterUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,6 +69,7 @@ public class TimePeriod {
         return false;
     }
     public  boolean isOverlap(TimePeriod validFor){
+        ParameterUtil.checkParameterIsNulForException(validFor, "validFor");
         if( null == startDateTime && null== endDateTime){
             return true;
         }
@@ -77,6 +80,7 @@ public class TimePeriod {
         else return false;
     }
     public boolean isInTimePeriod(TimePeriod validFor){
+        ParameterUtil.checkParameterIsNulForException(validFor, "validFor");
         if (this.startDateTime != null && this.endDateTime != null) {
             if((validFor.getStartDateTime().compareTo(this.startDateTime) != -1 )&& (validFor.getEndDateTime().compareTo(this.endDateTime) != 1)){
                 return true;
