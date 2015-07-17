@@ -169,13 +169,13 @@ public class ProductSpecCharacteristicValue {
         this.valueTo = valueTo;
         if(ParameterUtil.checkParameterIsNull(rangeInterval)){
             this.rangeInterval = ProdSpecEnum.RangeInterval.CLOSED.getValue();
-        }else if(!isInRangeIntervalDefined(rangeInterval)){
+        }else if(!validRangeInterval(rangeInterval)){
             assert false :"rangeInterval is illegal.";
         }else{
             this.rangeInterval = rangeInterval;
         }
     }
-    private boolean isInRangeIntervalDefined(String rangeInterval){
+    private boolean validRangeInterval(String rangeInterval){
         if(rangeInterval != ProdSpecEnum.RangeInterval.CLOSED.getValue() || rangeInterval != ProdSpecEnum.RangeInterval.CLOSED_BOTTOM.getValue() ||
                 rangeInterval != ProdSpecEnum.RangeInterval.CLOSED_TOP.getValue() || rangeInterval != ProdSpecEnum.RangeInterval.OPEN.getValue()){
             return false;
