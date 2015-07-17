@@ -95,9 +95,9 @@ public class ProdCatalogProdOffer {
         return result;
     }
 
-    public String toString() {
+    //public String toString() {
         // TODO - implement ProdCatalogProdOffer.toString
-        throw new UnsupportedOperationException();
-    }
+       // throw new UnsupportedOperationException();
+   // }
 
 }
