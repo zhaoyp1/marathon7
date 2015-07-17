@@ -65,13 +65,13 @@ public class ProductSpecCharUseTest {
         assertEquals("add value",exceptProductSpecCharValue,pscu.getProdSpecCharValue());
 
         result=pscu.assignValue(prodSpecCharValue, false, validFor);
-        assertEquals("add a duplicate value",CommonErrorCode.SUCCESS.getCode(),result);
+        assertEquals("add a duplicate value",ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_HAS_BEEN_USED.getCode(),result);
         assertEquals("add a duplicate value", 1, pscu.getProdSpecCharValue().size());
         assertEquals("add a duplicate value",exceptProductSpecCharValue,pscu.getProdSpecCharValue());
 
         prodSpecCharValue = new ProductSpecCharacteristicValue(ProdSpecEnum.ProdSpecType.NUMERIC.getName(),false,"cm", validFor, "12");
         result=pscu.assignValue(prodSpecCharValue, false, validFor);
-        assertEquals("add a duplicate value",CommonErrorCode.SUCCESS.getCode(),result);
+        assertEquals("add a duplicate value",ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_HAS_BEEN_USED.getCode(),result);
         assertEquals("add a duplicate value", 1, pscu.getProdSpecCharValue().size());
         assertEquals("add a duplicate value",exceptProductSpecCharValue,pscu.getProdSpecCharValue());
     }
