@@ -312,7 +312,7 @@ public abstract class ProductSpecification {
        ParameterUtil.checkParameterIsNulForException(charName,"charName") ;
        ParameterUtil.checkParameterIsNulForException(characteristic,"ProductSpecCharacteristic");
        ProductSpecCharUse charUse = this.retrieveProdSpecCharUse(charName, characteristic);
-       List<ProdSpecCharValueUse> defaults= charUse.retrieveDefaultValueUse();
+       List<ProdSpecCharValueUse> defaults= charUse.retrieveDefaultValue();
        return defaults;
     }
 

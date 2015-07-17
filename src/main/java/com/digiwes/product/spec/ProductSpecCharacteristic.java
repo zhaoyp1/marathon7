@@ -261,6 +261,10 @@ public class ProductSpecCharacteristic {
      * @param defaultCharVal
      */
     public int specifyDefaultValue(ProductSpecCharacteristicValue defaultCharVal) {
+        return changeDefaultValue(defaultCharVal, true);
+    }
+
+    private Integer changeDefaultValue(ProductSpecCharacteristicValue defaultCharVal, boolean isDefault) {
         if (null == defaultCharVal) {
             logger.error("charVal must not be null.");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
@@ -271,7 +275,7 @@ public class ProductSpecCharacteristic {
         }
         for (ProductSpecCharacteristicValue charValue : prodSpecCharValue) {
             if (charValue.equals(defaultCharVal)) {
-                charValue.setIsDefault(true);
+                charValue.setIsDefault(isDefault);
                 break;
             }
         }
@@ -283,21 +287,7 @@ public class ProductSpecCharacteristic {
      * @param value
      */
     public int clearDefaultValue(ProductSpecCharacteristicValue value) {
-        if (ParameterUtil.checkParameterIsNull(value)) {
-            logger.warn("charVal must not be null.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
-        }
-        if (null == this.prodSpecCharValue || !prodSpecCharValue.contains(value)) {
-            logger.warn("no charValue under the current char.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_NO_CHAR_VALUE.getCode();
-        }
-        for (ProductSpecCharacteristicValue productSpecCharacteristicValue : prodSpecCharValue) {
-            if (productSpecCharacteristicValue.equals(value)) {
-                productSpecCharacteristicValue.setIsDefault(false);
-                break;
-            }
-        }
-        return CommonErrorCode.SUCCESS.getCode();
+        return changeDefaultValue(value, false);
     }
 
     public List<ProductSpecCharacteristicValue> retrieveDefaultValue() {
@@ -319,13 +309,7 @@ public class ProductSpecCharacteristic {
      * @param validFor
      */
     public int associate(ProductSpecCharacteristic specChar, String type, TimePeriod validFor) {
-        Integer validResult = checkAssociateParam(specChar, type, validFor);
-        if (validResult != null) {
-            return validResult;
-        }
-        ProductSpecCharRelationship productSpecCharValueRelationShip = new ProductSpecCharRelationship(this, specChar, type, validFor);
-        this.prodSpecCharRelationship.add(productSpecCharValueRelationShip);
-        return CommonErrorCode.SUCCESS.getCode();
+        return associate(specChar, type, validFor, -1);
     }
 
     /**
