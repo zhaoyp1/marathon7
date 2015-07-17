@@ -19,7 +19,7 @@ public class App {
 
     private static final URI BASE_URI = URI.create("http://localhost:8080/marathon/");
 
-    public static void main(String[] args) {
+    public  static void main(String[] args) {
         try {
             Map<String, String> initParams = new HashMap<String, String>();
             //initParams.put(ServerProperties.PROVIDER_PACKAGES,  StudentResource.class.getPackage().getName());
