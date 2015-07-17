@@ -68,7 +68,7 @@ public class BundledProdOfferOption {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (null == o || getClass() != o.getClass()) return false;
 
         BundledProdOfferOption that = (BundledProdOfferOption) o;
 

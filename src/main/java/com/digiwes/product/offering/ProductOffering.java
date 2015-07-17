@@ -93,7 +93,7 @@ public abstract class ProductOffering {
         this.name = name;
         this.description = description;
         this.validFor = validFor;
-        this.status = ProdOfferingEnum.ProductOfferingStatus.ACTIVE.getValue();
+        this.status = ProdOfferingEnum.ProductOfferingStatus.ACTIVE.getValue();//TODO need modify
     }
 
     /**
@@ -137,8 +137,10 @@ public abstract class ProductOffering {
      * @param relationType
      */
     public List<ProductOffering> retrieveRelatedOffering(String relationType) {
-        ParameterUtil.checkParameterIsNulForException(relationType,"relationType");
         List<ProductOffering> offeringList = new ArrayList<ProductOffering>();
+        if(ParameterUtil.checkParameterIsNull(relationType)){
+            return offeringList;
+        }
         for(ProductOfferingRelationship relationship : this.prodOfferingRelationship){
             if(relationType.equals( relationship.getTypeRelationship())){
                 offeringList.add(relationship.getTargetOffering());
@@ -153,9 +155,11 @@ public abstract class ProductOffering {
      * @param time
      */
     public List<ProductOffering> retrieveRelatedOffering(String relationType, Date time) {
-        ParameterUtil.checkParameterIsNulForException(time,"time");
-        ParameterUtil.checkParameterIsNulForException(relationType, "relationType");
+        ParameterUtil.checkParameterIsNulForException(time, "time");
         List<ProductOffering> offeringList = new ArrayList<ProductOffering>();
+        if(ParameterUtil.checkParameterIsNull(relationType)){
+            return offeringList;
+        }
         for(ProductOfferingRelationship relationship : this.prodOfferingRelationship){
             if(relationType.equals( relationship.getTypeRelationship()) && relationship.getValidFor().isInTimePeriod(time)){
                 offeringList.add(relationship.getTargetOffering());

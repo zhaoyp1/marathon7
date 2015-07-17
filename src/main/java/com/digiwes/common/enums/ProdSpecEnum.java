@@ -90,4 +90,28 @@ public class ProdSpecEnum {
             return this.name;
         }
     }
+
+    /**
+     * type of rangeInterval about charValue
+     */
+    public enum RangeInterval{
+
+        OPEN("1","OPEN"),
+        CLOSED("2","CLOSED"),
+        CLOSED_BOTTOM("3","CLOSED_BOTTOM"),
+        CLOSED_TOP("4","CLOSED_TOP");
+        private String value;
+        private String name;
+
+        RangeInterval(String value,String name){
+            this.value = value;
+            this.name = name;
+        }
+        public String getValue(){
+            return this.value;
+        }
+        public String getName(){
+            return this.name;
+        }
+    }
 }

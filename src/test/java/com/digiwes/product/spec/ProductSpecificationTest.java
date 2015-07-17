@@ -156,6 +156,7 @@ public class ProductSpecificationTest extends TestCase {
         specChar.assignValue(charValue);
         specChar.assignValue(charValue2);
         atomicProdSpec.attachCharacteristic("Color", specChar, false, false, validFor);
+        atomicProdSpec.assignCharacteristicValue("Color",specChar,charValue,false,validFor);
         List<ProdSpecCharValueUse> expectCharValueUse = new ArrayList<ProdSpecCharValueUse>();
         List<ProdSpecCharValueUse> charValueUses = null;
         try{
@@ -180,6 +181,7 @@ public class ProductSpecificationTest extends TestCase {
 
         ProdSpecCharValueUse valueUse = new ProdSpecCharValueUse(charValue,false,validFor);
         expectCharValueUse.add(valueUse);
+
         charValueUses = atomicProdSpec.retrieveCharacteristicValue("Color", specChar, new Date());
         assertEquals("retrieve a characteristic's values ,expectCharValueUse compare to retrieved charValueUses.",expectCharValueUse,charValueUses);
 

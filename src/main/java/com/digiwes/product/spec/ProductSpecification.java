@@ -27,9 +27,6 @@ public abstract class ProductSpecification {
         return prodSpecRelationship;
     }
 
-    public void setProdSpecRelationship(List<ProductSpecificationRelationship> prodSpecRelationship) {
-        this.prodSpecRelationship = prodSpecRelationship;
-    }
 
 
     /**
@@ -142,12 +139,13 @@ public abstract class ProductSpecification {
      */
     public int attachCharacteristic(String charName, ProductSpecCharacteristic specChar, boolean canBeOveridden, boolean isPackage, TimePeriod validFor) {
         int errorCode = checkCharacteristic(charName, specChar, validFor);
-        if(errorCode == CommonErrorCode.SUCCESS.getCode() ){
-            ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,charName,canBeOveridden,isPackage,validFor);
-            this.prodSpecChar.add(productSpecCharUse);
-            return CommonErrorCode.SUCCESS.getCode();
+        if(CommonErrorCode.SUCCESS.getCode() != errorCode){
+            return errorCode;
         }
-        return errorCode;
+        ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,charName,canBeOveridden,isPackage,validFor);
+        this.prodSpecChar.add(productSpecCharUse);
+        return CommonErrorCode.SUCCESS.getCode();
+
     }
 
     /**
@@ -165,12 +163,13 @@ public abstract class ProductSpecification {
      */
     public int attachCharacteristic(String charName, ProductSpecCharacteristic specChar, boolean canBeOveridden, boolean isPackage, TimePeriod validFor, String unique, int minCardinality, int maxCardinality, boolean extensible, String description) {
         int errorCode = checkCharacteristic(charName, specChar, validFor);
-        if(errorCode == CommonErrorCode.SUCCESS.getCode() ){
-            ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,name,canBeOveridden,isPackage,validFor,unique,minCardinality,maxCardinality,extensible,description);
-            this.prodSpecChar.add(productSpecCharUse);
-            return CommonErrorCode.SUCCESS.getCode();
+        if(CommonErrorCode.SUCCESS.getCode() != errorCode ){
+            return errorCode;
         }
-        return errorCode;
+        ProductSpecCharUse productSpecCharUse = new ProductSpecCharUse(specChar,name,canBeOveridden,isPackage,validFor,unique,minCardinality,maxCardinality,extensible,description);
+        this.prodSpecChar.add(productSpecCharUse);
+        return CommonErrorCode.SUCCESS.getCode();
+
 
     }
 
@@ -181,7 +180,7 @@ public abstract class ProductSpecification {
         if(ParameterUtil.checkParameterIsNull(specChar)){
             return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
         }
-        if( !specChar.getValidFor().isInTimePeriod(validFor)){
+        if( !validFor.isInTimePeriod(specChar.getValidFor())){
              return ProdSpecErrorCode.PROD_SPEC_CHAR_USE_TIME_NOT_BELONG_OF_CHAR_TIME.getCode();
         }
         for(ProductSpecCharUse productSpecCharUse:this.prodSpecChar){
@@ -229,22 +228,24 @@ public abstract class ProductSpecification {
      * @param validFor The period of time for which the use of the CharacteristicValue is applicable.
      */
     public int assignCharacteristicValue(String charName, ProductSpecCharacteristic specChar, ProductSpecCharacteristicValue charValue, boolean isDefault, TimePeriod validFor) {
-        int errorCode = validParameter(charName, specChar, charValue);
-        if( CommonErrorCode.SUCCESS.getCode() == errorCode){
-            ProductSpecCharUse productSpecCharUse = retrieveProdSpecCharUse(charName, specChar);
-            if( null == productSpecCharUse){
-                return   ProdSpecErrorCode.PROD_SPEC_NOT_USED_CURRENT_CHAR.getCode();
-            }
-            if(!charValue.getValidFor().isInTimePeriod(validFor)){
-                return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_USE_TIME_NOT_BELONG_OF_CHARVALUE_TIME.getCode();
-            }
-            return productSpecCharUse.assignValue(charValue, isDefault, validFor);
-
+        int errorCode = validAttachCharValueParameter(charName, specChar, charValue);
+        if(ParameterUtil.checkParameterIsNull(validFor)){
+            return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
         }
-        return errorCode;
+        if( CommonErrorCode.SUCCESS.getCode() != errorCode){
+           return errorCode;
+        }
+        ProductSpecCharUse productSpecCharUse = retrieveProdSpecCharUse(charName, specChar);
+        if( null == productSpecCharUse){
+            return   ProdSpecErrorCode.PROD_SPEC_NOT_USED_CURRENT_CHAR.getCode();
+        }
+        if(!validFor.isInTimePeriod(charValue.getValidFor())){
+            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_USE_TIME_NOT_BELONG_OF_CHARVALUE_TIME.getCode();
+        }
+        return productSpecCharUse.assignValue(charValue, isDefault, validFor);
     }
 
-    private int validParameter(String charName, ProductSpecCharacteristic specChar, ProductSpecCharacteristicValue charValue) {
+    private int validAttachCharValueParameter(String charName, ProductSpecCharacteristic specChar, ProductSpecCharacteristicValue charValue) {
         if(StringUtils.isEmpty(charName)){
             return ProdSpecErrorCode.PROD_SPEC_CHAR_USE_NAME_IS_NULL_OR_EMPTY.getCode();
         }
@@ -259,7 +260,7 @@ public abstract class ProductSpecification {
 
     private ProductSpecCharUse retrieveProdSpecCharUse(String charName, ProductSpecCharacteristic specChar) {
         for (ProductSpecCharUse productSpecCharUse :this.prodSpecChar){
-            if(charName.equals(productSpecCharUse.getName()) && specChar.equals(productSpecCharUse.getProdSpecChar())){
+            if(productSpecCharUse.getName().equals(charName) && productSpecCharUse.getProdSpecChar().equals(specChar)){
                 return  productSpecCharUse;
             }
         }
@@ -284,9 +285,10 @@ public abstract class ProductSpecification {
      * @param defaultCharValue
      */
     public int specifyDefaultCharacteristicValue(String charName, ProductSpecCharacteristic specChar, ProductSpecCharacteristicValue defaultCharValue) {
-        int errorCode = this.validParameter(charName, specChar, defaultCharValue);
-        if(errorCode == CommonErrorCode.SUCCESS.getCode()){
-            specChar.specifyDefaultValue(defaultCharValue);
+        int errorCode = this.validAttachCharValueParameter(charName, specChar, defaultCharValue);
+        if( CommonErrorCode.SUCCESS.getCode() == errorCode ){
+            ProductSpecCharUse charUse = retrieveProdSpecCharUse(charName,specChar);
+            charUse.specifyDefaultValue(defaultCharValue);
         }
         return  errorCode;
 
@@ -311,8 +313,11 @@ public abstract class ProductSpecification {
     public List<ProdSpecCharValueUse> retrieveDefaultValue(String charName, ProductSpecCharacteristic characteristic) {
        ParameterUtil.checkParameterIsNulForException(charName,"charName") ;
        ParameterUtil.checkParameterIsNulForException(characteristic,"ProductSpecCharacteristic");
-       ProductSpecCharUse charUse = this.retrieveProdSpecCharUse(charName, characteristic);
-       List<ProdSpecCharValueUse> defaults= charUse.retrieveDefaultValue();
+       ProductSpecCharUse charUse = this.retrieveProdSpecCharUse(charName, characteristic) ;
+        List<ProdSpecCharValueUse> defaults= new ArrayList<ProdSpecCharValueUse>();
+       if( null != charUse){
+          defaults= charUse.retrieveDefaultValue();
+        }
        return defaults;
     }
 
@@ -351,8 +356,6 @@ public abstract class ProductSpecification {
                     }
                 }
             }
-        }else {
-            logger.warn(" specChar not be used");
         }
         return  validProdSpecCharValueUse ;
     }
@@ -507,7 +510,7 @@ public abstract class ProductSpecification {
     private ProductSpecificationRelationship retrieveRelatedProdSpecBySpec(ProductSpecification targetProdSpec){
         if(null != this.prodSpecRelationship){
             for(ProductSpecificationRelationship prodSpecShip : prodSpecRelationship){
-                if(prodSpecShip.equals(targetProdSpec)){
+                if(prodSpecShip.getTargetProdSpec().equals(targetProdSpec)){
                     return prodSpecShip;
                 }
             }
@@ -530,15 +533,15 @@ public abstract class ProductSpecification {
      */
     public List<ProductSpecification> retrieveRelatedProdSpec(String type) {
         ParameterUtil.checkParameterIsNulForException(type,"type");
-        List<ProductSpecification> validProductSpecification = new ArrayList<ProductSpecification>();
+        List<ProductSpecification> result = new ArrayList<ProductSpecification>();
         if(null != this.prodSpecRelationship){
             for (ProductSpecificationRelationship prodSpecRelate : this.prodSpecRelationship) {
-                if(prodSpecRelate.getType().equals(type)){
-                    validProductSpecification.add(prodSpecRelate.getTargetProdSpec());
+                if(type.equals(prodSpecRelate.getType())){
+                    result.add(prodSpecRelate.getTargetProdSpec());
                 }
             }
         }
-        return validProductSpecification;
+        return result;
     }
 
     /**
@@ -549,14 +552,15 @@ public abstract class ProductSpecification {
     public List<ProductSpecification> retrieveRelatedProdSpec(String type, Date time) {
         ParameterUtil.checkParameterIsNulForException(type,"type");
         ParameterUtil.checkParameterIsNulForException(time,"time");
-        List<ProductSpecification> validProductSpecification = new ArrayList<ProductSpecification>();
+        List<ProductSpecification> result = new ArrayList<ProductSpecification>();
         for (ProductSpecificationRelationship prodSpecRelate : this.prodSpecRelationship) {
-            if(prodSpecRelate.getValidFor().isInTimePeriod(time) && prodSpecRelate.getType().equals(type)){
-                 validProductSpecification.add(prodSpecRelate.getTargetProdSpec());
+            if(prodSpecRelate.getValidFor().isInTimePeriod(time) && type.equals(prodSpecRelate.getType())){
+                 result.add(prodSpecRelate.getTargetProdSpec());
             }
         }
-        return validProductSpecification;
+        return result;
     }
+
 
     /**
      * 
@@ -577,7 +581,7 @@ public abstract class ProductSpecification {
      */
     private boolean contains(String charName, ProductSpecCharacteristic characteristic) {
         for (ProductSpecCharUse productSpecCharUse :this.prodSpecChar){
-            if(charName.equals(productSpecCharUse.getName()) && characteristic.equals(productSpecCharUse.getProdSpecChar())){
+            if(productSpecCharUse.getName().equals(charName) && productSpecCharUse.getProdSpecChar().equals(characteristic)){
                 return  true;
             }
         }
