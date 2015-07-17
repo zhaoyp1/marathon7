@@ -370,7 +370,7 @@ public class ProductSpecCharacteristic {
      */
     public int dissociate(ProductSpecCharacteristic specChar) {
         if ( ParameterUtil.checkParameterIsNull(specChar) ) {
-            logger.warn("specChar must not be null");
+            logger.error("specChar must not be null");
             return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
         }
         if ( ParameterUtil.checkParameterIsNull(this.prodSpecCharRelationship) ) {
@@ -393,7 +393,7 @@ public class ProductSpecCharacteristic {
     public List<ProductSpecCharacteristic> retrieveRelatedCharacteristic(String charRelationshipType) {
         ParameterUtil.checkParameterIsNulForException(charRelationshipType, "charRelationshipType");
         List<ProductSpecCharacteristic>  characteristics = new ArrayList<ProductSpecCharacteristic>();;
-        if (null != prodSpecCharRelationship ) {
+        if (null !=prodSpecCharRelationship ) {
             for (ProductSpecCharRelationship productSpecCharRelationship : prodSpecCharRelationship) {
                 if (charRelationshipType.equals(productSpecCharRelationship.getCharRelationshipType())) {
                     characteristics.add(productSpecCharRelationship.getTargetProdSpecChar());
@@ -412,7 +412,7 @@ public class ProductSpecCharacteristic {
         ParameterUtil.checkParameterIsNulForException(charRelationshipType, "charRelationshipType");
         ParameterUtil.checkParameterIsNulForException(time, "time");
         List<ProductSpecCharacteristic>  characteristics = new ArrayList<ProductSpecCharacteristic>();;
-        if (null != prodSpecCharRelationship ) {
+        if (null !=prodSpecCharRelationship ) {
             for (ProductSpecCharRelationship productSpecCharRelationship : prodSpecCharRelationship) {
                 if (charRelationshipType.equals(productSpecCharRelationship.getCharRelationshipType()) &&  productSpecCharRelationship.getValidFor().isInTimePeriod(time)) {
                     characteristics.add(productSpecCharRelationship.getTargetProdSpecChar());
