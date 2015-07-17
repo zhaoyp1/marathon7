@@ -121,16 +121,17 @@ public class ProductCatalog extends Catalog {
         for (ProdCatalogProdOffer prodCatalogProdOffer:this.prodCatalogProdOffer){
             if(prodCatalogProdOffer.getProdOffering().equals(offering) ){
                 isUsed = true;
-                if(new Date().compareTo(offering.getValidFor().getEndDateTime()) == -1){
+                if(new Date().compareTo(prodCatalogProdOffer.getValidFor().getEndDateTime()) == -1){
                     prodCatalogProdOffer.getValidFor().setEndDateTime(new Date());
                 }
 
             }
         }
-        logger.warn("offering have not been publish");
+
         if(isUsed){
             return CommonErrorCode.SUCCESS.getCode();
         }else{
+            logger.warn("offering have not been publish");
             return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_NOT_BE_PUBLISH.getCode();
         }
 
@@ -248,10 +249,10 @@ public class ProductCatalog extends Catalog {
         throw new UnsupportedOperationException();
     }
 
- /*   public String toString() {
+    public String toString() {
         // TODO - implement ProductCatalog.toString
         throw new UnsupportedOperationException();
-    }*/
+    }
 
     private int checkOffering(ProductOffering offering, TimePeriod validFor) {
         if(ParameterUtil.checkParameterIsNull(offering)){

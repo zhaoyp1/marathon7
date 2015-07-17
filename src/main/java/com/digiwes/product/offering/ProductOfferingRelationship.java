@@ -67,7 +67,7 @@ public class ProductOfferingRelationship {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (null == o || getClass() != o.getClass()) return false;
 
         ProductOfferingRelationship that = (ProductOfferingRelationship) o;
 
