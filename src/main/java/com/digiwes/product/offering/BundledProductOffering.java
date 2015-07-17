@@ -47,8 +47,10 @@ public class BundledProductOffering extends ProductOffering {
         if(ParameterUtil.checkParameterIsNull(offering)){
             return ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode();
         }
-        if(lowerLimit>upperLimit){
-            return ProdOfferingErrorCode.BUNDLED_PROD_OFFERING_LOWERLIMIT_GREATER_UPPERLIMIT.getCode();
+        if(lowerLimit != -1 && upperLimit != -1 ){
+            if(lowerLimit>upperLimit){
+                return ProdOfferingErrorCode.BUNDLED_PROD_OFFERING_LOWERLIMIT_GREATER_UPPERLIMIT.getCode();
+            }
         }
         BundledProdOfferOption offerOption = new BundledProdOfferOption(offering,lowerLimit,upperLimit);
         if(this.bundledProdOfferOption.contains(offerOption)){
