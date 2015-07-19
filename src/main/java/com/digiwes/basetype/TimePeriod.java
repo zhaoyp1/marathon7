@@ -73,7 +73,7 @@ public class TimePeriod {
         if( null == validFor){
             return true;
         }
-        if (0 >= validFor.getStartDateTime().compareTo(endDateTime) && 0 <= validFor.endDateTime.compareTo(startDateTime)) return true;
+        if (0 >= validFor.getStartDateTime().compareTo(endDateTime) && 0 <= validFor.getEndDateTime().compareTo(startDateTime)) return true;
         else return false;
     }
     public boolean isInTimePeriod(TimePeriod validFor){

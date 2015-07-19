@@ -1,6 +1,7 @@
 package com.digiwes.product.spec;
 
 import com.digiwes.basetype.TimePeriod;
+import com.digiwes.common.enums.CommonEnum;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
@@ -155,11 +156,14 @@ public class ProductSpecCharUse {
     public ProductSpecCharUse(ProductSpecCharacteristic specChar,String name, boolean canBeOveridden, boolean isPackage, TimePeriod validFor ) {
         assert !ParameterUtil.checkParameterIsNull(specChar) :"specChar must not be null";
         assert !StringUtils.isEmpty(name) : "name must not be null";
+        assert !ParameterUtil.checkParameterIsNull(validFor) : "validFor must not be null";
         this.name = name;
         this.prodSpecChar =specChar;
         this.canBeOveridden=canBeOveridden;
         this.isPackage = isPackage;
         this.validFor = validFor;
+        this.minCardinality = CommonEnum.MIN_NOT_LIMIT.getCode();
+        this.maxCardinality = CommonEnum.MAX_NOT_LIMIT.getCode();
     }
 
     /**
@@ -177,9 +181,12 @@ public class ProductSpecCharUse {
      */
     public ProductSpecCharUse(ProductSpecCharacteristic specChar, String name,boolean canBeOveridden, boolean isPackage, TimePeriod validFor, String unique, int minCardinality, int maxCardinality, boolean extensible, String description) {
         this(specChar, name, canBeOveridden, isPackage, validFor);
+        assert (minCardinality > maxCardinality ? false : true) : "maxCardinality less than minCardinality.";
         this.unique = unique;
         this.minCardinality = minCardinality;
         this.maxCardinality = maxCardinality;
+        this.extensible = extensible;
+        this.description = description;
     }
 
     /**
@@ -210,7 +217,7 @@ public class ProductSpecCharUse {
         if(null != this.prodSpecChar.getProdSpecCharValue() && !this.prodSpecChar.getProdSpecCharValue().contains(charValue)){
             return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
         }
-        if(!charValue.getValidFor().isInTimePeriod(validFor)){
+        if(!validFor.isInTimePeriod(charValue.getValidFor())){
             return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_USE_NOT_IN_VALUE.getCode();
         }
 
