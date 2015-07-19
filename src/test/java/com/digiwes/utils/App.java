@@ -1,7 +1,9 @@
 package com.digiwes.utils;
 
+import com.digiwes.product.resource.ProductCatalogResource;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.servlet.GrizzlyWebContainerFactory;
+import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.servlet.ServletContainer;
 
 import java.io.IOException;
@@ -22,7 +24,7 @@ public class App {
     public  static void main(String[] args) {
         try {
             Map<String, String> initParams = new HashMap<String, String>();
-            //initParams.put(ServerProperties.PROVIDER_PACKAGES,  StudentResource.class.getPackage().getName());
+            initParams.put(ServerProperties.PROVIDER_PACKAGES,  ProductCatalogResource.class.getPackage().getName());
             
             final HttpServer server = GrizzlyWebContainerFactory.create(BASE_URI, ServletContainer.class, initParams);
 
