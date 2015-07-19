@@ -16,4 +16,12 @@ public class RetiredOfferingRequest {
         this.catalogId = catalogId;
     }
 
+
+    public String getProdOfferingId() {
+        return prodOfferingId;
+    }
+
+    public void setProdOfferingId(String prodOfferingId) {
+        this.prodOfferingId = prodOfferingId;
+    }
 }
