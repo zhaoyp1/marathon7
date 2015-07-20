@@ -59,7 +59,7 @@ public class ProductCatalogResource {
       return  resultResponse;
     }
     /**
-     * TODO retiredOffering
+     *  retiredOffering
      */
     @Path("/retireOffering")
     @POST
@@ -87,7 +87,7 @@ public class ProductCatalogResource {
 
 
     /**
-     * TODO retrieveOffering
+     *  retrieveOffering
      */
     @Path("/ProductOffering")
     @POST

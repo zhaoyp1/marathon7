@@ -261,7 +261,7 @@ public class ProductCatalog extends Catalog {
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date now = TimeUtils.truncDate(new Date());
-        if(now.compareTo(validFor.getStartDateTime()) ==1){
+        if( 1 == now.compareTo(validFor.getStartDateTime())){
             return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode();
         }
         if (contains(offering, validFor)){
