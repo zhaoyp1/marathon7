@@ -54,7 +54,7 @@ public class ProductCatalogController {
     /**
      * method of retiredOffering
      */
-    public PublishedOffering retiredOffering(String prodCatalogId, String prodOfferingId, TimePeriod validFor) throws Exception{
+    public ProductOffering retiredOffering(String prodCatalogId, String prodOfferingId, TimePeriod validFor) throws Exception{
         PublishedOffering publishedOffering = new PublishedOffering();
         CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
         ProductOfferingPersistence productOfferingPersistence = PersistenceFactory.getProdOfferingPersistence();
@@ -75,7 +75,7 @@ public class ProductCatalogController {
         publishedOffering.setProductCatalog(productCatalog);
 
         catalogPersistence.save(prodCatalog);
-        return publishedOffering;
+        return prodOffering;
     }
 
     /**
@@ -97,7 +97,7 @@ public class ProductCatalogController {
      * retrieveCatalog
      */
     public ProductCatalog retrieveCatalog(String catalogId) throws Exception{
-        CatalogPersistenceSimpleImpl catalogPersistence = new CatalogPersistenceSimpleImpl();
+        CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
         return  catalogPersistence.load(catalogId);
 
     }
