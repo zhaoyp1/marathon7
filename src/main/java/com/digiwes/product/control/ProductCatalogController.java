@@ -51,7 +51,7 @@ public class ProductCatalogController {
      }
 
     /**
-     * TODO retiredOffering
+     * method of retiredOffering
      */
     public PublishedOffering retiredOffering(String prodCatalogId, String prodOfferingId, TimePeriod validFor) throws Exception{
         PublishedOffering publishedOffering = new PublishedOffering();
