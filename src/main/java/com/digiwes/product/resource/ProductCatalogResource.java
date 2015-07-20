@@ -4,13 +4,11 @@ import com.digiwes.basetype.TimePeriod;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.utils.TimeUtils;
 import com.digiwes.product.control.ProductCatalogController;
-import com.digiwes.product.control.persistence.impl.CatalogPersistenceSimpleImpl;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.Parameter.*;
 import org.jvnet.hk2.annotations.Service;
 
-import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -39,7 +37,7 @@ public class ProductCatalogResource {
         resultResponse.code=String.valueOf(CommonErrorCode.SUCCESS.getCode());
         resultResponse.message=CommonErrorCode.SUCCESS.getMessage();
         try{
-              ProductCatalog productCatalog= prodCatalogController.publishOffering(requestParame.catalogId, requestParame.prodOfferingId, requestParame.validFor);
+              ProductCatalog productCatalog= prodCatalogController.publishOffering(requestParame.getCatalogId(), requestParame.getProdOfferingId(), requestParame.getValidFor());
               com.digiwes.product.resource.Parameter.ProductCatalog catalogResponse =new com.digiwes.product.resource.Parameter.ProductCatalog();
               List<PublishedOffering>  productOfferings=new ArrayList<PublishedOffering>();
               catalogResponse.convertFromProductCatalog(productCatalog);
@@ -56,7 +54,7 @@ public class ProductCatalogResource {
               }
            }   catch (Exception e){
                resultResponse.code =String.valueOf(CommonErrorCode.FAIL.getCode());
-               resultResponse.message = CommonErrorCode.FAIL.getMessage();
+               resultResponse.message = e.getMessage();
            }
       return  resultResponse;
     }

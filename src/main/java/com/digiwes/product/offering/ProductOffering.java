@@ -7,7 +7,7 @@ import com.digiwes.common.enums.ProdOfferingEnum;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
 import com.digiwes.product.offering.price.*;
-import com.digiwes.basetype.*;
+import com.digiwes.basetype.TimePeriod;
 import org.apache.commons.lang.StringUtils;
 
 /**

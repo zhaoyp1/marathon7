@@ -1,7 +1,6 @@
 package com.digiwes.basetype;
 
 import com.digiwes.common.utils.TimeUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 
 import java.util.Date;

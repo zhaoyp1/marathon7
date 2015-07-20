@@ -2,10 +2,8 @@ package com.digiwes.product.spec;
 
 import com.digiwes.basetype.TimePeriod;
 import com.digiwes.common.enums.CommonErrorCode;
-import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.common.enums.ProdSpecEnum;
 import com.digiwes.common.enums.ProdSpecErrorCode;
-import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.utils.DateUtils;
 import junit.framework.TestCase;
 import org.junit.Before;

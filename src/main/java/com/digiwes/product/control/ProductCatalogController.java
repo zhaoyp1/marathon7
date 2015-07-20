@@ -9,13 +9,10 @@ import com.digiwes.product.control.persistence.CatalogPersistence;
 import com.digiwes.product.control.persistence.PersistenceFactory;
 import com.digiwes.product.control.persistence.ProductOfferingPersistence;
 import com.digiwes.product.control.persistence.impl.CatalogPersistenceSimpleImpl;
-import com.digiwes.product.control.persistence.impl.ProductOfferingPersistenceSimpleImpl;
 import com.digiwes.product.offering.ProductOffering;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
-import com.digiwes.product.resource.Parameter.PublishOfferingRequest;
 import com.digiwes.product.resource.Parameter.PublishedOffering;
-import com.digiwes.product.resource.Parameter.RetiredOfferingResponse;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -46,6 +43,8 @@ public class ProductCatalogController {
              throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID.getMessage());
          } else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode() == result){
              throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getMessage());
+         } else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_IS_PUBLISHED.getCode() == result){
+             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_IS_PUBLISHED.getMessage());
          }
          catalogPersistence.save(catalog);
          return catalog;
