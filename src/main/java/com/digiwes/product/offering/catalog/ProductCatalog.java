@@ -262,7 +262,7 @@ public class ProductCatalog extends Catalog {
             return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date now = TimeUtils.parseDate(new Date());
+        Date now = TimeUtils.truncDate(new Date());
         if(now.compareTo(validFor.getStartDateTime()) ==1){
             return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode();
         }
