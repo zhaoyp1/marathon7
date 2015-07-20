@@ -1,7 +1,7 @@
 package com.digiwes.common.catalog;
 
-import com.digiwes.basetype.*;
 import com.digiwes.common.utils.ParameterUtil;
+import com.digiwes.basetype.TimePeriod;
 import org.apache.commons.lang.StringUtils;
 
 public class Catalog {

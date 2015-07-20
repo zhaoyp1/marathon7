@@ -1,6 +1,6 @@
 package com.digiwes.product.spec;
 
-import com.digiwes.basetype.*;
+import com.digiwes.basetype.TimePeriod;
 
 /**
  * A particular form or variety of a ProductSpecification that is different from others or from the original. The form represents differences in properties that characterize a ProductSpecification, that are not enough to warrant creating a new ProductSpecification.

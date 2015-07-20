@@ -46,7 +46,7 @@ public class TimeUtils {
         }
         return org.apache.commons.lang.time.DateUtils.parseDate(strDate, patterns);
     }
-    public static Date parseDate( Date date){
+    public static Date truncDate( Date date){
         date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);

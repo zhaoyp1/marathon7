@@ -1,8 +1,7 @@
 package com.digiwes.product.spec;
 
-import com.digiwes.basetype.*;
 import com.digiwes.common.utils.ParameterUtil;
-import org.apache.commons.lang.StringUtils;
+import com.digiwes.basetype.TimePeriod;
 
 /**
  * A aggregation, migration, substitution, dependency, or exclusivity relationship between/among ProductSpecCharacteristics.

@@ -4,17 +4,15 @@ import com.digiwes.common.catalog.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
-import com.digiwes.basetype.*;
 import com.digiwes.common.enums.CommonErrorCode;
-import com.digiwes.common.enums.ProdCatalog;
 import com.digiwes.common.enums.ProdCatalogErrorCode;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
 import com.digiwes.common.utils.TimeUtils;
 import com.digiwes.product.offering.*;
 import com.digiwes.product.offering.price.*;
+import com.digiwes.basetype.TimePeriod;
 import org.apache.log4j.Logger;
 
 /**
@@ -262,7 +260,7 @@ public class ProductCatalog extends Catalog {
             return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date now = TimeUtils.parseDate(new Date());
+        Date now = TimeUtils.truncDate(new Date());
         if(now.compareTo(validFor.getStartDateTime()) ==1){
             return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode();
         }

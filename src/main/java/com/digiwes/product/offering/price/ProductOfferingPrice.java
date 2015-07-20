@@ -1,6 +1,6 @@
 package com.digiwes.product.offering.price;
 
-import com.digiwes.basetype.*;
+import com.digiwes.basetype.TimePeriod;
 
 import java.util.Map;
 

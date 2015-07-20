@@ -1,12 +1,11 @@
 package com.digiwes.product.spec;
 
 import java.util.*;
-import com.digiwes.basetype.*;
+
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
-import com.sun.research.ws.wadl.Param;
-import org.apache.commons.lang.StringUtils;
+import com.digiwes.basetype.TimePeriod;
 
 /**
  * A type of ProductSpecification that is formed by aggregating other ProductSpecifications, which may be Composite or Atomic ProductSpecifications.

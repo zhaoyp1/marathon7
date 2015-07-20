@@ -1,7 +1,7 @@
 package com.digiwes.product.spec;
 
-import com.digiwes.basetype.*;
 import com.digiwes.common.utils.ParameterUtil;
+import com.digiwes.basetype.TimePeriod;
 
 /**
  * A use of the ProdSpecCharacteristicValue by an ProductSpecification to which additional properties (attributes) apply or override the properties of similar properties contained in ProdSpecCharacteristicValue.

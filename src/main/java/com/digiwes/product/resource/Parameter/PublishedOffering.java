@@ -3,8 +3,6 @@ package com.digiwes.product.resource.Parameter;
 import com.digiwes.basetype.TimePeriod;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 
-import java.util.*;
-
 public class PublishedOffering {
 
     public TimePeriod validFor;
