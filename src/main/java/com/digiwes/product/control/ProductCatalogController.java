@@ -53,17 +53,33 @@ public class ProductCatalogController {
     /**
      * TODO retiredOffering
      */
-    public PublishedOffering retiredOffering(String prodCatalogId, String prodOfferingId) throws Exception{
+    public PublishedOffering retiredOffering(String prodCatalogId, String prodOfferingId, TimePeriod validFor) throws Exception{
         PublishedOffering publishedOffering = new PublishedOffering();
         CatalogPersistenceSimpleImpl catalogPersistence = new CatalogPersistenceSimpleImpl();
         ProductOfferingPersistenceSimpleImpl productOfferingPersistenceSimple = new ProductOfferingPersistenceSimpleImpl();
 
-        ProductCatalog productCatalog = catalogPersistence.load(prodCatalogId);
+        ProductCatalog prodCatalog = catalogPersistence.load(prodCatalogId);
         ProductOffering prodOffering = productOfferingPersistenceSimple.load(prodOfferingId);
-        productCatalog.retired(prodOffering);
+        prodCatalog.retired(prodOffering, validFor);
 
-        prodOffering.setId(prodOffering.getId());
-        prodOffering.setName(prodOffering.getName());
+        publishedOffering.setId(prodOffering.getId());
+        publishedOffering.setName(prodOffering.getName());
+
+        com.digiwes.product.resource.Parameter.ProductOffering productOffering = new com.digiwes.product.resource.Parameter.ProductOffering();
+        productOffering.setId(prodOffering.getId());
+        productOffering.setName(prodOffering.getName());
+        productOffering.setDescription(prodOffering.getDescription());
+        productOffering.setStatus(prodOffering.getStatus());
+        //productOffering.setHref();
+        publishedOffering.setProductOffering(productOffering);
+
+        com.digiwes.product.resource.Parameter.ProductCatalog productCatalog = new com.digiwes.product.resource.Parameter.ProductCatalog();
+        productCatalog.setId(prodCatalog.getID());
+        productCatalog.setName(prodCatalog.getName());
+        productCatalog.setType(prodCatalog.getType());
+        productCatalog.setValidFor(prodCatalog.getValidFor());
+        //productCatalog.setHref();
+        publishedOffering.setProductCatalog(productCatalog);
 
         return publishedOffering;
     }
