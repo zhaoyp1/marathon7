@@ -18,13 +18,14 @@ import java.util.List;
  * Created by zhaoyp on 2015/7/19.
  */
 @Singleton
-@Path("/catalogManagement/ProductOffering")
+@Path("/catalogManagement")
 public class ProductCatalogResource {
 
     private static ProductCatalogController prodCatalogController = new ProductCatalogController();
     /**
      * TODO publishOffering
      */
+    @Path("/publishOffering")
     @POST
     @Consumes({ "application/json", "application/xml" })
     @Produces({ "application/json", "application/xml" })
@@ -82,16 +83,25 @@ public class ProductCatalogResource {
     /**
      * TODO retrieveOffering
      */
+    @Path("/ProductOffering")
+    @POST
     @Consumes({ "application/json", "application/xml" })
+    @Produces({ "application/json", "application/xml" })
     public RetrieveOfferingResponse retrieveOffering(RetrieveOfferingRequest requestParam){
         RetrieveOfferingResponse retrieveOfferingResult =  new RetrieveOfferingResponse();
         retrieveOfferingResult.setCode(String.valueOf(CommonErrorCode.SUCCESS.getCode()));
         retrieveOfferingResult.setMessage(CommonErrorCode.SUCCESS.getMessage());
 
+        List<ProdCatalogProdOffer> prodCatalogProdOffers = new ArrayList<ProdCatalogProdOffer>();
         List<PublishedOffering> publishedOfferingList = new ArrayList<PublishedOffering>();
         ProductCatalogController prodCatalogController = new ProductCatalogController();
         try {
-            publishedOfferingList = prodCatalogController.retrieveOffering(requestParam.getOfferingName(),requestParam.getTime(),requestParam.getCatalogId());
+            prodCatalogProdOffers = prodCatalogController.retrieveOffering(requestParam.getOfferingName(),requestParam.getTime(),requestParam.getCatalogId());
+            for(ProdCatalogProdOffer catalogProdOffer : prodCatalogProdOffers){
+                PublishedOffering publishedOffering = new PublishedOffering();
+                publishedOffering.convertFromProdCatalogProdOffeing(catalogProdOffer);
+                publishedOfferingList.add(publishedOffering);
+            }
             retrieveOfferingResult.setPublishedOfferings(publishedOfferingList);
         }catch (Exception e){
             retrieveOfferingResult.setCode(String.valueOf(CommonErrorCode.FAIL.getCode()));
