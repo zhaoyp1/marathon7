@@ -7,10 +7,7 @@ import org.apache.commons.lang.StringUtils;
  */
 public class ParameterUtil {
     public static boolean checkParameterIsNull(Object obj){
-        if(null == obj){
-            return true;
-        }
-        return false;
+        return (null == obj);
     }
     public static void checkParameterIsNulForException(Object obj,String parameterName){
        if(checkParameterIsNull(obj)){

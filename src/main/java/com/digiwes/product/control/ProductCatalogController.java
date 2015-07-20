@@ -80,34 +80,16 @@ public class ProductCatalogController {
     /**
      * TODO retrieveOffering
      */
-    public List<PublishedOffering> retrieveOffering(String offeringName,Date time,String prodCatalogId) throws Exception{
-        List<PublishedOffering> publishedOfferingList = new ArrayList<PublishedOffering>();
+    public List<ProdCatalogProdOffer> retrieveOffering(String offeringName,Date time,String prodCatalogId) throws Exception{
         CatalogPersistenceSimpleImpl catalogPersistence = new CatalogPersistenceSimpleImpl();
         List<ProdCatalogProdOffer> prodCatalogProdOffers = new ArrayList<ProdCatalogProdOffer>();
-        ProductOfferingPersistenceSimpleImpl productOfferingPersistenceSimple = new ProductOfferingPersistenceSimpleImpl();
-
         ProductCatalog productCatalog = catalogPersistence.load(prodCatalogId);
-        ProductOffering prodOffering = productOfferingPersistenceSimple.load(prodCatalogId);
-        if(null != time) {
+        if(null != time && StringUtils.isEmpty(offeringName)) {
             prodCatalogProdOffers = productCatalog.retrieveOffering(time);
         }
-        if(StringUtils.isEmpty(offeringName)){
+        if(!StringUtils.isEmpty(offeringName) ){
            prodCatalogProdOffers = productCatalog.retrieveOffering(offeringName);
         }
-        for(ProdCatalogProdOffer catalogProdOffer : prodCatalogProdOffers){
-            PublishedOffering publishedOffering = new PublishedOffering();
-            publishedOffering.id = catalogProdOffer.getProdOffering().getId();
-            publishedOffering.name = catalogProdOffer.getProdOffering().getName();
-            publishedOffering.validFor = catalogProdOffer.getValidFor();
-            com.digiwes.product.resource.Parameter.ProductCatalog prodCatalog = new com.digiwes.product.resource.Parameter.ProductCatalog();
-            prodCatalog.id = productCatalog.getID();
-            prodCatalog.name = productCatalog.getName();
-            prodCatalog.type = productCatalog.getType();
-            publishedOffering.productCatalog = prodCatalog;
-          //  publishedOffering.productOffering = catalogProdOffer.getProdOffering();
-            publishedOfferingList.add(publishedOffering);
-
-        }
-        return publishedOfferingList;
+        return prodCatalogProdOffers;
     }
 }
