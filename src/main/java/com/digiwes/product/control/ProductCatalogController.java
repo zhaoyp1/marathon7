@@ -54,25 +54,23 @@ public class ProductCatalogController {
     /**
      * method of retiredOffering
      */
-    public ProductOffering retiredOffering(String prodCatalogId, String prodOfferingId, TimePeriod validFor) throws Exception{
+    public ProdCatalogProdOffer retiredOffering(ProductCatalog prodCatalog, String prodOfferingId, TimePeriod validFor) throws Exception{
         PublishedOffering publishedOffering = new PublishedOffering();
         CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
         ProductOfferingPersistence productOfferingPersistence = PersistenceFactory.getProdOfferingPersistence();
-
-        ProductCatalog prodCatalog = catalogPersistence.load(prodCatalogId);
         ProductOffering prodOffering = productOfferingPersistence.load(prodOfferingId);
-        int resultCode = prodCatalog.retired(prodOffering, validFor);
 
-
-        com.digiwes.product.resource.Parameter.ProductOffering productOffering = new com.digiwes.product.resource.Parameter.ProductOffering();
-        productOffering.convertFromProductOffering(prodOffering);
-        publishedOffering.setProductOffering(productOffering);
-
-        com.digiwes.product.resource.Parameter.ProductCatalog productCatalog = new com.digiwes.product.resource.Parameter.ProductCatalog();
-        productCatalog.convertFromProductCatalog(prodCatalog);
-        publishedOffering.setExistInProdCatalog(productCatalog);
-        catalogPersistence.save(prodCatalog);
-        return prodOffering;
+        int resultCode ;
+        if(null != prodCatalog.getProdCatalogProdOffer()){
+            for(ProdCatalogProdOffer prodCatalogProdOffer : prodCatalog.getProdCatalogProdOffer()){
+                if(prodCatalogProdOffer.getProdOffering().getId().equals(prodOfferingId) && prodCatalogProdOffer.getValidFor().equals(validFor)){
+                    resultCode = prodCatalog.retired(prodOffering, validFor);
+                    catalogPersistence.save(prodCatalog);
+                    return prodCatalogProdOffer;
+                }
+            }
+        }
+        return null;
     }
 
     /**
