@@ -77,5 +77,15 @@ public class PublishedOffering {
 
        }
     }
+    public void  convertFromProductCatalog(com.digiwes.product.offering.catalog.ProductCatalog prodCatalog){
+        if( null !=prodCatalog){
+            if( null != prodCatalog) {
+                ProductCatalog catalog =new ProductCatalog();
+                catalog.convertFromProductCatalog(prodCatalog);
+                this.productCatalog = catalog;
+            }
+
+        }
+    }
 
 }
