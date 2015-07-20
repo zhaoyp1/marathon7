@@ -52,7 +52,7 @@ public class PublishedOffering {
             if( null != prodCatalog) {
                 ProductCatalog catalog =new ProductCatalog();
                 catalog.convertFromProductCatalog(prodCatalog);
-                this.productCatalog = catalog;
+                this.existInProdCatalog = catalog;
             }
 
         }
