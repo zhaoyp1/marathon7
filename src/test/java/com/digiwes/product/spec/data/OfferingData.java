@@ -30,7 +30,7 @@ public class OfferingData {
             {"off_2", "price_3"},
             {"off_2", "price_4"},
     };
-    private static TimePeriod validFor = TimeUtil.creatTimePeriod("2015-06-01", "2015-08-01");
+    private static TimePeriod validFor = TimeUtil.creatTimePeriod("2015-06-01 00:00:00", "2015-12-01 23:59:59");
     private static  Boolean isInit = false;
     public static synchronized void init() {
         if (!isInit) {
@@ -52,7 +52,7 @@ public class OfferingData {
             PersistenceFactory.getProdOfferingPersistence().save(offer);
         }
         //specifyPrice
-        specifyPrice();
+       // specifyPrice();
     }
 
     private static void specifyPrice() throws Exception {

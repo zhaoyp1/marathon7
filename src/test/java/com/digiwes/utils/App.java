@@ -1,6 +1,7 @@
 package com.digiwes.utils;
 
 import com.digiwes.product.resource.ProductCatalogResource;
+import com.digiwes.product.spec.data.*;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.servlet.GrizzlyWebContainerFactory;
 import org.glassfish.jersey.server.ServerProperties;
@@ -24,15 +25,23 @@ public class App {
     public  static void main(String[] args) {
         try {
             Map<String, String> initParams = new HashMap<String, String>();
-            initParams.put(ServerProperties.PROVIDER_PACKAGES,  ProductCatalogResource.class.getPackage().getName());
+            initParams.put(ServerProperties.PROVIDER_PACKAGES, ProductCatalogResource.class.getPackage().getName());
             
             final HttpServer server = GrizzlyWebContainerFactory.create(BASE_URI, ServletContainer.class, initParams);
-
+            initData();
             System.out.println("Application started. Try out Hit enter to stop it...");
             System.in.read();
             server.shutdownNow();
+
         } catch (IOException ex) {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public static void initData(){
+        SpecCharData.init();       // create char
+        SpecData.init();           //create spec
+        OfferingData.init();
+        PriceData.init();
+        CatalogData.init();
     }
 }

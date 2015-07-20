@@ -26,4 +26,14 @@ public class ProductOffering {
         this.description = description;
     }
 
+    public void convertFromProductOffering(com.digiwes.product.offering.ProductOffering offering){
+       if( null != offering){
+        this.id = offering.getId();
+        this.name = offering.getName();
+        this.status =offering.getStatus();
+        this.href ="http://localhost:8080/marathon/ProductOffering/"+offering.getId();
+        this.description =offering.getDescription();
+       }
+    }
+
 }
