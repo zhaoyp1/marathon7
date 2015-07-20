@@ -6,6 +6,7 @@ package com.digiwes.common.enums;
 public enum  CommonErrorCode {
 
     SUCCESS(0,"SUCCESS"),
+    FAIL(3,"FAIL"),
     TIME_IS_NULL(1,"Time is null."),
     VALIDFOR_IS_NULL(2,"validFor is null");
 

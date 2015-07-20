@@ -10,11 +10,11 @@ import org.apache.log4j.Logger;
  */
 public class CatalogData {
     private static Logger logger = Logger.getLogger(CatalogData.class);
-    private static TimePeriod validFor = TimeUtil.creatTimePeriod("2015-06-01", "2015-08-01");
+    private static TimePeriod validFor = TimeUtil.creatTimePeriod("2015-06-01 00:00:00", "2015-08-01  00:00:00");
 
     private final static int CATALOG_ID = 0;
-    private final static int CATALOG_NAME = 0;
-    private final static int CATALOG_TYPE = 0;
+    private final static int CATALOG_NAME = 1;
+    private final static int CATALOG_TYPE = 2;
     private static String[][] catalogData = {
             {"catalog_1", "Mac", "Computer"},
             {"catalog_2", "iPhone", "Mobile"}

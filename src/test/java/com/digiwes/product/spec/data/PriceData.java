@@ -24,7 +24,7 @@ public class PriceData {
     private static  Boolean isInit = false;
     public static synchronized void init() {
         if (!isInit) {
-            createPriceMap();
+           // createPriceMap();
             isInit = true;
         }
     }
