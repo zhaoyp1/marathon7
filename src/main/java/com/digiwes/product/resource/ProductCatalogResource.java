@@ -7,6 +7,7 @@ import org.jvnet.hk2.annotations.Service;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ public class ProductCatalogResource {
     /**
      * TODO retiredOffering
      */
+    @POST
+    @Consumes({"application/json","application/xml"})
     public RetiredOfferingResponse retiredOffering(RetiredOfferingRequest requestParam){
         RetiredOfferingResponse retiredOfferingResult =  new RetiredOfferingResponse();
         retiredOfferingResult.setCode(String.valueOf(CommonErrorCode.SUCCESS.getCode()));
@@ -33,11 +36,13 @@ public class ProductCatalogResource {
         List<PublishedOffering> publishedOfferingList = new ArrayList<PublishedOffering>();
         ProductCatalogController prodCatalogController = new ProductCatalogController();
         try {
-            PublishedOffering publishedOffering = prodCatalogController.retiredOffering(requestParam.getCatalogId(), requestParam.getProdOfferingId());
+            PublishedOffering publishedOffering = prodCatalogController.retiredOffering(requestParam.getCatalogId(), requestParam.getProdOfferingId(),requestParam.getValidFor());
             publishedOfferingList.add(publishedOffering);
             retiredOfferingResult.setPublishedOffering(publishedOfferingList);
         }catch (Exception e){
             // Error
+            retiredOfferingResult.setCode(String.valueOf(CommonErrorCode.FAIL.getCode()));
+            retiredOfferingResult.setMessage(CommonErrorCode.FAIL.getMessage());
         }
 
         return retiredOfferingResult;
