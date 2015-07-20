@@ -3,11 +3,14 @@ package com.digiwes.product.control;
 import com.digiwes.basetype.TimePeriod;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.product.control.persistence.CatalogPersistence;
+import com.digiwes.product.control.persistence.PersistenceFactory;
+import com.digiwes.product.control.persistence.ProductOfferingPersistence;
 import com.digiwes.product.control.persistence.impl.CatalogPersistenceSimpleImpl;
 import com.digiwes.product.control.persistence.impl.ProductOfferingPersistenceSimpleImpl;
 import com.digiwes.product.offering.ProductOffering;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
+import com.digiwes.product.resource.Parameter.PublishOfferingRequest;
 import com.digiwes.product.resource.Parameter.PublishedOffering;
 import com.digiwes.product.resource.Parameter.RetiredOfferingResponse;
 import org.apache.commons.lang.StringUtils;
@@ -22,9 +25,18 @@ import java.util.List;
 public class ProductCatalogController {
 
     /**
-     * TODO publishOffering
+     *publishOffering()
      */
-
+     public ProductCatalog publishOffering(String prodCatalogId,String prodOfferingId,TimePeriod validFor)throws Exception{
+         CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
+         ProductOfferingPersistence productOfferingPersistence= PersistenceFactory.getProdOfferingPersistence();
+         ProductCatalog catalog=catalogPersistence.load(prodCatalogId);
+         ProductOffering offering=productOfferingPersistence.load(prodOfferingId);
+         catalog.publish(offering, validFor);
+         catalogPersistence.save(catalog);
+         catalog=catalogPersistence.load(prodCatalogId);
+         return catalog;
+     }
 
     /**
      * TODO retiredOffering

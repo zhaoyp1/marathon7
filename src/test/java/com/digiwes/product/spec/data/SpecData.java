@@ -92,12 +92,12 @@ public class SpecData {
                     validFor);
 
             //set version
-            prodSpec.specifyVersion("1.0.0", "create a version", new Date(), validFor);
+          //  prodSpec.specifyVersion("1.0.0", "create a version", new Date(), validFor);
 
             specMap.put(specItem[S_SPEC_ID_INDEX], prodSpec);
         }
         //attach char and value
-        attachCharAndValue();
+      //  attachCharAndValue();
     }
 
     private static void attachCharAndValue() {

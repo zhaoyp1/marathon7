@@ -6,8 +6,8 @@ import java.util.*;
 
 public class PublishOfferingRequest {
 
-    public TimePeriod validFor;
-    public  List<ProductOfferingPrice> advicePrice;
+   public TimePeriod validFor;
+    //public  List<ProductOfferingPrice> advicePrice;
     public String catalogId;
     public String prodOfferingId;
 

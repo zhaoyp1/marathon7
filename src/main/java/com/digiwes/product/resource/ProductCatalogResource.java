@@ -1,28 +1,64 @@
 package com.digiwes.product.resource;
 
+import com.digiwes.basetype.TimePeriod;
 import com.digiwes.common.enums.CommonErrorCode;
+import com.digiwes.common.utils.TimeUtils;
 import com.digiwes.product.control.ProductCatalogController;
+import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
+import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.Parameter.*;
-import org.jvnet.hk2.annotations.Service;
 
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by zhaoyp on 2015/7/19.
  */
-@Service
+@Singleton
 @Path("/catalogManagement/ProductOffering")
 public class ProductCatalogResource {
+
+    private static ProductCatalogController prodCatalogController = new ProductCatalogController();
     /**
      * TODO publishOffering
      */
+    @POST
+    @Consumes({ "application/json", "application/xml" })
+    @Produces({ "application/json", "application/xml" })
+     public PublishOfferingResponse publishOffering(PublishOfferingRequest requestParame)throws Exception{
+        requestParame.validFor =  new TimePeriod(TimeUtils.parseDate("2015-07-21 23:59:59","yyyy-MM-dd hh:mm:ss"),TimeUtils.parseDate("2015-11-01 23:59:59","yyyy-MM-dd hh:mm:ss"));
+           PublishOfferingResponse resultResponse =new PublishOfferingResponse();
+           resultResponse.code="200";
+           resultResponse.message="SUCCESS";
+
+           try{
+              ProductCatalog productCatalog= prodCatalogController.publishOffering(requestParame.catalogId, requestParame.prodOfferingId, requestParame.validFor);
+              com.digiwes.product.resource.Parameter.ProductCatalog catalogResponse =new com.digiwes.product.resource.Parameter.ProductCatalog();
+              List<PublishedOffering>  productOfferings=new ArrayList<PublishedOffering>();
+               catalogResponse.convertFromProductCatalog(productCatalog);
+
+              if(null != productCatalog ){
+                  List<ProdCatalogProdOffer> prodCatalogProdOffer= productCatalog.getProdCatalogProdOffer();
+                  for (ProdCatalogProdOffer catalogProdOffer :prodCatalogProdOffer){
+                      PublishedOffering publishedOffering = new PublishedOffering();
+                      publishedOffering.convertFromProdCatalogProdOffeing(catalogProdOffer);
+                      publishedOffering.productCatalog = catalogResponse;
+                      productOfferings.add(publishedOffering);
+                  }
+                  resultResponse.publishedOffering = productOfferings;
+              }
+           }   catch (Exception e){
+               e.printStackTrace();
+           }
 
 
+           return  resultResponse;
+       }
     /**
      * TODO retiredOffering
      */
@@ -52,7 +88,6 @@ public class ProductCatalogResource {
     /**
      * TODO retrieveOffering
      */
-    @GET
     @Consumes({ "application/json", "application/xml" })
     public RetrieveOfferingResponse retrieveOffering(RetrieveOfferingRequest requestParam){
         RetrieveOfferingResponse retrieveOfferingResult =  new RetrieveOfferingResponse();
