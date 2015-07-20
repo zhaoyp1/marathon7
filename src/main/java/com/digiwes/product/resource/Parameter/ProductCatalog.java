@@ -50,11 +50,11 @@ public class ProductCatalog {
         this.type = type;
     }
 
-    public int getHref() {
+    public String getHref() {
         return href;
     }
 
-    public void setHref(int href) {
+    public void setHref(String href) {
         this.href = href;
     }
 }
