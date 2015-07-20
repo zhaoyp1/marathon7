@@ -1,10 +1,14 @@
 package com.digiwes.product.resource.Parameter;
 
+import com.digiwes.product.resource.utils.DateAdapter;
+
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
 public class RetrieveOfferingRequest {
 
     private String offeringName;
+    @XmlJavaTypeAdapter(DateAdapter.class)
     private Date time;
     private String catalogId;
 
