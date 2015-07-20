@@ -30,15 +30,14 @@ public class ProductCatalogResource {
     @Produces({ "application/json", "application/xml" })
      public PublishOfferingResponse publishOffering(PublishOfferingRequest requestParame)throws Exception{
         requestParame.validFor =  new TimePeriod(TimeUtils.parseDate("2015-07-21 23:59:59","yyyy-MM-dd hh:mm:ss"),TimeUtils.parseDate("2015-11-01 23:59:59","yyyy-MM-dd hh:mm:ss"));
-           PublishOfferingResponse resultResponse =new PublishOfferingResponse();
-           resultResponse.code="200";
-           resultResponse.message="SUCCESS";
-
-           try{
+        PublishOfferingResponse resultResponse =new PublishOfferingResponse();
+        resultResponse.code=String.valueOf(CommonErrorCode.SUCCESS.getCode());
+        resultResponse.message=CommonErrorCode.SUCCESS.getMessage();
+        try{
               ProductCatalog productCatalog= prodCatalogController.publishOffering(requestParame.catalogId, requestParame.prodOfferingId, requestParame.validFor);
               com.digiwes.product.resource.Parameter.ProductCatalog catalogResponse =new com.digiwes.product.resource.Parameter.ProductCatalog();
               List<PublishedOffering>  productOfferings=new ArrayList<PublishedOffering>();
-               catalogResponse.convertFromProductCatalog(productCatalog);
+              catalogResponse.convertFromProductCatalog(productCatalog);
 
               if(null != productCatalog ){
                   List<ProdCatalogProdOffer> prodCatalogProdOffer= productCatalog.getProdCatalogProdOffer();
@@ -51,12 +50,11 @@ public class ProductCatalogResource {
                   resultResponse.publishedOffering = productOfferings;
               }
            }   catch (Exception e){
-               e.printStackTrace();
+               resultResponse.code =String.valueOf(CommonErrorCode.FAIL.getCode());
+               resultResponse.message = CommonErrorCode.FAIL.getMessage();
            }
-
-
-           return  resultResponse;
-       }
+      return  resultResponse;
+    }
     /**
      * TODO retiredOffering
      */

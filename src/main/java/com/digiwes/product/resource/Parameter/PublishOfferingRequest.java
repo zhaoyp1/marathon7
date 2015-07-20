@@ -2,8 +2,10 @@ package com.digiwes.product.resource.Parameter;
 
 import com.digiwes.basetype.TimePeriod;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.*;
 
+@XmlRootElement
 public class PublishOfferingRequest {
 
    public TimePeriod validFor;

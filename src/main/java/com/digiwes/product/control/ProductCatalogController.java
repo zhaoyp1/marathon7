@@ -2,6 +2,8 @@ package com.digiwes.product.control;
 
 import com.digiwes.basetype.TimePeriod;
 import com.digiwes.common.enums.CommonErrorCode;
+import com.digiwes.common.enums.ProdCatalogErrorCode;
+import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.product.control.persistence.CatalogPersistence;
 import com.digiwes.product.control.persistence.PersistenceFactory;
 import com.digiwes.product.control.persistence.ProductOfferingPersistence;
@@ -32,9 +34,19 @@ public class ProductCatalogController {
          ProductOfferingPersistence productOfferingPersistence= PersistenceFactory.getProdOfferingPersistence();
          ProductCatalog catalog=catalogPersistence.load(prodCatalogId);
          ProductOffering offering=productOfferingPersistence.load(prodOfferingId);
-         catalog.publish(offering, validFor);
+         int result =catalog.publish(offering, validFor);
+         if(CommonErrorCode.VALIDFOR_IS_NULL.getCode() == result) {
+             throw  new Exception(CommonErrorCode.VALIDFOR_IS_NULL.getMessage());
+         }else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode() == result){
+             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getMessage());
+         }else if(ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode() == result){
+             throw  new IllegalArgumentException(ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getMessage());
+         } else if(ProdCatalogErrorCode.PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID.getCode() ==result ){
+             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID.getMessage());
+         } else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode() == result){
+             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getMessage());
+         }
          catalogPersistence.save(catalog);
-         catalog=catalogPersistence.load(prodCatalogId);
          return catalog;
      }
 
