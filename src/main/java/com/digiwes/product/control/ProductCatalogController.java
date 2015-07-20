@@ -37,7 +37,7 @@ public class ProductCatalogController {
          ProductOffering offering=productOfferingPersistence.load(prodOfferingId);
          int result =catalog.publish(offering, validFor);
          if(CommonErrorCode.VALIDFOR_IS_NULL.getCode() == result) {
-             throw  new Exception(CommonErrorCode.VALIDFOR_IS_NULL.getMessage());
+             throw  new IllegalArgumentException(CommonErrorCode.VALIDFOR_IS_NULL.getMessage());
          }else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode() == result){
              throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getMessage());
          }else if(ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode() == result){
@@ -63,8 +63,6 @@ public class ProductCatalogController {
         ProductOffering prodOffering = productOfferingPersistence.load(prodOfferingId);
         int resultCode = prodCatalog.retired(prodOffering, validFor);
 
-        publishedOffering.setId(prodOffering.getId());
-        publishedOffering.setName(prodOffering.getName());
 
         com.digiwes.product.resource.Parameter.ProductOffering productOffering = new com.digiwes.product.resource.Parameter.ProductOffering();
         productOffering.convertFromProductOffering(prodOffering);
@@ -72,8 +70,7 @@ public class ProductCatalogController {
 
         com.digiwes.product.resource.Parameter.ProductCatalog productCatalog = new com.digiwes.product.resource.Parameter.ProductCatalog();
         productCatalog.convertFromProductCatalog(prodCatalog);
-        publishedOffering.setProductCatalog(productCatalog);
-
+        publishedOffering.setExistInProdCatalog(productCatalog);
         catalogPersistence.save(prodCatalog);
         return prodOffering;
     }
