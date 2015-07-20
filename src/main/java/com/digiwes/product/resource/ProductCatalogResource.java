@@ -64,6 +64,7 @@ public class ProductCatalogResource {
     @Path("/retireOffering")
     @POST
     @Consumes({"application/json","application/xml"})
+    @Produces({ "application/json", "application/xml" })
     public RetiredOfferingResponse retiredOffering(RetiredOfferingRequest requestParam){
         RetiredOfferingResponse retiredOfferingResult =  new RetiredOfferingResponse();
         retiredOfferingResult.setCode(String.valueOf(CommonErrorCode.SUCCESS.getCode()));
