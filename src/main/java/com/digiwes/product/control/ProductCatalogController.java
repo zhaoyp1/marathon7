@@ -54,16 +54,14 @@ public class ProductCatalogController {
      * method of retiredOffering
      */
     public ProdCatalogProdOffer retiredOffering(ProductCatalog prodCatalog, String prodOfferingId, TimePeriod validFor) throws Exception{
-        PublishedOffering publishedOffering = new PublishedOffering();
         CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
         ProductOfferingPersistence productOfferingPersistence = PersistenceFactory.getProdOfferingPersistence();
         ProductOffering prodOffering = productOfferingPersistence.load(prodOfferingId);
 
-        int resultCode ;
         if(null != prodCatalog.getProdCatalogProdOffer()){
             for(ProdCatalogProdOffer prodCatalogProdOffer : prodCatalog.getProdCatalogProdOffer()){
                 if(prodCatalogProdOffer.getProdOffering().getId().equals(prodOfferingId) && prodCatalogProdOffer.getValidFor().equals(validFor)){
-                    resultCode = prodCatalog.retired(prodOffering, validFor);
+                    prodCatalog.retired(prodOffering, validFor);
                     catalogPersistence.save(prodCatalog);
                     return prodCatalogProdOffer;
                 }
