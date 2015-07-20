@@ -70,7 +70,7 @@ public class SpecCharData {
     };
     private static Map<String, ProductSpecCharacteristic> charMap = new HashMap<String,ProductSpecCharacteristic>();
     private static  Map<String, ProductSpecCharacteristicValue> valueMap = new HashMap<String, ProductSpecCharacteristicValue>();
-    private static TimePeriod validFor =  TimeUtil.creatTimePeriod("2015-06-01", "2015-08-01");
+    private static TimePeriod validFor =  TimeUtil.creatTimePeriod("2015-06-01  00:00:00", "2015-08-01  00:00:00");
     private static  Boolean isInit = false;
     public static synchronized void init() {
         if (!isInit) {

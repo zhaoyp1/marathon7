@@ -41,7 +41,7 @@ public class App {
         SpecCharData.init();       // create char
         SpecData.init();           //create spec
         OfferingData.init();
-        PriceData.init();
+        //PriceData.init();
         CatalogData.init();
     }
 }
