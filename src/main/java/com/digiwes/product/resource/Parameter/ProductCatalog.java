@@ -4,7 +4,6 @@ import com.digiwes.basetype.TimePeriod;
 
 public class ProductCatalog {
 
-    public TimePeriod validFor;
     public String id;
     public String name;
     public String type;
@@ -13,18 +12,10 @@ public class ProductCatalog {
        if( null != catalog){
            this.id = catalog.getID();
            this.name = catalog.getName();
-           this.validFor = catalog.getValidFor();
            this.href = "http://localhost:8080/marathon/catalog/"+catalog.getID();
        }
     }
 
-    public TimePeriod getValidFor() {
-        return validFor;
-    }
-
-    public void setValidFor(TimePeriod validFor) {
-        this.validFor = validFor;
-    }
 
     public String getId() {
         return id;

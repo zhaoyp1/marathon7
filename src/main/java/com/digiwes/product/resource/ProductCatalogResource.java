@@ -4,6 +4,7 @@ import com.digiwes.basetype.TimePeriod;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.utils.TimeUtils;
 import com.digiwes.product.control.ProductCatalogController;
+import com.digiwes.product.control.persistence.impl.CatalogPersistenceSimpleImpl;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.Parameter.*;
@@ -93,7 +94,7 @@ public class ProductCatalogResource {
     @POST
     @Consumes({ "application/json", "application/xml" })
     @Produces({ "application/json", "application/xml" })
-    public RetrieveOfferingResponse retrieveOffering(RetrieveOfferingRequest requestParam){
+    public RetrieveOfferingResponse retrieveOffering(RetrieveOfferingRequest requestParam) throws Exception {
         RetrieveOfferingResponse retrieveOfferingResult =  new RetrieveOfferingResponse();
         retrieveOfferingResult.setCode(String.valueOf(CommonErrorCode.SUCCESS.getCode()));
         retrieveOfferingResult.setMessage(CommonErrorCode.SUCCESS.getMessage());
@@ -101,11 +102,13 @@ public class ProductCatalogResource {
         List<ProdCatalogProdOffer> prodCatalogProdOffers = new ArrayList<ProdCatalogProdOffer>();
         List<PublishedOffering> publishedOfferingList = new ArrayList<PublishedOffering>();
         ProductCatalogController prodCatalogController = new ProductCatalogController();
+        ProductCatalog productCatalog = prodCatalogController.retrieveCatalog(requestParam.getCatalogId());
         try {
-            prodCatalogProdOffers = prodCatalogController.retrieveOffering(requestParam.getOfferingName(),requestParam.getTime(),requestParam.getCatalogId());
+            prodCatalogProdOffers = prodCatalogController.retrieveOffering(requestParam.getOfferingName(),requestParam.getTime(),productCatalog);
             for(ProdCatalogProdOffer catalogProdOffer : prodCatalogProdOffers){
                 PublishedOffering publishedOffering = new PublishedOffering();
                 publishedOffering.convertFromProdCatalogProdOffeing(catalogProdOffer);
+                publishedOffering.convertFromProductCatalog(productCatalog);
                 publishedOfferingList.add(publishedOffering);
             }
             retrieveOfferingResult.setPublishedOfferings(publishedOfferingList);
