@@ -63,10 +63,10 @@ public class Catalog {
      * @param validFor
      */
     public Catalog(String id, String name, String type, TimePeriod validFor) {
-        assert !StringUtils.isEmpty(id):"id must not be null";
-        assert !StringUtils.isEmpty(name):"name must not be null";
-        assert !StringUtils.isEmpty(type):"type must not be null";
-        assert !ParameterUtil.checkParameterIsNull(validFor):"validFor must not be null";
+        assert !StringUtils.isEmpty(id):"Catalog's id must not be null";
+        assert !StringUtils.isEmpty(name):"Catalog's name must not be null";
+        assert !StringUtils.isEmpty(type):"Catalog's type must not be null";
+        assert !ParameterUtil.checkParameterIsNull(validFor):" Catalog's validFor must not be null";
         this.ID = id;
         this.name = name;
         this.type = type;
