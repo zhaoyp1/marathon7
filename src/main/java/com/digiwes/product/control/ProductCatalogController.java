@@ -2,6 +2,8 @@ package com.digiwes.product.control;
 
 import com.digiwes.basetype.TimePeriod;
 import com.digiwes.common.enums.CommonErrorCode;
+import com.digiwes.common.enums.ProdCatalogErrorCode;
+import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.product.control.persistence.CatalogPersistence;
 import com.digiwes.product.control.persistence.PersistenceFactory;
 import com.digiwes.product.control.persistence.ProductOfferingPersistence;
@@ -32,26 +34,52 @@ public class ProductCatalogController {
          ProductOfferingPersistence productOfferingPersistence= PersistenceFactory.getProdOfferingPersistence();
          ProductCatalog catalog=catalogPersistence.load(prodCatalogId);
          ProductOffering offering=productOfferingPersistence.load(prodOfferingId);
-         catalog.publish(offering, validFor);
+         int result =catalog.publish(offering, validFor);
+         if(CommonErrorCode.VALIDFOR_IS_NULL.getCode() == result) {
+             throw  new Exception(CommonErrorCode.VALIDFOR_IS_NULL.getMessage());
+         }else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode() == result){
+             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getMessage());
+         }else if(ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode() == result){
+             throw  new IllegalArgumentException(ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getMessage());
+         } else if(ProdCatalogErrorCode.PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID.getCode() ==result ){
+             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID.getMessage());
+         } else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode() == result){
+             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getMessage());
+         }
          catalogPersistence.save(catalog);
-         catalog=catalogPersistence.load(prodCatalogId);
          return catalog;
      }
 
     /**
      * TODO retiredOffering
      */
-    public PublishedOffering retiredOffering(String prodCatalogId, String prodOfferingId) throws Exception{
+    public PublishedOffering retiredOffering(String prodCatalogId, String prodOfferingId, TimePeriod validFor) throws Exception{
         PublishedOffering publishedOffering = new PublishedOffering();
         CatalogPersistenceSimpleImpl catalogPersistence = new CatalogPersistenceSimpleImpl();
         ProductOfferingPersistenceSimpleImpl productOfferingPersistenceSimple = new ProductOfferingPersistenceSimpleImpl();
 
-        ProductCatalog productCatalog = catalogPersistence.load(prodCatalogId);
+        ProductCatalog prodCatalog = catalogPersistence.load(prodCatalogId);
         ProductOffering prodOffering = productOfferingPersistenceSimple.load(prodOfferingId);
-        productCatalog.retired(prodOffering);
+        prodCatalog.retired(prodOffering, validFor);
 
-        prodOffering.setId(prodOffering.getId());
-        prodOffering.setName(prodOffering.getName());
+        publishedOffering.setId(prodOffering.getId());
+        publishedOffering.setName(prodOffering.getName());
+
+        com.digiwes.product.resource.Parameter.ProductOffering productOffering = new com.digiwes.product.resource.Parameter.ProductOffering();
+        productOffering.setId(prodOffering.getId());
+        productOffering.setName(prodOffering.getName());
+        productOffering.setDescription(prodOffering.getDescription());
+        productOffering.setStatus(prodOffering.getStatus());
+        //productOffering.setHref();
+        publishedOffering.setProductOffering(productOffering);
+
+        com.digiwes.product.resource.Parameter.ProductCatalog productCatalog = new com.digiwes.product.resource.Parameter.ProductCatalog();
+        productCatalog.setId(prodCatalog.getID());
+        productCatalog.setName(prodCatalog.getName());
+        productCatalog.setType(prodCatalog.getType());
+        productCatalog.setValidFor(prodCatalog.getValidFor());
+        //productCatalog.setHref();
+        publishedOffering.setProductCatalog(productCatalog);
 
         return publishedOffering;
     }

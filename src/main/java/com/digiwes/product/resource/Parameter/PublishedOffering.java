@@ -26,6 +26,46 @@ public class PublishedOffering {
         this.description = description;
     }
 
+    public ProductOffering getProductOffering() {
+        return productOffering;
+    }
+
+    public void setProductOffering(ProductOffering productOffering) {
+        this.productOffering = productOffering;
+    }
+
+    public TimePeriod getValidFor() {
+        return validFor;
+    }
+
+    public void setValidFor(TimePeriod validFor) {
+        this.validFor = validFor;
+    }
+
+    public ProductCatalog getProductCatalog() {
+        return productCatalog;
+    }
+
+    public void setProductCatalog(ProductCatalog productCatalog) {
+        this.productCatalog = productCatalog;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void  convertFromProdCatalogProdOffeing(ProdCatalogProdOffer prodCatalogProdOffer){
        if( null !=prodCatalogProdOffer){
            validFor = prodCatalogProdOffer.getValidFor();
@@ -37,6 +77,5 @@ public class PublishedOffering {
 
        }
     }
-
 
 }

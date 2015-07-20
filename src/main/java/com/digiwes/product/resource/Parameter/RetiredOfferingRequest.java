@@ -24,4 +24,12 @@ public class RetiredOfferingRequest {
     public void setProdOfferingId(String prodOfferingId) {
         this.prodOfferingId = prodOfferingId;
     }
+
+    public TimePeriod getValidFor() {
+        return validFor;
+    }
+
+    public void setValidFor(TimePeriod validFor) {
+        this.validFor = validFor;
+    }
 }
