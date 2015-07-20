@@ -7,24 +7,10 @@ import java.util.*;
 
 public class PublishedOffering {
 
-    public ProductOffering productOffering;
     public TimePeriod validFor;
-    public ProductCatalog productCatalog;
+    public ProductOffering productOffering;
+    public ProductCatalog existInProdCatalog;
    // public  List<ProductOfferingPrice> advicePrice;
-    public String id;
-    public String name;
-    /**
-     * A narrative that explains what the offering is.
-     */
-    private String description;
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public ProductOffering getProductOffering() {
         return productOffering;
@@ -42,28 +28,12 @@ public class PublishedOffering {
         this.validFor = validFor;
     }
 
-    public ProductCatalog getProductCatalog() {
-        return productCatalog;
+    public ProductCatalog getExistInProdCatalog() {
+        return existInProdCatalog;
     }
 
-    public void setProductCatalog(ProductCatalog productCatalog) {
-        this.productCatalog = productCatalog;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setExistInProdCatalog(ProductCatalog existInProdCatalog) {
+        this.existInProdCatalog = existInProdCatalog;
     }
 
     public void  convertFromProdCatalogProdOffeing(ProdCatalogProdOffer prodCatalogProdOffer){

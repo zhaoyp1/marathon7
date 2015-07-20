@@ -7,6 +7,7 @@ import com.digiwes.product.control.ProductCatalogController;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.Parameter.*;
+import org.jvnet.hk2.annotations.Service;
 
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
@@ -19,13 +20,13 @@ import java.util.List;
 /**
  * Created by zhaoyp on 2015/7/19.
  */
-@Singleton
+@Service
 @Path("/catalogManagement")
 public class ProductCatalogResource {
 
     private static ProductCatalogController prodCatalogController = new ProductCatalogController();
     /**
-     * TODO publishOffering
+     * publishOffering
      */
     @Path("/publishOffering")
     @POST
@@ -47,7 +48,7 @@ public class ProductCatalogResource {
                   for (ProdCatalogProdOffer catalogProdOffer :prodCatalogProdOffer){
                       PublishedOffering publishedOffering = new PublishedOffering();
                       publishedOffering.convertFromProdCatalogProdOffeing(catalogProdOffer);
-                      publishedOffering.productCatalog = catalogResponse;
+                      publishedOffering.existInProdCatalog = catalogResponse;
                       productOfferings.add(publishedOffering);
                   }
                   resultResponse.publishedOffering = productOfferings;
