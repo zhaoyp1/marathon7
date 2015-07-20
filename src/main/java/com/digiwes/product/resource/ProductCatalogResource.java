@@ -60,7 +60,7 @@ public class ProductCatalogResource {
     /**
      * TODO retiredOffering
      */
-    @Path("retired")
+    @Path("/retireOffering")
     @POST
     @Consumes({"application/json","application/xml"})
     public RetiredOfferingResponse retiredOffering(RetiredOfferingRequest requestParam){

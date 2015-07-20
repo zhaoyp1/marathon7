@@ -60,8 +60,7 @@ public class ProductCatalogController {
 
         ProductCatalog prodCatalog = catalogPersistence.load(prodCatalogId);
         ProductOffering prodOffering = productOfferingPersistence.load(prodOfferingId);
-        prodCatalog.retired(prodOffering, validFor);
-        catalogPersistence.save(prodCatalog);
+        int resultCode = prodCatalog.retired(prodOffering, validFor);
 
         publishedOffering.setId(prodOffering.getId());
         publishedOffering.setName(prodOffering.getName());
@@ -74,6 +73,7 @@ public class ProductCatalogController {
         productCatalog.convertFromProductCatalog(prodCatalog);
         publishedOffering.setProductCatalog(productCatalog);
 
+        catalogPersistence.save(prodCatalog);
         return publishedOffering;
     }
 
