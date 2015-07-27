@@ -47,6 +47,9 @@ public class TimePeriod {
         this.endDateTime = endDateTime;
     }
 
+    public TimePeriod() {
+    }
+
     public TimePeriod(Date startDateTime, Date endDateTime) {
         assert !ParameterUtil.checkParameterIsNull(startDateTime):"starDateTime must not be  null.";
         assert !ParameterUtil.checkParameterIsNull(endDateTime):"endDateTime must not be  null.";
