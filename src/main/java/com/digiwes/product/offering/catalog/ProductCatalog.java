@@ -57,12 +57,13 @@ public class ProductCatalog extends Catalog {
      */
     public int publish(ProductOffering offering, TimePeriod validFor) {
         int code = checkOffering(offering, validFor);
-        if (CommonErrorCode.SUCCESS.getCode() == code){
-            ProdCatalogProdOffer catalogProdOffer=new ProdCatalogProdOffer(offering,validFor);
-            prodCatalogProdOffer.add(catalogProdOffer);
-            return CommonErrorCode.SUCCESS.getCode();
+        if (CommonErrorCode.SUCCESS.getCode() != code){
+            return code;
         }
-        return code;
+        ProdCatalogProdOffer catalogProdOffer=new ProdCatalogProdOffer(offering,validFor);
+        prodCatalogProdOffer.add(catalogProdOffer);
+        return CommonErrorCode.SUCCESS.getCode();
+
     }
 
 
@@ -75,12 +76,12 @@ public class ProductCatalog extends Catalog {
      */
     public int publish(ProductOffering offering, TimePeriod validFor, List<ProductOfferingPrice> price) {
         int code = checkOffering(offering, validFor);
-        if (CommonErrorCode.SUCCESS.getCode() == code){
-            ProdCatalogProdOffer catalogProdOffer=new ProdCatalogProdOffer(offering,validFor,price);
-            prodCatalogProdOffer.add(catalogProdOffer);
-            return CommonErrorCode.SUCCESS.getCode();
+        if (CommonErrorCode.SUCCESS.getCode() != code){
+            return code;
         }
-        return code;
+        ProdCatalogProdOffer catalogProdOffer=new ProdCatalogProdOffer(offering,validFor,price);
+        prodCatalogProdOffer.add(catalogProdOffer);
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
 
@@ -98,13 +99,14 @@ public class ProductCatalog extends Catalog {
             return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
         }
         ProdCatalogProdOffer prodCatalogProdOffer = this.retrieveProdCatalogProdOffer(offering, validFor);
-        if( null != prodCatalogProdOffer) {
-            validFor.setEndDateTime(new Date());
-            prodCatalogProdOffer.setValidFor(validFor);
-            return CommonErrorCode.SUCCESS.getCode() ;
+        if( null == prodCatalogProdOffer) {
+            logger.warn("offering have not been publish");
+            return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_NOT_BE_PUBLISH.getCode();
         }
-        logger.warn("offering have not been publish");
-        return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_NOT_BE_PUBLISH.getCode();
+        validFor.setEndDateTime(new Date());
+        prodCatalogProdOffer.setValidFor(validFor);
+        return CommonErrorCode.SUCCESS.getCode() ;
+
     }
 
     /**
