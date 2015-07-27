@@ -51,27 +51,23 @@ public class ProductCatalogController {
      }
 
     /**
-     * TODO retiredOffering
+     * method of retiredOffering
      */
-    public PublishedOffering retiredOffering(String prodCatalogId, String prodOfferingId, TimePeriod validFor) throws Exception{
-        PublishedOffering publishedOffering = new PublishedOffering();
+    public ProdCatalogProdOffer retiredOffering(ProductCatalog prodCatalog, String prodOfferingId, TimePeriod validFor) throws Exception{
         CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
         ProductOfferingPersistence productOfferingPersistence = PersistenceFactory.getProdOfferingPersistence();
-
-        ProductCatalog prodCatalog = catalogPersistence.load(prodCatalogId);
         ProductOffering prodOffering = productOfferingPersistence.load(prodOfferingId);
-        int resultCode = prodCatalog.retired(prodOffering, validFor);
 
-
-        com.digiwes.product.resource.Parameter.ProductOffering productOffering = new com.digiwes.product.resource.Parameter.ProductOffering();
-        productOffering.convertFromProductOffering(prodOffering);
-        publishedOffering.setProductOffering(productOffering);
-
-        com.digiwes.product.resource.Parameter.ProductCatalog productCatalog = new com.digiwes.product.resource.Parameter.ProductCatalog();
-        productCatalog.convertFromProductCatalog(prodCatalog);
-        publishedOffering.setExistInProdCatalog(productCatalog);
-        catalogPersistence.save(prodCatalog);
-        return publishedOffering;
+        if(null != prodCatalog.getProdCatalogProdOffer()){
+            for(ProdCatalogProdOffer prodCatalogProdOffer : prodCatalog.getProdCatalogProdOffer()){
+                if(prodCatalogProdOffer.getProdOffering().getId().equals(prodOfferingId) && prodCatalogProdOffer.getValidFor().equals(validFor)){
+                    prodCatalog.retired(prodOffering, validFor);
+                    catalogPersistence.save(prodCatalog);
+                    return prodCatalogProdOffer;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -93,7 +89,7 @@ public class ProductCatalogController {
      * retrieveCatalog
      */
     public ProductCatalog retrieveCatalog(String catalogId) throws Exception{
-        CatalogPersistenceSimpleImpl catalogPersistence = new CatalogPersistenceSimpleImpl();
+        CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
         return  catalogPersistence.load(catalogId);
 
     }
