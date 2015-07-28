@@ -9,6 +9,8 @@ import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.response.ProdOffering;
 import com.digiwes.product.resource.response.ProductOfferingPrice;
 import com.digiwes.product.resource.utils.ConvertUtil;
+import com.digiwes.product.resource.utils.ConvertUtil;
+import org.apache.commons.lang.StringUtils;
 
 import javax.ws.rs.*;
 import java.util.ArrayList;
@@ -47,12 +49,25 @@ public class CatalogManagementResource {
        List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
        if(null != resultProdOfferingList && resultProdOfferingList.size()>0){
            for(ProdOffering resultProdOffering :resultProdOfferingList){
-               Map<String,Object> map = ConvertUtil.convertObjectToMap(resultProdOffering, fields);
+               Map<String,Object> map = ConvertUtil.convertObjectToMap(resultProdOffering, fields,"id");
                resultList.add(map);
            }
        }
 
        return resultList;
+    }
+    @GET
+    @Path("/productOffering/{id}")
+    public  Map<String,Object> retrieveProdOffering(@PathParam("id")String id,@QueryParam("fields") String fields){
+        ProductCatalog catalog =getManagementProductCatalog();
+        Map<String,Object> result = null ;
+        CatalogManagementController catalogManagementController = new CatalogManagementController();
+        ProdCatalogProdOffer prodCatalogProdOffer = catalogManagementController.retrieveOffering(catalog, id);
+        ProdOffering offering =ConvertUtil.convertToProdOffering(prodCatalogProdOffer);
+        if( null != offering){
+            result = ConvertUtil.convertObjectToMap(offering, fields,"id");
+        }
+        return  result;
     }
 
     @POST

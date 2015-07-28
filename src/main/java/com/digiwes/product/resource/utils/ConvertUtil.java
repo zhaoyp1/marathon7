@@ -54,29 +54,33 @@ public class ConvertUtil {
 
     //covert prodCatalogProdOffering to prodOffering
     public static  ProdOffering convertToProdOffering(ProdCatalogProdOffer prodCatalogProdOffer){
-        ProdOffering prodOffering = new ProdOffering();
-        prodOffering.setId(prodCatalogProdOffer.getProdOffering().getId());
-        prodOffering.setValidFor(prodCatalogProdOffer.getValidFor());
-        prodOffering.setName(prodCatalogProdOffer.getProdOffering().getName());
-        prodOffering.setDescription(prodCatalogProdOffer.getProdOffering().getDescription());
-        prodOffering.setLastUpdate(null);
-        prodOffering.setLifecycleStatus(prodCatalogProdOffer.getProdOffering().getStatus());
-        prodOffering.setVersion("1.0.0");
-        //price
-        List<ProductOfferingPrice>  prodOfferingPriceResult = new ArrayList<ProductOfferingPrice>();
-        List<com.digiwes.product.offering.price.ProductOfferingPrice> productOfferingPriceList = prodCatalogProdOffer.getProductOfferingPrice();
-        if(null!= productOfferingPriceList && productOfferingPriceList.size()>0){
-            for(com.digiwes.product.offering.price.ProductOfferingPrice productOfferingPrice : productOfferingPriceList){
-                ProductOfferingPrice prodOfferingPrice = convertToProductOfferingPrice(productOfferingPrice);
-                prodOfferingPriceResult.add(prodOfferingPrice);
+        ProdOffering prodOffering = null;
+        if( null != prodCatalogProdOffer){
+            prodOffering = new ProdOffering();
+            prodOffering.setId(prodCatalogProdOffer.getProdOffering().getId());
+            prodOffering.setValidFor(prodCatalogProdOffer.getValidFor());
+            prodOffering.setName(prodCatalogProdOffer.getProdOffering().getName());
+            prodOffering.setDescription(prodCatalogProdOffer.getProdOffering().getDescription());
+            prodOffering.setLastUpdate(null);
+            prodOffering.setLifecycleStatus(prodCatalogProdOffer.getProdOffering().getStatus());
+            prodOffering.setVersion("1.0.0");
+            //price
+            List<ProductOfferingPrice>  prodOfferingPriceResult = new ArrayList<ProductOfferingPrice>();
+            List<com.digiwes.product.offering.price.ProductOfferingPrice> productOfferingPriceList = prodCatalogProdOffer.getProductOfferingPrice();
+            if(null!= productOfferingPriceList && productOfferingPriceList.size()>0){
+                for(com.digiwes.product.offering.price.ProductOfferingPrice productOfferingPrice : productOfferingPriceList){
+                    ProductOfferingPrice prodOfferingPrice = convertToProductOfferingPrice(productOfferingPrice);
+                    prodOfferingPriceResult.add(prodOfferingPrice);
+                }
+            }
+            prodOffering.setProductOfferingPrice(prodOfferingPriceResult);
+            if(prodCatalogProdOffer.getProdOffering() instanceof SimpleProductOffering){
+                prodOffering.setProductSpecification(convertToProdSpecRef((SimpleProductOffering) prodCatalogProdOffer.getProdOffering()));
+            }else{
+                prodOffering.setProductSpecification(null);
             }
         }
-        prodOffering.setProductOfferingPrice(prodOfferingPriceResult);
-        if(prodCatalogProdOffer.getProdOffering() instanceof SimpleProductOffering){
-            prodOffering.setProductSpecification(convertToProdSpecRef((SimpleProductOffering) prodCatalogProdOffer.getProdOffering()));
-        }else{
-            prodOffering.setProductSpecification(null);
-        }
+
        return prodOffering;
     }
 
@@ -96,14 +100,21 @@ public class ConvertUtil {
         prodSpecRef.setHref("");
         return prodSpecRef;
     }
-    public static Map<String,Object> convertObjectToMap(Object thisObj,String fields)
+    public static Map<String,Object> convertObjectToMap(Object thisObj,String fields,String requiredField)
     {
         Map map = new HashMap();
         Class c;
         String [] fieldArray = null;
-        if(StringUtils.isEmpty(fields)){
-            fieldArray = fields.split(",");
+        String [] requiredFields =null;
+        if(!StringUtils.isEmpty(fields)){
+            String allFields= fields;
+            if(!StringUtils.isEmpty(requiredField)){
+                allFields=fields+","+requiredField;
+
+            }
+            fieldArray=allFields.split(",");
         }
+
         try
         {
             c = Class.forName(thisObj.getClass().getName());
@@ -117,21 +128,23 @@ public class ConvertUtil {
                         Object value = m[i].invoke(thisObj);
                         if (value != null)
                         {
-                            if(null != fieldArray){
+                            if(!StringUtils.isEmpty(fields)){
+
+
                                 for(int j=0 ; j<fieldArray.length ; j++){
 
                                     String key=method.substring(3);
+                                    key=key.substring(0,1).toLowerCase()+key.substring(1);
                                     if(key.equals(fieldArray[j])){
-                                        key=key.substring(0,1)+key.substring(1);
-                                        map.put(method, value);
+                                        map.put(key, value);
                                         break;
                                     }
 
                                 }
                             }else{
                                 String key=method.substring(3);
-                                key=key.substring(0,1).toUpperCase()+key.substring(1);
-                                map.put(method, value);
+                                key=key.substring(0,1).toLowerCase()+key.substring(1);
+                                map.put(key, value);
                             }
 
                         }

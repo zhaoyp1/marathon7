@@ -1,5 +1,7 @@
 package com.digiwes.utils;
 
+import com.digiwes.product.spec.data.CatalogData;
+import com.digiwes.product.spec.data.OfferingData;
 import com.digiwes.product.resource.ProductCatalogResource;
 import com.digiwes.product.spec.data.*;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -24,6 +26,7 @@ public class App {
 
     public  static void main(String[] args) {
         try {
+
             Map<String, String> initParams = new HashMap<String, String>();
             initParams.put(ServerProperties.PROVIDER_PACKAGES, ProductCatalogResource.class.getPackage().getName());
             
@@ -41,7 +44,6 @@ public class App {
         SpecCharData.init();       // create char
         SpecData.init();           //create spec
         OfferingData.init();
-        //PriceData.init();
         CatalogData.init();
     }
 }

@@ -7,6 +7,7 @@ import com.digiwes.product.offering.ProductOffering;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.response.ProdOffering;
+import com.digiwes.product.resource.utils.ConvertUtil;
 import com.digiwes.product.resource.utils.DateAdapter;
 
 import java.util.Date;
@@ -64,11 +65,11 @@ public class CatalogManagementController {
 	/**
 	 * 
 	 * @param id
-	 * @param fields
+	 *
 	 */
-	public Map<String, Object> retrieveOffering(ProductCatalog productCatalog,String id, String fields) {
-		// TODO - implement CatalogManagementController.retrieveOffering
-		throw new UnsupportedOperationException();
+	public ProdCatalogProdOffer retrieveOffering(ProductCatalog productCatalog,String id) {
+		ProdCatalogProdOffer prodCatalogProdOffer =productCatalog.retrieveProdOffering(id);
+		return  prodCatalogProdOffer;
 	}
 
 }

@@ -183,6 +183,16 @@ public class ProductCatalog extends Catalog {
        }
         return validProdCatalogProdOffer;
     }
+    public ProdCatalogProdOffer retrieveProdOffering(String id){
+        ParameterUtil.checkParameterIsNulForException(id,"id");
+        List<ProdCatalogProdOffer> validProdCatalogProdOffer =new ArrayList<ProdCatalogProdOffer>();
+        for (ProdCatalogProdOffer prodCatalogProdOffer:this.prodCatalogProdOffer){
+            if(id.equals(prodCatalogProdOffer.getProdOffering().getId())){
+                return  prodCatalogProdOffer;
+            }
+        }
+        return null;
+    }
 
     /**
      * 
