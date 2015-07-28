@@ -14,8 +14,6 @@
 package com.digiwes.product.resource.response;
 
 import com.digiwes.basetype.TimePeriod;
-import com.digiwes.product.offering.BundledProductOffering;
-
 import java.util.List;
 
 public class ProdOffering {

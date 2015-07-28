@@ -13,7 +13,7 @@
  */
 package com.digiwes.product.resource.response;
 
-public class BundledProductSpecification {
+public class BundledProductOffering {
   private String id;
 
   public String getId() {
