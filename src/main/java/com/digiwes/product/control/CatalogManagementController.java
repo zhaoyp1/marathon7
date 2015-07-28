@@ -1,8 +1,9 @@
 package com.digiwes.product.control;
 
 import com.digiwes.common.utils.ParameterUtil;
-import com.digiwes.product.resource.response.ProductOffering;
 
+import com.digiwes.product.resource.response.ProdOffering;
+import com.digiwes.product.offering.catalog.*;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +13,8 @@ public class CatalogManagementController {
 	 * 
 	 * @param productOffering
 	 */
-	public ProductOffering publishOffering(ProductOffering productOffering) {
-		// TODO - implement CatalogManagementController.publishOffering
+	public ProdOffering publishOffering(ProductCatalog productCatalog, ProdOffering productOffering) {
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -23,7 +24,7 @@ public class CatalogManagementController {
 	 * @param offeringName
 	 * @param time
 	 */
-	public List<Map<String, Object>> retrieveProductOffering(String fields, String offeringName, String time) {
+	public List<Map<String, Object>> retrieveProductOffering(ProductCatalog productCatalog,String fields, String offeringName, String time) {
 		// TODO - implement CatalogManagementController.retrieveProductOffering
 		if(ParameterUtil.checkParamIsNullOrEmpty(fields)){
 
@@ -36,7 +37,7 @@ public class CatalogManagementController {
 	 * @param id
 	 * @param fields
 	 */
-	public Map<String, Object> retrieveOffering(String id, String fields) {
+	public Map<String, Object> retrieveOffering(ProductCatalog productCatalog,String id, String fields) {
 		// TODO - implement CatalogManagementController.retrieveOffering
 		throw new UnsupportedOperationException();
 	}
