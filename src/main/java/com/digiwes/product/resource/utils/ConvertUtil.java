@@ -69,11 +69,11 @@ public class ConvertUtil {
         }
         prodOffering.setProductOfferingPrice(prodOfferingPriceResult);
         if(prodCatalogProdOffer.getProdOffering() instanceof SimpleProductOffering){
-            prodOffering.setProductSpecification(convertToProdSpecRef((SimpleProductOffering)prodCatalogProdOffer.getProdOffering()));
+            prodOffering.setProductSpecification(convertToProdSpecRef((SimpleProductOffering) prodCatalogProdOffer.getProdOffering()));
         }else{
             prodOffering.setProductSpecification(null);
         }
-       return null;
+       return prodOffering;
     }
 
     private ProductOfferingPrice convertToProductOfferingPrice(com.digiwes.product.offering.price.ProductOfferingPrice productOfferingPrice){
