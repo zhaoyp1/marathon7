@@ -57,7 +57,7 @@ public enum BusinessCode {
 	 * @param code
 	 * @param message
 	 */
-    BusinessCode(int code, String message) {
+    private BusinessCode(int code, String message) {
         this.code = code;
 		this.message = message;
     }
