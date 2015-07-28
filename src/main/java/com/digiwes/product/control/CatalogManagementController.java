@@ -1,5 +1,6 @@
 package com.digiwes.product.control;
 
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.utils.ParameterUtil;
 import com.digiwes.product.control.persistence.PersistenceFactory;
 import com.digiwes.product.control.persistence.ProductOfferingPersistence;
@@ -10,6 +11,7 @@ import com.digiwes.product.resource.response.ProdOffering;
 import com.digiwes.product.resource.utils.ConvertUtil;
 import com.digiwes.product.resource.utils.DateAdapter;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +34,7 @@ public class CatalogManagementController {
 			if(null == exists){
 
 			}
-			int result = productCatalog.publish(exists, productOffering.getValidFor());
+			BusinessCode result = productCatalog.publish(exists, productOffering.getValidFor());
 		}catch (Exception e)  {
 		   e.printStackTrace();
 		}
