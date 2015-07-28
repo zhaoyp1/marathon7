@@ -7,6 +7,8 @@ import com.digiwes.product.control.persistence.PersistenceFactory;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.response.ProdOffering;
+import com.digiwes.product.resource.response.ProductOfferingPrice;
+import com.digiwes.product.resource.utils.ConvertUtil;
 
 import javax.ws.rs.*;
 import java.util.ArrayList;
@@ -21,9 +23,8 @@ import java.util.Map;
 @Produces({ "application/json"})
 public class CatalogManagementResource {
 
-
-
-    @Path("/retrieveProductOffering")
+    @GET
+    @Path("/productOffering")
     public List<Map<String, Object>> retrieveProductOffering(@QueryParam("fields") String fields, @QueryParam("offeringName") String offeringName, @QueryParam("time") String time){
         //return value
         ProdOffering productOffering = new ProdOffering();
@@ -35,20 +36,23 @@ public class CatalogManagementResource {
         CatalogManagementController catalogManagementController = new CatalogManagementController();
         List<ProdCatalogProdOffer> productOfferingUnderCatalog = catalogManagementController.retrieveProductOffering(productCatalog, offeringName, time);
 
-        List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
-        if(ParameterUtil.checkParamIsNullOrEmpty(fields)){
-            if(null != productOfferingUnderCatalog && productOfferingUnderCatalog.size()>0){
-                for(ProdCatalogProdOffer prodCatalogProdOffer : productOfferingUnderCatalog){
-                    Map<String, Object> resultMap = new HashMap<String, Object>();
-                    resultMap.put("prodOffering", prodCatalogProdOffer.getProdOffering());
-                    resultMap.put("productOfferingPrice", prodCatalogProdOffer.getProductOfferingPrice());
-                    resultMap.put("validFor", prodCatalogProdOffer.getValidFor());
-                    resultList.add(resultMap);
-                }
+        List<ProdOffering> resultProdOfferingList = new ArrayList<ProdOffering>();
+        if(null != productOfferingUnderCatalog && productOfferingUnderCatalog.size()>0){
+            for(ProdCatalogProdOffer prodCatalogProdOffer : productOfferingUnderCatalog){
+                ProdOffering prodOffering = ConvertUtil.convertToProdOffering(prodCatalogProdOffer);
+                resultProdOfferingList.add(prodOffering);
             }
         }
-        //TODO convert the return value to return json
-        return resultList;
+
+       List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+       if(null != resultProdOfferingList && resultProdOfferingList.size()>0){
+           for(ProdOffering resultProdOffering :resultProdOfferingList){
+               Map<String,Object> map = ConvertUtil.convertObjectToMap(resultProdOffering, fields);
+               resultList.add(map);
+           }
+       }
+
+       return resultList;
     }
 
     @POST

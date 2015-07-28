@@ -58,19 +58,6 @@ public class CatalogManagementController {
 		}
 		List<ProdCatalogProdOffer> prodCatalogProdOfferList = productCatalog.retrieveOffering(offeringName, offeringTime);
 
-		/*//screening
-		if(ParameterUtil.checkParamIsNullOrEmpty(fields)){
-			if(null != prodCatalogProdOfferList && prodCatalogProdOfferList.size()>0){
-				for(ProdCatalogProdOffer prodCatalogProdOffer : prodCatalogProdOfferList){
-					Map<String, Object> resultMap = new HashMap<String, Object>();
-					resultMap.put("prodOffering", prodCatalogProdOffer.getProdOffering());
-					resultMap.put("productOfferingPrice", prodCatalogProdOffer.getProductOfferingPrice());
-					resultMap.put("validFor", prodCatalogProdOffer.getValidFor());
-					resultList.add(resultMap);
-				}
-			}
-		}
-		throw new UnsupportedOperationException();*/
 		return prodCatalogProdOfferList;
 	}
 

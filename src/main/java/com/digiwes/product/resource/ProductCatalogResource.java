@@ -24,7 +24,7 @@ import java.util.List;
  * Created by zhaoyp on 2015/7/19.
  */
 @Service
-@Path("/catalogManagement")
+@Path("/catalogManagement1")
 public class ProductCatalogResource {
 
     private static ProductCatalogController prodCatalogController = new ProductCatalogController();
