@@ -1,6 +1,7 @@
 package com.digiwes.product.offering;
 
 import com.digiwes.basetype.TimePeriod;
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.product.spec.AtomicProductSpecification;
@@ -46,26 +47,26 @@ public class BundledProductOfferingTest {
 
         //offering is null
         ProductOffering offeringNull = null;
-        int rtnCode = bundledProdOffering.composeOf(offeringNull, lowerLimit, upperLimit);
-        assertEquals("offering is null", ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode(), rtnCode);
+        BusinessCode rtnCode = bundledProdOffering.composeOf(offeringNull, lowerLimit, upperLimit);
+        assertEquals("offering is null", BusinessCode.PROD_OFFERING_IS_NULL, rtnCode);
         assertEquals("offering is null", 0, bundledProdOffering.getBundledProdOfferOption().size());
 
         //min > max
         int lowerLimitMin = 2;
         int upperLimitMax = 1;
         rtnCode = bundledProdOffering.composeOf(offering, lowerLimitMin, upperLimitMax);
-        assertEquals("add an simpleOffering to bundleProductOffering, min > max", ProdOfferingErrorCode.BUNDLED_PROD_OFFERING_LOWERLIMIT_GREATER_UPPERLIMIT.getCode(), rtnCode);
+        assertEquals("add an simpleOffering to bundleProductOffering, min > max", BusinessCode.PROD_OFFERING_BUNDLED_OPTION_LOWERLIMIT_GT_UPPERLIMIT.getCode(), rtnCode.getCode());
         assertEquals("add an simpleOffering to bundleProductOffering, min > max", 0, bundledProdOffering.getBundledProdOfferOption().size());
 
         //normal
         rtnCode = bundledProdOffering.composeOf(offering, lowerLimit, upperLimit);
-        assertEquals("add an simpleOffering to bundleProductOffering", CommonErrorCode.SUCCESS.getCode(), rtnCode);
+        assertEquals("add an simpleOffering to bundleProductOffering", BusinessCode.SUCCESS, rtnCode.getCode());
         assertEquals("add an simpleOffering to bundleProductOffering", 1, bundledProdOffering.getBundledProdOfferOption().size());
         assertEquals("add an simpleOffering to bundleProductOffering", offering, bundledProdOffering.getBundledProdOfferOption().get(0).getProductOffering());
 
         //repeat offering can add
         rtnCode = bundledProdOffering.composeOf(offering, lowerLimit, upperLimit);
-        assertEquals("add an simpleOffering to bundleProductOffering", ProdOfferingErrorCode.BUNDLED_PROD_OFFERING_ALREADY_COMPOSED.getCode(), rtnCode);
+        assertEquals("add an simpleOffering to bundleProductOffering", BusinessCode.PROD_OFFERING_BUNDLED_OFFERING_EXISTED.getCode(), rtnCode.getCode());
         assertEquals("add an simpleOffering to bundleProductOffering", 1, bundledProdOffering.getBundledProdOfferOption().size());
     }
 }

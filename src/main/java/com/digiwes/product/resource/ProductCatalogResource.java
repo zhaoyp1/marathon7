@@ -1,6 +1,7 @@
 package com.digiwes.product.resource;
 
 import com.digiwes.basetype.TimePeriod;
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.utils.TimeUtils;
 import com.digiwes.product.control.ProductCatalogController;
@@ -38,8 +39,8 @@ public class ProductCatalogResource {
     public PublishOfferingResponse publishOffering(PublishOfferingRequest requestParame) throws Exception {
         requestParame.validFor =  new TimePeriod(TimeUtils.parseDate("2015-08-21 23:59:59","yyyy-MM-dd hh:mm:ss"),TimeUtils.parseDate("2015-11-01 23:59:59","yyyy-MM-dd hh:mm:ss"));
         PublishOfferingResponse resultResponse = new PublishOfferingResponse();
-        resultResponse.setCode( String.valueOf(CommonErrorCode.SUCCESS.getCode()));
-        resultResponse.setMessage(CommonErrorCode.SUCCESS.getMessage());
+        resultResponse.setCode( String.valueOf(BusinessCode.SUCCESS.getCode()));
+        resultResponse.setMessage(BusinessCode.SUCCESS.getMessage());
         try {
             ProductCatalog productCatalog = prodCatalogController.publishOffering(requestParame.catalogId, requestParame.prodOfferingId, requestParame.validFor);
             com.digiwes.product.resource.Parameter.ProductCatalog catalogResponse = new com.digiwes.product.resource.Parameter.ProductCatalog();
@@ -73,8 +74,8 @@ public class ProductCatalogResource {
     public RetiredOfferingResponse retiredOffering(RetiredOfferingRequest requestParam) throws Exception{
         requestParam.validFor =  new TimePeriod(TimeUtils.parseDate("2015-07-21 23:59:59","yyyy-MM-dd hh:mm:ss"),TimeUtils.parseDate("2015-11-01 23:59:59","yyyy-MM-dd hh:mm:ss"));
         RetiredOfferingResponse retiredOfferingResult =  new RetiredOfferingResponse();
-        retiredOfferingResult.setCode(String.valueOf(CommonErrorCode.SUCCESS.getCode()));
-        retiredOfferingResult.setMessage(CommonErrorCode.SUCCESS.getMessage());
+        retiredOfferingResult.setCode(String.valueOf(BusinessCode.SUCCESS.getCode()));
+        retiredOfferingResult.setMessage(BusinessCode.SUCCESS.getMessage());
 
         List<PublishedOffering> publishedOfferingList = new ArrayList<PublishedOffering>();
         ProductCatalogController prodCatalogController = new ProductCatalogController();
@@ -114,8 +115,8 @@ public class ProductCatalogResource {
     @Produces({ "application/json", "application/xml" })
     public RetrieveOfferingResponse retrieveOffering(RetrieveOfferingRequest requestParam) throws Exception {
         RetrieveOfferingResponse retrieveOfferingResult =  new RetrieveOfferingResponse();
-        retrieveOfferingResult.setCode(String.valueOf(CommonErrorCode.SUCCESS.getCode()));
-        retrieveOfferingResult.setMessage(CommonErrorCode.SUCCESS.getMessage());
+        retrieveOfferingResult.setCode(String.valueOf(BusinessCode.SUCCESS.getCode()));
+        retrieveOfferingResult.setMessage(BusinessCode.SUCCESS.getMessage());
 
         List<ProdCatalogProdOffer> prodCatalogProdOffers = new ArrayList<ProdCatalogProdOffer>();
         List<PublishedOffering> publishedOfferingList = new ArrayList<PublishedOffering>();
