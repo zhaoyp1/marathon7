@@ -1,18 +1,15 @@
 package com.digiwes.product.control;
 
-import com.digiwes.common.enums.CommonErrorCode;
-import com.digiwes.common.enums.ProdCatalogErrorCode;
-import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
-
 import com.digiwes.product.control.persistence.PersistenceFactory;
 import com.digiwes.product.control.persistence.ProductOfferingPersistence;
 import com.digiwes.product.offering.ProductOffering;
-import com.digiwes.product.resource.Enums.ApiErrorCode;
+import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
+import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.response.ProdOffering;
-import com.digiwes.product.offering.catalog.*;
-import com.digiwes.product.resource.utils.ConvertUtil;
+import com.digiwes.product.resource.utils.DateAdapter;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -45,16 +42,36 @@ public class CatalogManagementController {
 
 	/**
 	 * 
-	 * @param fields
 	 * @param offeringName
 	 * @param time
 	 */
-	public List<Map<String, Object>> retrieveProductOffering(ProductCatalog productCatalog,String fields, String offeringName, String time) {
-		// TODO - implement CatalogManagementController.retrieveProductOffering
-		if(ParameterUtil.checkParamIsNullOrEmpty(fields)){
+	public List<ProdCatalogProdOffer> retrieveProductOffering(ProductCatalog productCatalog, String offeringName, String time) {
+		//choice
+		Date offeringTime = null;
+		try {
+			DateAdapter dateAdapter = new DateAdapter();
+			if(!ParameterUtil.checkParameterIsNull(time)){
+				offeringTime = dateAdapter.unmarshal(time);
+			}
+		}catch (Exception e){
 
 		}
-		throw new UnsupportedOperationException();
+		List<ProdCatalogProdOffer> prodCatalogProdOfferList = productCatalog.retrieveOffering(offeringName, offeringTime);
+
+		/*//screening
+		if(ParameterUtil.checkParamIsNullOrEmpty(fields)){
+			if(null != prodCatalogProdOfferList && prodCatalogProdOfferList.size()>0){
+				for(ProdCatalogProdOffer prodCatalogProdOffer : prodCatalogProdOfferList){
+					Map<String, Object> resultMap = new HashMap<String, Object>();
+					resultMap.put("prodOffering", prodCatalogProdOffer.getProdOffering());
+					resultMap.put("productOfferingPrice", prodCatalogProdOffer.getProductOfferingPrice());
+					resultMap.put("validFor", prodCatalogProdOffer.getValidFor());
+					resultList.add(resultMap);
+				}
+			}
+		}
+		throw new UnsupportedOperationException();*/
+		return prodCatalogProdOfferList;
 	}
 
 	/**

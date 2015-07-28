@@ -164,7 +164,7 @@ public class ProdOffering {
   }
 
   private ResourceCandidateRef resourceCandidate;
-  @XmlElement
+
   public ResourceCandidateRef getResourceCandidate() {
     return resourceCandidate;
   }

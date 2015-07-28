@@ -201,6 +201,36 @@ public class ProductCatalog extends Catalog {
     }
 
     /**
+     *
+     * @param offeringName
+     * @param time
+     * @return
+     */
+    public List<ProdCatalogProdOffer> retrieveOffering(String offeringName, Date time) {
+        if(ParameterUtil.checkParameterIsNull(time)){
+            if(ParameterUtil.checkParamIsNullOrEmpty(offeringName)){
+                return this.prodCatalogProdOffer;
+            }else{
+                return retrieveOffering(offeringName);
+            }
+        }else{
+            if(ParameterUtil.checkParamIsNullOrEmpty(offeringName)){
+                return retrieveOffering(time);
+            }else{
+                List<ProdCatalogProdOffer> validProdCatalogProdOffer =new ArrayList<ProdCatalogProdOffer>();
+                for (ProdCatalogProdOffer prodCatalogProdOffer:this.prodCatalogProdOffer){
+                    if(prodCatalogProdOffer.getValidFor().isInTimePeriod(time)){
+                        if(prodCatalogProdOffer.getProdOffering().getName().equals(offeringName)){
+                            validProdCatalogProdOffer.add(prodCatalogProdOffer);
+                        }
+                    }
+                }
+                return validProdCatalogProdOffer;
+            }
+        }
+    }
+
+    /**
      * 
      * @param offering
      * @param validFor
