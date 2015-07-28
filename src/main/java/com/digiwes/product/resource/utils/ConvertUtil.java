@@ -100,14 +100,21 @@ public class ConvertUtil {
         prodSpecRef.setHref("");
         return prodSpecRef;
     }
-    public static Map<String,Object> convertObjectToMap(Object thisObj,String fields)
+    public static Map<String,Object> convertObjectToMap(Object thisObj,String fields,String requiredField)
     {
         Map map = new HashMap();
         Class c;
         String [] fieldArray = null;
+        String [] requiredFields =null;
         if(!StringUtils.isEmpty(fields)){
-            fieldArray = fields.split(",");
+            String allFields= fields;
+            if(!StringUtils.isEmpty(requiredField)){
+                allFields=fields+","+requiredField;
+
+            }
+            fieldArray=allFields.split(",");
         }
+
         try
         {
             c = Class.forName(thisObj.getClass().getName());
@@ -121,7 +128,9 @@ public class ConvertUtil {
                         Object value = m[i].invoke(thisObj);
                         if (value != null)
                         {
-                            if(null != fieldArray){
+                            if(!StringUtils.isEmpty(fields)){
+
+
                                 for(int j=0 ; j<fieldArray.length ; j++){
 
                                     String key=method.substring(3);

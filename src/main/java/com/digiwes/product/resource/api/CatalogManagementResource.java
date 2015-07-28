@@ -61,7 +61,7 @@ public class CatalogManagementResource {
         ProdCatalogProdOffer prodCatalogProdOffer = catalogManagementController.retrieveOffering(catalog, id);
         ProdOffering offering =ConvertUtil.convertToProdOffering(prodCatalogProdOffer);
         if( null != offering){
-            result = ConvertUtil.convertObjectToMap(offering, fields);
+            result = ConvertUtil.convertObjectToMap(offering, fields,"id");
         }
         return  result;
     }
