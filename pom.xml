@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.digiwes</groupId>
   <artifactId>marathon7</artifactId>
-  <packaging>war</packaging>
+  <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>marathon7 Maven Webapp</name>
   <url>http://maven.apache.org</url>

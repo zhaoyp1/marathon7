@@ -1,6 +1,6 @@
 package com.digiwes.product.spec;
 
-import com.digiwes.basetype.*;
+import com.digiwes.basetype.TimePeriod;
 
 /**
  * A migration, substitution, dependency, or exclusivity relationship between/among ProductSpecifications.

@@ -2,11 +2,11 @@ package com.digiwes.product.spec;
 
 import java.util.*;
 
-import com.digiwes.basetype.*;
 import com.digiwes.common.enums.CommonEnum;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
+import com.digiwes.basetype.TimePeriod;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 

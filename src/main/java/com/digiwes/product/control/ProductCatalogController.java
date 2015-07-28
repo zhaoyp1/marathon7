@@ -9,13 +9,10 @@ import com.digiwes.product.control.persistence.CatalogPersistence;
 import com.digiwes.product.control.persistence.PersistenceFactory;
 import com.digiwes.product.control.persistence.ProductOfferingPersistence;
 import com.digiwes.product.control.persistence.impl.CatalogPersistenceSimpleImpl;
-import com.digiwes.product.control.persistence.impl.ProductOfferingPersistenceSimpleImpl;
 import com.digiwes.product.offering.ProductOffering;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
-import com.digiwes.product.resource.Parameter.PublishOfferingRequest;
 import com.digiwes.product.resource.Parameter.PublishedOffering;
-import com.digiwes.product.resource.Parameter.RetiredOfferingResponse;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -46,33 +43,31 @@ public class ProductCatalogController {
              throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID.getMessage());
          } else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode() == result){
              throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getMessage());
+         } else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_IS_PUBLISHED.getCode() == result){
+             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_IS_PUBLISHED.getMessage());
          }
          catalogPersistence.save(catalog);
          return catalog;
      }
 
     /**
-     * TODO retiredOffering
+     * method of retiredOffering
      */
-    public PublishedOffering retiredOffering(String prodCatalogId, String prodOfferingId, TimePeriod validFor) throws Exception{
-        PublishedOffering publishedOffering = new PublishedOffering();
+    public ProdCatalogProdOffer retiredOffering(ProductCatalog prodCatalog, String prodOfferingId, TimePeriod validFor) throws Exception{
         CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
         ProductOfferingPersistence productOfferingPersistence = PersistenceFactory.getProdOfferingPersistence();
-
-        ProductCatalog prodCatalog = catalogPersistence.load(prodCatalogId);
         ProductOffering prodOffering = productOfferingPersistence.load(prodOfferingId);
-        int resultCode = prodCatalog.retired(prodOffering, validFor);
 
-
-        com.digiwes.product.resource.Parameter.ProductOffering productOffering = new com.digiwes.product.resource.Parameter.ProductOffering();
-        productOffering.convertFromProductOffering(prodOffering);
-        publishedOffering.setProductOffering(productOffering);
-
-        com.digiwes.product.resource.Parameter.ProductCatalog productCatalog = new com.digiwes.product.resource.Parameter.ProductCatalog();
-        productCatalog.convertFromProductCatalog(prodCatalog);
-        publishedOffering.setExistInProdCatalog(productCatalog);
-        catalogPersistence.save(prodCatalog);
-        return publishedOffering;
+        if(null != prodCatalog.getProdCatalogProdOffer()){
+            for(ProdCatalogProdOffer prodCatalogProdOffer : prodCatalog.getProdCatalogProdOffer()){
+                if(prodCatalogProdOffer.getProdOffering().getId().equals(prodOfferingId) && prodCatalogProdOffer.getValidFor().equals(validFor)){
+                    prodCatalog.retired(prodOffering, validFor);
+                    catalogPersistence.save(prodCatalog);
+                    return prodCatalogProdOffer;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -94,7 +89,7 @@ public class ProductCatalogController {
      * retrieveCatalog
      */
     public ProductCatalog retrieveCatalog(String catalogId) throws Exception{
-        CatalogPersistenceSimpleImpl catalogPersistence = new CatalogPersistenceSimpleImpl();
+        CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
         return  catalogPersistence.load(catalogId);
 
     }

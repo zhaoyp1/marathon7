@@ -14,4 +14,6 @@ public interface ProductOfferingPersistence {
     public List<ProductOffering> retrieveOffering(String offerName) throws Exception;
 
     public ProductOffering load(String id) throws Exception;
+
+    public ProductOffering getOfferByName(String name) throws Exception;
 }

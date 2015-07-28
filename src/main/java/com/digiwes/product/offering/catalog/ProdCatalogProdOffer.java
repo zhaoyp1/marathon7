@@ -4,7 +4,7 @@ import com.digiwes.common.utils.ParameterUtil;
 import com.digiwes.product.offering.*;
 import java.util.*;
 import com.digiwes.product.offering.price.*;
-import com.digiwes.basetype.*;
+import com.digiwes.basetype.TimePeriod;
 
 /**
  * The appearance of a ProductOffering in a ProductCatalog.
@@ -95,9 +95,5 @@ public class ProdCatalogProdOffer {
         return result;
     }
 
-    //public String toString() {
-        // TODO - implement ProdCatalogProdOffer.toString
-       // throw new UnsupportedOperationException();
-   // }
 
 }

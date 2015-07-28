@@ -1,6 +1,6 @@
 package com.digiwes.product.spec;
 
-import com.digiwes.basetype.*;
+import com.digiwes.basetype.TimePeriod;
 
 /**
  * A type of ProductSpecification that does not have any subordinate ProductSpecifications, that is, an AtomicProductSpecification is a leaf-level ProductSpecification.

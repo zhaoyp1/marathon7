@@ -144,26 +144,26 @@ public class ProductSpecCharacteristicTest {
         result=prodSpecChar.associate(targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-01-01 00:00:00"), DateUtils.datetimeFormat.parse("2015-01-29 23:59:59")));
         productSpecCharValueRelationShip = new ProductSpecCharRelationship(prodSpecChar, targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-01-01 00:00:00"),DateUtils.datetimeFormat.parse("2015-01-29 23:59:59")));
         exceptProductSpecRelationship.add(productSpecCharValueRelationShip);
-        assertEquals("add Related SpecChar£ºhave create a aggregation relationship (time before )", CommonErrorCode.SUCCESS.getCode(), result);
+        assertEquals("add Related SpecCharï¿½ï¿½have create a aggregation relationship (time before )", CommonErrorCode.SUCCESS.getCode(), result);
         assertEquals("add Related SpecChar.", 2, prodSpecChar.getProdSpecCharRelationship().size());
         assertEquals("add Related SpecChar.",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
 
         result=prodSpecChar.associate(targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-01-01 00:00:00"), DateUtils.datetimeFormat.parse("2015-06-29 23:59:59")));
-        assertEquals("add Related SpecChar£ºhave create a aggregation relationship (time in period  )",ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT.getCode(), result);
-        assertEquals("add Related SpecChar£ºhave create a aggregation relationship (time in period  )",2, prodSpecChar.getProdSpecCharRelationship().size());
-        assertEquals("add Related SpecChar£ºhave create a aggregation relationship (time in period  )",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
+        assertEquals("add Related SpecCharï¿½ï¿½have create a aggregation relationship (time in period  )",ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT.getCode(), result);
+        assertEquals("add Related SpecCharï¿½ï¿½have create a aggregation relationship (time in period  )",2, prodSpecChar.getProdSpecCharRelationship().size());
+        assertEquals("add Related SpecCharï¿½ï¿½have create a aggregation relationship (time in period  )",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
 
         result=prodSpecChar.associate(targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-09-01 23:59:59"), DateUtils.datetimeFormat.parse("2015-10-29 23:59:59")));
         productSpecCharValueRelationShip = new ProductSpecCharRelationship(prodSpecChar, targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-09-01 23:59:59"),DateUtils.datetimeFormat.parse("2015-10-29 23:59:59")));
         exceptProductSpecRelationship.add(productSpecCharValueRelationShip);
-        assertEquals("add Related SpecChar£ºhave create a aggregation relationship (time after  )", CommonErrorCode.SUCCESS.getCode(), result);
+        assertEquals("add Related SpecCharï¿½ï¿½have create a aggregation relationship (time after  )", CommonErrorCode.SUCCESS.getCode(), result);
         assertEquals("add Related SpecChar.have create a aggregation relationship (time after  )",3, prodSpecChar.getProdSpecCharRelationship().size());
-        assertEquals("add Related SpecChar£ºhave create a aggregation relationship (time after  )",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
+        assertEquals("add Related SpecCharï¿½ï¿½have create a aggregation relationship (time after  )",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
 
         result=prodSpecChar.associate(targetChar, ProdSpecEnum.ProdSpecRelationship.DEPENDENCY.getValue(), validFor);
         assertEquals("add Related SpecChar:have create other relationship", ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT.getCode(), result);
-        assertEquals("add Related SpecChar£ºhave create other relationship",3, prodSpecChar.getProdSpecCharRelationship().size());
-        assertEquals("add Related SpecChar£ºhave create a aggregation relationship (time after  )",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
+        assertEquals("add Related SpecCharï¿½ï¿½have create other relationship",3, prodSpecChar.getProdSpecCharRelationship().size());
+        assertEquals("add Related SpecCharï¿½ï¿½have create a aggregation relationship (time after  )",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
     }
 
     @Test

@@ -4,17 +4,15 @@ import com.digiwes.common.catalog.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
-import com.digiwes.basetype.*;
 import com.digiwes.common.enums.CommonErrorCode;
-import com.digiwes.common.enums.ProdCatalog;
 import com.digiwes.common.enums.ProdCatalogErrorCode;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
 import com.digiwes.common.utils.TimeUtils;
 import com.digiwes.product.offering.*;
 import com.digiwes.product.offering.price.*;
+import com.digiwes.basetype.TimePeriod;
 import org.apache.log4j.Logger;
 
 /**
@@ -59,12 +57,13 @@ public class ProductCatalog extends Catalog {
      */
     public int publish(ProductOffering offering, TimePeriod validFor) {
         int code = checkOffering(offering, validFor);
-        if (CommonErrorCode.SUCCESS.getCode() == code){
-            ProdCatalogProdOffer catalogProdOffer=new ProdCatalogProdOffer(offering,validFor);
-            prodCatalogProdOffer.add(catalogProdOffer);
-            return CommonErrorCode.SUCCESS.getCode();
+        if (CommonErrorCode.SUCCESS.getCode() != code){
+            return code;
         }
-        return code;
+        ProdCatalogProdOffer catalogProdOffer=new ProdCatalogProdOffer(offering,validFor);
+        prodCatalogProdOffer.add(catalogProdOffer);
+        return CommonErrorCode.SUCCESS.getCode();
+
     }
 
 
@@ -77,12 +76,12 @@ public class ProductCatalog extends Catalog {
      */
     public int publish(ProductOffering offering, TimePeriod validFor, List<ProductOfferingPrice> price) {
         int code = checkOffering(offering, validFor);
-        if (CommonErrorCode.SUCCESS.getCode() == code){
-            ProdCatalogProdOffer catalogProdOffer=new ProdCatalogProdOffer(offering,validFor,price);
-            prodCatalogProdOffer.add(catalogProdOffer);
-            return CommonErrorCode.SUCCESS.getCode();
+        if (CommonErrorCode.SUCCESS.getCode() != code){
+            return code;
         }
-        return code;
+        ProdCatalogProdOffer catalogProdOffer=new ProdCatalogProdOffer(offering,validFor,price);
+        prodCatalogProdOffer.add(catalogProdOffer);
+        return CommonErrorCode.SUCCESS.getCode();
     }
 
 
@@ -100,13 +99,14 @@ public class ProductCatalog extends Catalog {
             return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
         }
         ProdCatalogProdOffer prodCatalogProdOffer = this.retrieveProdCatalogProdOffer(offering, validFor);
-        if( null != prodCatalogProdOffer) {
-            validFor.setEndDateTime(new Date());
-            prodCatalogProdOffer.setValidFor(validFor);
-            return CommonErrorCode.SUCCESS.getCode() ;
+        if( null == prodCatalogProdOffer) {
+            logger.warn("offering have not been publish");
+            return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_NOT_BE_PUBLISH.getCode();
         }
-        logger.warn("offering have not been publish");
-        return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_NOT_BE_PUBLISH.getCode();
+        validFor.setEndDateTime(new Date());
+        prodCatalogProdOffer.setValidFor(validFor);
+        return CommonErrorCode.SUCCESS.getCode() ;
+
     }
 
     /**
@@ -201,6 +201,36 @@ public class ProductCatalog extends Catalog {
     }
 
     /**
+     *
+     * @param offeringName
+     * @param time
+     * @return
+     */
+    public List<ProdCatalogProdOffer> retrieveOffering(String offeringName, Date time) {
+        if(ParameterUtil.checkParameterIsNull(time)){
+            if(ParameterUtil.checkParamIsNullOrEmpty(offeringName)){
+                return this.prodCatalogProdOffer;
+            }else{
+                return retrieveOffering(offeringName);
+            }
+        }else{
+            if(ParameterUtil.checkParamIsNullOrEmpty(offeringName)){
+                return retrieveOffering(time);
+            }else{
+                List<ProdCatalogProdOffer> validProdCatalogProdOffer =new ArrayList<ProdCatalogProdOffer>();
+                for (ProdCatalogProdOffer prodCatalogProdOffer:this.prodCatalogProdOffer){
+                    if(prodCatalogProdOffer.getValidFor().isInTimePeriod(time)){
+                        if(prodCatalogProdOffer.getProdOffering().getName().equals(offeringName)){
+                            validProdCatalogProdOffer.add(prodCatalogProdOffer);
+                        }
+                    }
+                }
+                return validProdCatalogProdOffer;
+            }
+        }
+    }
+
+    /**
      * 
      * @param offering
      * @param validFor
@@ -262,8 +292,8 @@ public class ProductCatalog extends Catalog {
             return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date now = TimeUtils.parseDate(new Date());
-        if(now.compareTo(validFor.getStartDateTime()) ==1){
+        Date now = TimeUtils.truncDate(new Date());
+        if( 1 == now.compareTo(validFor.getStartDateTime())){
             return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode();
         }
         if (contains(offering, validFor)){

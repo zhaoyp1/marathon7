@@ -1,7 +1,5 @@
 package com.digiwes.product.resource.Parameter;
 
-import com.digiwes.basetype.TimePeriod;
-
 public class ProductCatalog {
 
     public String id;

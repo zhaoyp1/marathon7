@@ -53,4 +53,17 @@ public class ProductOfferingPersistenceSimpleImpl implements ProductOfferingPers
         }
         return null;
     }
+    public ProductOffering getOfferByName(String name) throws Exception {
+        if (StringUtils.isEmpty(name)) {
+            logger.error("parameter [name] can't be empty");
+            throw new IllegalArgumentException("parameter [name] can't be empty");
+        }
+        List<ProductOffering> offeringList = getAllOffering();
+        for (ProductOffering offering : offeringList) {
+            if ( offering.getName().equals(name)) {
+                return offering;
+            }
+        }
+        return null;
+    }
 }

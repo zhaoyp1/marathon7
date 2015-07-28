@@ -1,8 +1,8 @@
 package com.digiwes.product.offering;
 
 import com.digiwes.common.utils.ParameterUtil;
+import com.digiwes.basetype.TimePeriod;
 import com.digiwes.product.spec.*;
-import com.digiwes.basetype.*;
 
 import java.util.Map;
 
@@ -12,6 +12,10 @@ import java.util.Map;
 public class SimpleProductOffering extends ProductOffering {
 
     private ProductSpecification productSpecification;
+
+    public ProductSpecification getProductSpecification() {
+        return productSpecification;
+    }
 
     /**
      * 

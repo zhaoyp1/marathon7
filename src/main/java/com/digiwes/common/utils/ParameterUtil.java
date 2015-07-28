@@ -19,4 +19,12 @@ public class ParameterUtil {
           }
        }
     }
+
+    //check parameter is null or empty
+    public static boolean checkParamIsNullOrEmpty(String param){
+        if(null == param || "".equals(param)){
+            return true;
+        }
+        return false;
+    }
 }
