@@ -1,5 +1,7 @@
 package com.digiwes.product.control;
 
+import com.digiwes.common.utils.ParameterUtil;
+
 import com.digiwes.product.resource.response.ProdOffering;
 import com.digiwes.product.offering.catalog.*;
 import java.util.List;
@@ -24,6 +26,9 @@ public class CatalogManagementController {
 	 */
 	public List<Map<String, Object>> retrieveProductOffering(ProductCatalog productCatalog,String fields, String offeringName, String time) {
 		// TODO - implement CatalogManagementController.retrieveProductOffering
+		if(ParameterUtil.checkParamIsNullOrEmpty(fields)){
+
+		}
 		throw new UnsupportedOperationException();
 	}
 
