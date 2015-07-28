@@ -139,7 +139,7 @@ public class ProdOffering {
 
   private BundledProductOffering[] bundledProductOffering;
 
-  public BundledProductOffering[] getBundledProductSpecification() {
+  public BundledProductOffering[] getBundledProductOffering() {
     return bundledProductOffering;
   }
 
