@@ -105,7 +105,6 @@ public class ConvertUtil {
         Map map = new HashMap();
         Class c;
         String [] fieldArray = null;
-        String [] requiredFields =null;
         if(!StringUtils.isEmpty(fields)){
             String allFields= fields;
             if(!StringUtils.isEmpty(requiredField)){

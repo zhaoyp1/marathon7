@@ -1,20 +1,15 @@
 package com.digiwes.product.resource.api;
 
-import com.digiwes.common.utils.ParameterUtil;
 import com.digiwes.product.control.CatalogManagementController;
 import com.digiwes.product.control.persistence.CatalogPersistence;
 import com.digiwes.product.control.persistence.PersistenceFactory;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.response.ProdOffering;
-import com.digiwes.product.resource.response.ProductOfferingPrice;
 import com.digiwes.product.resource.utils.ConvertUtil;
-import com.digiwes.product.resource.utils.ConvertUtil;
-import org.apache.commons.lang.StringUtils;
 
 import javax.ws.rs.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
