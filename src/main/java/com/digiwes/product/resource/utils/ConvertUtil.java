@@ -53,7 +53,7 @@ public class ConvertUtil {
     }
 
     //covert prodCatalogProdOffering to prodOffering
-    public ProdOffering convertToProdOffering(ProdCatalogProdOffer prodCatalogProdOffer){
+    public static  ProdOffering convertToProdOffering(ProdCatalogProdOffer prodCatalogProdOffer){
         ProdOffering prodOffering = new ProdOffering();
         prodOffering.setId(prodCatalogProdOffer.getProdOffering().getId());
         prodOffering.setValidFor(prodCatalogProdOffer.getValidFor());
@@ -80,7 +80,7 @@ public class ConvertUtil {
        return prodOffering;
     }
 
-    private ProductOfferingPrice convertToProductOfferingPrice(com.digiwes.product.offering.price.ProductOfferingPrice productOfferingPrice){
+    private static  ProductOfferingPrice convertToProductOfferingPrice(com.digiwes.product.offering.price.ProductOfferingPrice productOfferingPrice){
         ProductOfferingPrice prodOfferingPrice = new ProductOfferingPrice();
         prodOfferingPrice.setVersion("1.0.0");
         prodOfferingPrice.setDescription(productOfferingPrice.getDescription());
@@ -89,7 +89,7 @@ public class ConvertUtil {
         return prodOfferingPrice;
     }
 
-    private ProductSpecificationRef convertToProdSpecRef(SimpleProductOffering simpleProdOffering){
+    private static ProductSpecificationRef convertToProdSpecRef(SimpleProductOffering simpleProdOffering){
         ProductSpecificationRef prodSpecRef = new ProductSpecificationRef();
         prodSpecRef.setId(simpleProdOffering.getId());
         prodSpecRef.setName(simpleProdOffering.getName());
