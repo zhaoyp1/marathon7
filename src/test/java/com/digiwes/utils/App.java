@@ -1,12 +1,9 @@
 package com.digiwes.utils;
 
-<<<<<<< HEAD
 import com.digiwes.product.spec.data.CatalogData;
 import com.digiwes.product.spec.data.OfferingData;
-=======
 import com.digiwes.product.resource.ProductCatalogResource;
 import com.digiwes.product.spec.data.*;
->>>>>>> f672301e5656c807905ef068f0acc4356f159b89
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.servlet.GrizzlyWebContainerFactory;
 import org.glassfish.jersey.server.ServerProperties;
@@ -30,9 +27,6 @@ public class App {
     public  static void main(String[] args) {
         try {
 
-            //busi data inlitialize
-            initBusiData();
-
             Map<String, String> initParams = new HashMap<String, String>();
             initParams.put(ServerProperties.PROVIDER_PACKAGES, ProductCatalogResource.class.getPackage().getName());
             
@@ -46,16 +40,10 @@ public class App {
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-<<<<<<< HEAD
-    public static void initBusiData() {
-        OfferingData.init();
-=======
     public static void initData(){
         SpecCharData.init();       // create char
         SpecData.init();           //create spec
         OfferingData.init();
-        //PriceData.init();
->>>>>>> f672301e5656c807905ef068f0acc4356f159b89
         CatalogData.init();
     }
 }
