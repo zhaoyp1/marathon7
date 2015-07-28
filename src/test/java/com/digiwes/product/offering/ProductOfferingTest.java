@@ -1,6 +1,7 @@
 package com.digiwes.product.offering;
 
 import com.digiwes.basetype.TimePeriod;
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdOfferingEnum;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
@@ -38,7 +39,7 @@ public class ProductOfferingTest {
         Date endDateTime = DateUtils.str2Date("2015-09-01 00:00:00",DateUtils.datetimeFormat);
         validFor = new TimePeriod(startDateTime, endDateTime);
         prodSpec = new AtomicProductSpecification("1", "11 Pounds MacBook Air", "apple", "Mac", validForSpec);
-        offering = new SimpleProductOffering("0001",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 process£¬Turbo Boost 2.7GHz",  validFor,  prodSpec);
+        offering = new SimpleProductOffering("0001",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 processï¿½ï¿½Turbo Boost 2.7GHz",  validFor,  prodSpec);
     }
 
     @org.junit.Test
@@ -47,31 +48,31 @@ public class ProductOfferingTest {
 
         //offeringTarget is null
         ProductOffering offeringTargetNull = null;
-        int rtnCode = offering.associate(offeringTargetNull, ProdOfferingEnum.OfferingRelationshipType.AGGREGATION.getValue(), validFor);
+        BusinessCode rtnCode = offering.associate(offeringTargetNull, ProdOfferingEnum.OfferingRelationshipType.AGGREGATION.getValue(), validFor);
         assertEquals("target offering is null", 0, offering.getProdOfferingRelationship().size());
-        assertEquals("target offering is null", ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode(), rtnCode);
+        assertEquals("target offering is null", BusinessCode.PROD_OFFERING_IS_NULL.getCode(), rtnCode.getCode());
 
         //type of relationship is null
-        ProductOffering offeringTarget = new SimpleProductOffering("0002",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 process£¬Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
+        ProductOffering offeringTarget = new SimpleProductOffering("0002",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 processï¿½ï¿½Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
         rtnCode = offering.associate(offeringTarget, null, validFor);
         assertEquals("type of relationship is null", 0, offering.getProdOfferingRelationship().size());
-        assertEquals("type of relationship is null", ProdOfferingErrorCode.PROD_OFFERING_RELATIONSHIP_TYPE_IS_NULL_OR_EMPTY.getCode(), rtnCode);
+        assertEquals("type of relationship is null", BusinessCode.PROD_OFFERING_RELATIONSHIP_TYPE_IS_NULL_OR_EMPTY.getCode(), rtnCode.getCode());
 
         //type of relationship is empty
         rtnCode = offering.associate(offeringTarget, "", validFor);
         assertEquals("type of relationship is null", 0, offering.getProdOfferingRelationship().size());
-        assertEquals("type of relationship is null", ProdOfferingErrorCode.PROD_OFFERING_RELATIONSHIP_TYPE_IS_NULL_OR_EMPTY.getCode(), rtnCode);
+        assertEquals("type of relationship is null", BusinessCode.PROD_OFFERING_RELATIONSHIP_TYPE_IS_NULL_OR_EMPTY.getCode(), rtnCode.getCode());
 
         //validFor is null
         rtnCode = offering.associate(offeringTarget, ProdOfferingEnum.OfferingRelationshipType.AGGREGATION.getValue(), null);
         assertEquals("validFor is null", 0, offering.getProdOfferingRelationship().size());
-        assertEquals("validFor is null", CommonErrorCode.VALIDFOR_IS_NULL.getCode(), rtnCode);
+        assertEquals("validFor is null", BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL.getCode(), rtnCode.getCode());
 
         //can't create relationship to itself
-        ProductOffering offeringTargetItself = new SimpleProductOffering("0001",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 process£¬Turbo Boost 2.7GHz",  validFor,  prodSpec);
+        ProductOffering offeringTargetItself = new SimpleProductOffering("0001",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 processï¿½ï¿½Turbo Boost 2.7GHz",  validFor,  prodSpec);
         rtnCode = offering.associate(offeringTargetItself, ProdOfferingEnum.OfferingRelationshipType.AGGREGATION.getValue(), validFor);
         assertEquals("can't create relationship to itself", 0, offering.getProdOfferingRelationship().size());
-        assertEquals("can't create relationship to itself", ProdOfferingErrorCode.PROD_OFFERING_ASSOCIATE_ITSELF.getCode(), rtnCode);
+        assertEquals("can't create relationship to itself", BusinessCode.PROD_OFFERING_ASSOCIATE_WITH_ITSELF.getCode(), rtnCode.getCode());
 
         //normal
         offering.associate(offeringTarget, ProdOfferingEnum.OfferingRelationshipType.AGGREGATION.getValue(), validFor);
@@ -86,9 +87,9 @@ public class ProductOfferingTest {
     @org.junit.Test
     public void testRetrieveRelatedOffering() throws Exception {
         prodSpecTarget = new AtomicProductSpecification("1", "11 Pounds MacBook Air", "apple", "Mac", validForSpec);
-        ProductOffering offeringTarget = new SimpleProductOffering("0002",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 process£¬Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
-        ProductOffering offeringTargetTwo = new SimpleProductOffering("0003",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 process£¬Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
-        ProductOffering offeringTargetThree = new SimpleProductOffering("0004",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 process£¬Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
+        ProductOffering offeringTarget = new SimpleProductOffering("0002",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 processï¿½ï¿½Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
+        ProductOffering offeringTargetTwo = new SimpleProductOffering("0003",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 processï¿½ï¿½Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
+        ProductOffering offeringTargetThree = new SimpleProductOffering("0004",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 processï¿½ï¿½Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
         offering.associate(offeringTarget, ProdOfferingEnum.OfferingRelationshipType.AGGREGATION.getValue(), validFor);
         offering.associate(offeringTargetTwo, ProdOfferingEnum.OfferingRelationshipType.AGGREGATION.getValue(), validFor);
         offering.associate(offeringTargetThree, ProdOfferingEnum.OfferingRelationshipType.DEPENDENCY.getValue(), validFor);
@@ -109,9 +110,9 @@ public class ProductOfferingTest {
     @org.junit.Test
     public void testRetrieveRelatedOffering1() throws Exception {
         prodSpecTarget = new AtomicProductSpecification("1", "11 Pounds MacBook Air", "apple", "Mac", validForSpec);
-        ProductOffering offeringTarget = new SimpleProductOffering("0002",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 process£¬Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
-        ProductOffering offeringTargetTwo = new SimpleProductOffering("0003",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 process£¬Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
-        ProductOffering offeringTargetThree = new SimpleProductOffering("0004",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 process£¬Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
+        ProductOffering offeringTarget = new SimpleProductOffering("0002",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 processï¿½ï¿½Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
+        ProductOffering offeringTargetTwo = new SimpleProductOffering("0003",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 processï¿½ï¿½Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
+        ProductOffering offeringTargetThree = new SimpleProductOffering("0004",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 processï¿½ï¿½Turbo Boost 2.7GHz",  validFor,  prodSpecTarget);
         offering.associate(offeringTarget, ProdOfferingEnum.OfferingRelationshipType.AGGREGATION.getValue(), validFor);
         offering.associate(offeringTargetTwo, ProdOfferingEnum.OfferingRelationshipType.AGGREGATION.getValue(), validFor);
         offering.associate(offeringTargetThree, ProdOfferingEnum.OfferingRelationshipType.DEPENDENCY.getValue(), validFor);

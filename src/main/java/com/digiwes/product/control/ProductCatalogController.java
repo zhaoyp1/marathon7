@@ -1,6 +1,7 @@
 package com.digiwes.product.control;
 
 import com.digiwes.basetype.TimePeriod;
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdCatalogErrorCode;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
@@ -32,19 +33,19 @@ public class ProductCatalogController {
          ProductOfferingPersistence productOfferingPersistence= PersistenceFactory.getProdOfferingPersistence();
          ProductCatalog catalog=catalogPersistence.load(prodCatalogId);
          ProductOffering offering=productOfferingPersistence.load(prodOfferingId);
-         int result =catalog.publish(offering, validFor);
-         if(CommonErrorCode.VALIDFOR_IS_NULL.getCode() == result) {
-             throw  new IllegalArgumentException(CommonErrorCode.VALIDFOR_IS_NULL.getMessage());
-         }else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode() == result){
-             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getMessage());
-         }else if(ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode() == result){
-             throw  new IllegalArgumentException(ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getMessage());
-         } else if(ProdCatalogErrorCode.PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID.getCode() ==result ){
-             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID.getMessage());
-         } else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode() == result){
-             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getMessage());
-         } else if(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_IS_PUBLISHED.getCode() == result){
-             throw  new Exception(ProdCatalogErrorCode.PROD_CATALOG_OFFERING_IS_PUBLISHED.getMessage());
+         BusinessCode result =catalog.publish(offering, validFor);
+         if(BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL.getCode() == result.getCode()) {
+             throw  new IllegalArgumentException(BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL.getMessage());
+         }else if(BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT.getCode() == result.getCode()){
+             throw  new Exception(BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT.getMessage());
+         }else if(BusinessCode.PROD_OFFERING_IS_NULL.getCode() == result.getCode()){
+             throw  new IllegalArgumentException(BusinessCode.PROD_OFFERING_IS_NULL.getMessage());
+         } else if(BusinessCode.PROD_OFFERING_PUBLISHED_VALIDPERIOD_NOT_IN_OFFERING_VALIDPERIOD.getCode() ==result.getCode()){
+             throw  new Exception(BusinessCode.PROD_OFFERING_PUBLISHED_VALIDPERIOD_NOT_IN_OFFERING_VALIDPERIOD.getMessage());
+         } else if(BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT.getCode() == result.getCode()){
+             throw  new Exception(BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT.getMessage());
+         } else if(BusinessCode.PROD_OFFERING_CATALOG_OFFERING_HAS_BEEN_PUBLISHED.getCode() == result.getCode()){
+             throw  new Exception(BusinessCode.PROD_OFFERING_CATALOG_OFFERING_HAS_BEEN_PUBLISHED.getMessage());
          }
          catalogPersistence.save(catalog);
          return catalog;

@@ -2,6 +2,7 @@ package com.digiwes.product.offering;
 
 import java.util.*;
 
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonEnum;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
@@ -35,7 +36,7 @@ public class BundledProductOffering extends ProductOffering {
      * 
      * @param offering
      */
-    public int composedOf(ProductOffering offering) {
+    public BusinessCode composedOf(ProductOffering offering) {
        return composeOf(offering,CommonEnum.MIN_NOT_LIMIT.getCode(), CommonEnum.MAX_NOT_LIMIT.getCode());
     }
 
@@ -45,21 +46,21 @@ public class BundledProductOffering extends ProductOffering {
      * @param lowerLimit
      * @param upperLimit
      */
-    public int composeOf(ProductOffering offering, int lowerLimit, int upperLimit) {
+    public BusinessCode composeOf(ProductOffering offering, int lowerLimit, int upperLimit) {
         if(ParameterUtil.checkParameterIsNull(offering)){
-            return ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode();
+            return BusinessCode.PROD_OFFERING_IS_NULL;
         }
         if(CommonEnum.MIN_NOT_LIMIT.getCode() != lowerLimit && CommonEnum.MAX_NOT_LIMIT.getCode() !=  upperLimit  ){
             if(lowerLimit>upperLimit){
-                return ProdOfferingErrorCode.BUNDLED_PROD_OFFERING_LOWERLIMIT_GREATER_UPPERLIMIT.getCode();
+                return BusinessCode.PROD_OFFERING_BUNDLED_OPTION_LOWERLIMIT_GT_UPPERLIMIT;
             }
         }
         BundledProdOfferOption offerOption = new BundledProdOfferOption(offering,lowerLimit,upperLimit);
         if(this.bundledProdOfferOption.contains(offerOption)){
-            return ProdOfferingErrorCode.BUNDLED_PROD_OFFERING_ALREADY_COMPOSED.getCode();
+            return BusinessCode.PROD_OFFERING_BUNDLED_OFFERING_EXISTED;
         }
         bundledProdOfferOption.add(offerOption);
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
     /**

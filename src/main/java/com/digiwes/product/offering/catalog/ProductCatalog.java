@@ -1,5 +1,6 @@
 package com.digiwes.product.offering.catalog;
 
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.catalog.*;
 
 import java.text.SimpleDateFormat;
@@ -55,14 +56,14 @@ public class ProductCatalog extends Catalog {
      * @param offering
      * @param validFor
      */
-    public int publish(ProductOffering offering, TimePeriod validFor) {
-        int code = checkOffering(offering, validFor);
-        if (CommonErrorCode.SUCCESS.getCode() != code){
+    public BusinessCode publish(ProductOffering offering, TimePeriod validFor) {
+        BusinessCode code = checkOffering(offering, validFor);
+        if (BusinessCode.SUCCESS.getCode() != code.getCode()){
             return code;
         }
         ProdCatalogProdOffer catalogProdOffer=new ProdCatalogProdOffer(offering,validFor);
         prodCatalogProdOffer.add(catalogProdOffer);
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
 
     }
 
@@ -74,14 +75,14 @@ public class ProductCatalog extends Catalog {
      * @param validFor
      * @param price
      */
-    public int publish(ProductOffering offering, TimePeriod validFor, List<ProductOfferingPrice> price) {
-        int code = checkOffering(offering, validFor);
-        if (CommonErrorCode.SUCCESS.getCode() != code){
+    public BusinessCode publish(ProductOffering offering, TimePeriod validFor, List<ProductOfferingPrice> price) {
+        BusinessCode code = checkOffering(offering, validFor);
+        if (BusinessCode.SUCCESS.getCode() != code.getCode()){
             return code;
         }
         ProdCatalogProdOffer catalogProdOffer=new ProdCatalogProdOffer(offering,validFor,price);
         prodCatalogProdOffer.add(catalogProdOffer);
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
 
@@ -91,21 +92,21 @@ public class ProductCatalog extends Catalog {
      * @param offering
      * @param validFor
      */
-    public int retired(ProductOffering offering, TimePeriod validFor) {
+    public BusinessCode retired(ProductOffering offering, TimePeriod validFor) {
         if(ParameterUtil.checkParameterIsNull(offering)){
-            return ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode();
+            return BusinessCode.PROD_OFFERING_IS_NULL;
         }
         if(ParameterUtil.checkParameterIsNull(validFor))  {
-            return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
+            return BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL;
         }
         ProdCatalogProdOffer prodCatalogProdOffer = this.retrieveProdCatalogProdOffer(offering, validFor);
         if( null == prodCatalogProdOffer) {
             logger.warn("offering have not been publish");
-            return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_NOT_BE_PUBLISH.getCode();
+            return BusinessCode.PROD_OFFERING_CATALOG_OFFERING_NOT_BE_PUBLISHED;
         }
         validFor.setEndDateTime(new Date());
         prodCatalogProdOffer.setValidFor(validFor);
-        return CommonErrorCode.SUCCESS.getCode() ;
+        return BusinessCode.SUCCESS;
 
     }
 
@@ -113,9 +114,9 @@ public class ProductCatalog extends Catalog {
      * 
      * @param offering
      */
-    public int retired(ProductOffering offering) {
+    public BusinessCode retired(ProductOffering offering) {
         if(ParameterUtil.checkParameterIsNull(offering)){
-            return ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode();
+            return BusinessCode.PROD_OFFERING_IS_NULL;
         }
         boolean isUsed = false;
         for (ProdCatalogProdOffer prodCatalogProdOffer:this.prodCatalogProdOffer){
@@ -129,10 +130,10 @@ public class ProductCatalog extends Catalog {
         }
 
         if(isUsed){
-            return CommonErrorCode.SUCCESS.getCode();
+            return BusinessCode.SUCCESS;
         }else{
             logger.warn("offering have not been publish");
-            return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_NOT_BE_PUBLISH.getCode();
+            return BusinessCode.PROD_OFFERING_CATALOG_OFFERING_NOT_BE_PUBLISHED;
         }
 
     }
@@ -294,27 +295,27 @@ public class ProductCatalog extends Catalog {
         throw new UnsupportedOperationException();
     }
 
-    private int checkOffering(ProductOffering offering, TimePeriod validFor) {
+    private BusinessCode checkOffering(ProductOffering offering, TimePeriod validFor) {
         if(ParameterUtil.checkParameterIsNull(offering)){
-            return ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode();
+            return BusinessCode.PROD_OFFERING_IS_NULL;
         }
         if(ParameterUtil.checkParameterIsNull(validFor)) {
-            return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
+            return BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL;
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date now = TimeUtils.truncDate(new Date());
         if( 1 == now.compareTo(validFor.getStartDateTime())){
-            return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_VALIDFOR_INVALID.getCode();
+            return BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT;
         }
         if (contains(offering, validFor)){
-            return ProdCatalogErrorCode.PROD_CATALOG_OFFERING_IS_PUBLISHED.getCode();
+            return BusinessCode.PROD_OFFERING_CATALOG_OFFERING_HAS_BEEN_PUBLISHED;
         }
 
         if(!validFor.isInTimePeriod(offering.getValidFor())){
-            return ProdCatalogErrorCode.PROD_CATALOG_PUBLISH_OFFERING_VALIDFOR_IS_INVALID.getCode();
+            return BusinessCode.PROD_OFFERING_PUBLISHED_VALIDPERIOD_NOT_IN_OFFERING_VALIDPERIOD;
         }
 
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
 

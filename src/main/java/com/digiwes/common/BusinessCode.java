@@ -15,6 +15,7 @@ public enum BusinessCode {
 	PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT(0x260A,"publish offering's validFor is invalid"),
 	PROD_OFFERING_CATALOG_OFFERING_NOT_BE_PUBLISHED(0x260B,"offering has not be published"),
 	PROD_OFFERING_PUBLISHED_VALIDPERIOD_NOT_IN_OFFERING_VALIDPERIOD(0x260C,"publish offering validFor is invalid"),
+	PROD_OFFERING_VALIDFOR_IS_NULL(0x260C,"validFor is null"),
 	PROD_SPEC_NAME_IS_NULL_OR_EMPTY(0x2501,"ProductSpecification name is null or empty"),
 	PROD_SPEC_SPEC_IS_NULL(0x2502,"ProductSpecification is null"),
 	PROD_SPEC_RELATIONSHIP_TYPE_IS_NULL(0x2503,"relationshipType is null"),

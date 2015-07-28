@@ -103,25 +103,25 @@ public abstract class ProductOffering {
      * @param relationType
      * @param validFor
      */
-    public int associate(ProductOffering offering, String relationType, TimePeriod validFor) {
+    public BusinessCode associate(ProductOffering offering, String relationType, TimePeriod validFor) {
         if(ParameterUtil.checkParameterIsNull(offering)){
-            return ProdOfferingErrorCode.PROD_OFFERING_OFFERING_IS_NULL.getCode();
+            return BusinessCode.PROD_OFFERING_IS_NULL;
         }
         if(StringUtils.isEmpty(relationType)){
-            return ProdOfferingErrorCode.PROD_OFFERING_RELATIONSHIP_TYPE_IS_NULL_OR_EMPTY.getCode();
+            return BusinessCode.PROD_OFFERING_RELATIONSHIP_TYPE_IS_NULL_OR_EMPTY;
         }
         if(ParameterUtil.checkParameterIsNull(validFor)){
-            return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
+            return BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL;
         }
         if(this.equals(offering)){
-            return ProdOfferingErrorCode.PROD_OFFERING_ASSOCIATE_ITSELF.getCode();
+            return BusinessCode.PROD_OFFERING_ASSOCIATE_WITH_ITSELF;
         }
         ProductOfferingRelationship offeringRelationship = new ProductOfferingRelationship(this,offering,relationType,validFor);
         if(this.prodOfferingRelationship.contains(offeringRelationship)){
-            return ProdOfferingErrorCode.PROD_OFFERING_RELATIONSHIP_ALREADY_EXISTING.getCode();
+            return BusinessCode.PROD_OFFERING_RELATIONSHIP_EXISTED;
         }
         this.prodOfferingRelationship.add(offeringRelationship);
-        return BusinessCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
     /**
