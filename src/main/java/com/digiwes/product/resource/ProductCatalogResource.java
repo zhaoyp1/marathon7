@@ -16,10 +16,7 @@ import com.digiwes.product.resource.Parameter.ProductOffering;
 import org.jvnet.hk2.annotations.Service;
 
 import javax.inject.Singleton;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +36,7 @@ public class ProductCatalogResource {
     @Consumes({"application/json", "application/xml"})
     @Produces({"application/json", "application/xml"})
     public PublishOfferingResponse publishOffering(PublishOfferingRequest requestParame) throws Exception {
-        //requestParame.validFor =  new TimePeriod(TimeUtils.parseDate("2015-08-21 23:59:59","yyyy-MM-dd hh:mm:ss"),TimeUtils.parseDate("2015-11-01 23:59:59","yyyy-MM-dd hh:mm:ss"));
+        requestParame.validFor =  new TimePeriod(TimeUtils.parseDate("2015-08-21 23:59:59","yyyy-MM-dd hh:mm:ss"),TimeUtils.parseDate("2015-11-01 23:59:59","yyyy-MM-dd hh:mm:ss"));
         PublishOfferingResponse resultResponse = new PublishOfferingResponse();
         resultResponse.setCode( String.valueOf(CommonErrorCode.SUCCESS.getCode()));
         resultResponse.setMessage(CommonErrorCode.SUCCESS.getMessage());
