@@ -65,12 +65,31 @@ public class TimePeriodTest {
     }
     @Test
     public void testIsInTimePeriod() throws Exception {
+        TimePeriod timePeriod = createTimePeriod("20150717","20150816");
+       //Case: parameter is null
+        try {
+            timePeriod.isInTimePeriod((Date) null);
+            fail("parameter can not be null");
+        } catch (Exception e) {
 
+        }
+                
+        assertFalse("lower test failed",timePeriod.isInTimePeriod(TimeUtils.parseDate("20150716", "yyyyMMdd")) );
+        assertFalse("higher test failed",timePeriod.isInTimePeriod(TimeUtils.parseDate("20150920", "yyyyMMdd")) );
+
+        assertTrue("bottom border test failed", timePeriod.isInTimePeriod(TimeUtils.parseDate("20150717", "yyyyMMdd")));
+        assertTrue("top border test failed", timePeriod.isInTimePeriod(TimeUtils.parseDate("20150816", "yyyyMMdd")));
+        assertTrue("middle value test failed", timePeriod.isInTimePeriod(TimeUtils.parseDate("20150801", "yyyyMMdd")));
+    }
+
+    private TimePeriod createTimePeriod(String startDate, String endDate) throws Exception {
+        return new TimePeriod(TimeUtils.parseDate(startDate, "yyyyMMdd"), TimeUtils.parseDate(endDate, "yyyyMMdd"));
     }
 
     @Test
     public void testIsOverlap() throws Exception {
-
+        TimePeriod timePeriod = createTimePeriod("20150717","20150816");
+//        timePeriod.isOverlap()
     }
 
     @Test
