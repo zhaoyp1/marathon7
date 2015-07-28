@@ -4,8 +4,9 @@ import com.digiwes.common.utils.ParameterUtil;
 
 import com.digiwes.product.resource.response.ProdOffering;
 import com.digiwes.product.offering.catalog.*;
-import java.util.List;
-import java.util.Map;
+import com.digiwes.product.resource.utils.DateAdapter;
+
+import java.util.*;
 
 public class CatalogManagementController {
 
@@ -20,16 +21,36 @@ public class CatalogManagementController {
 
 	/**
 	 * 
-	 * @param fields
 	 * @param offeringName
 	 * @param time
 	 */
-	public List<Map<String, Object>> retrieveProductOffering(ProductCatalog productCatalog,String fields, String offeringName, String time) {
-		// TODO - implement CatalogManagementController.retrieveProductOffering
-		if(ParameterUtil.checkParamIsNullOrEmpty(fields)){
+	public List<ProdCatalogProdOffer> retrieveProductOffering(ProductCatalog productCatalog, String offeringName, String time) {
+		//choice
+		Date offeringTime = null;
+		try {
+			DateAdapter dateAdapter = new DateAdapter();
+			if(!ParameterUtil.checkParameterIsNull(time)){
+				offeringTime = dateAdapter.unmarshal(time);
+			}
+		}catch (Exception e){
 
 		}
-		throw new UnsupportedOperationException();
+		List<ProdCatalogProdOffer> prodCatalogProdOfferList = productCatalog.retrieveOffering(offeringName, offeringTime);
+
+		/*//screening
+		if(ParameterUtil.checkParamIsNullOrEmpty(fields)){
+			if(null != prodCatalogProdOfferList && prodCatalogProdOfferList.size()>0){
+				for(ProdCatalogProdOffer prodCatalogProdOffer : prodCatalogProdOfferList){
+					Map<String, Object> resultMap = new HashMap<String, Object>();
+					resultMap.put("prodOffering", prodCatalogProdOffer.getProdOffering());
+					resultMap.put("productOfferingPrice", prodCatalogProdOffer.getProductOfferingPrice());
+					resultMap.put("validFor", prodCatalogProdOffer.getValidFor());
+					resultList.add(resultMap);
+				}
+			}
+		}
+		throw new UnsupportedOperationException();*/
+		return prodCatalogProdOfferList;
 	}
 
 	/**

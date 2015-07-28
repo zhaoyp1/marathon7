@@ -1,14 +1,18 @@
 package com.digiwes.product.resource.api;
 
+import com.digiwes.common.utils.ParameterUtil;
 import com.digiwes.product.control.CatalogManagementController;
 import com.digiwes.product.control.persistence.CatalogPersistence;
 import com.digiwes.product.control.persistence.PersistenceFactory;
+import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.response.ProdOffering;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +26,7 @@ public class CatalogManagementResource {
 
 
     @Path("/retrieveProductOffering")
-    public ProdOffering retrieveProductOffering(@QueryParam("fields") String fields, @QueryParam("offeringName") String offeringName, @QueryParam("time") String time){
+    public List<Map<String, Object>> retrieveProductOffering(@QueryParam("fields") String fields, @QueryParam("offeringName") String offeringName, @QueryParam("time") String time){
         //return value
         ProdOffering productOffering = new ProdOffering();
 
@@ -31,14 +35,25 @@ public class CatalogManagementResource {
 
         //call the controller to get the return value
         CatalogManagementController catalogManagementController = new CatalogManagementController();
-        List<Map<String, Object>> productOfferingUnderCatalog = catalogManagementController.retrieveProductOffering(productCatalog, fields, offeringName, time);
+        List<ProdCatalogProdOffer> productOfferingUnderCatalog = catalogManagementController.retrieveProductOffering(productCatalog, offeringName, time);
 
+        List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+        if(ParameterUtil.checkParamIsNullOrEmpty(fields)){
+            if(null != productOfferingUnderCatalog && productOfferingUnderCatalog.size()>0){
+                for(ProdCatalogProdOffer prodCatalogProdOffer : productOfferingUnderCatalog){
+                    Map<String, Object> resultMap = new HashMap<String, Object>();
+                    resultMap.put("prodOffering", prodCatalogProdOffer.getProdOffering());
+                    resultMap.put("productOfferingPrice", prodCatalogProdOffer.getProductOfferingPrice());
+                    resultMap.put("validFor", prodCatalogProdOffer.getValidFor());
+                    resultList.add(resultMap);
+                }
+            }
+        }
         //TODO convert the return value to return json
-
-        return productOffering;
+        return resultList;
     }
 
-    private static ProductCatalog getManagementProductCatalog(){
+    private ProductCatalog getManagementProductCatalog(){
         ProductCatalog productCatalog = null;
         try {
             CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
