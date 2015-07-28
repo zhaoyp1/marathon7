@@ -16,6 +16,8 @@ package com.digiwes.product.resource.response;
 import com.digiwes.basetype.TimePeriod;
 import com.digiwes.product.offering.BundledProductOffering;
 
+import java.util.List;
+
 public class ProdOffering {
   private String id;
 
@@ -97,23 +99,37 @@ public class ProdOffering {
     this.lifecycleStatus = value;
   }
 
-  private ChannelRef[] channel;
+  private List<ChannelRef > channel;
 
-  public ChannelRef[] getChannel() {
+  public List<ChannelRef> getChannel() {
     return channel;
   }
 
-  public void setChannel(ChannelRef[] value) {
+  public void setChannel(List<ChannelRef > value) {
     this.channel = value;
   }
 
-  private PlaceRef[] place;
+  private ProductSpecificationRef productSpecification;
 
-  public PlaceRef[] getPlace() {
+  public boolean isBunlde() {
+    return isBunlde;
+  }
+
+  public ProductSpecificationRef getProductSpecification() {
+    return productSpecification;
+  }
+
+  public void setProductSpecification(ProductSpecificationRef productSpecification) {
+    this.productSpecification = productSpecification;
+  }
+
+  private List<PlaceRef> place;
+
+  public List<PlaceRef> getPlace() {
     return place;
   }
 
-  public void setPlace(PlaceRef[] value) {
+  public void setPlace(List<PlaceRef> value) {
     this.place = value;
   }
 
@@ -137,13 +153,13 @@ public class ProdOffering {
     this.serviceLevelAgreement = value;
   }
 
-  private BundledProductOffering[] bundledProductOffering;
+  private List<BundledProductOffering> bundledProductOffering;
 
-  public BundledProductOffering[] getBundledProductOffering() {
+  public List<BundledProductOffering> getBundledProductOffering() {
     return bundledProductOffering;
   }
 
-  public void setBundledProductOffering(BundledProductOffering[] value) {
+  public void setBundledProductOffering(List<BundledProductOffering> value) {
     this.bundledProductOffering = value;
   }
 
@@ -157,13 +173,13 @@ public class ProdOffering {
     this.resourceCandidate = value;
   }
 
-  private ProductOfferingTerm[] productOfferingTerm;
+  private List<ProductOfferingTerm> productOfferingTerm;
 
-  public ProductOfferingTerm[] getProductOfferingTerm() {
+  public List<ProductOfferingTerm> getProductOfferingTerm() {
     return productOfferingTerm;
   }
 
-  public void setProductOfferingTerm(ProductOfferingTerm[] value) {
+  public void setProductOfferingTerm(List<ProductOfferingTerm> value) {
     this.productOfferingTerm = value;
   }
 
@@ -177,13 +193,13 @@ public class ProdOffering {
     this.validFor = value;
   }
 
-  private CategoryRef[] category;
+  private List<CategoryRef> category;
 
-  public CategoryRef[] getCategory() {
+  public List<CategoryRef> getCategory() {
     return category;
   }
 
-  public void setCategory(CategoryRef[] value) {
+  public void setCategory(List<CategoryRef> value) {
     this.category = value;
   }
 
