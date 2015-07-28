@@ -14,6 +14,8 @@
 package com.digiwes.product.resource.response;
 
 import com.digiwes.basetype.TimePeriod;
+
+import javax.xml.bind.annotation.XmlElement;
 import java.util.List;
 
 public class ProdOffering {
@@ -98,7 +100,7 @@ public class ProdOffering {
   }
 
   private List<ChannelRef > channel;
-
+  @XmlElement
   public List<ChannelRef> getChannel() {
     return channel;
   }
@@ -122,7 +124,7 @@ public class ProdOffering {
   }
 
   private List<PlaceRef> place;
-
+  @XmlElement
   public List<PlaceRef> getPlace() {
     return place;
   }
@@ -152,7 +154,7 @@ public class ProdOffering {
   }
 
   private List<BundledProductOffering> bundledProductOffering;
-
+  @XmlElement
   public List<BundledProductOffering> getBundledProductOffering() {
     return bundledProductOffering;
   }
@@ -172,7 +174,7 @@ public class ProdOffering {
   }
 
   private List<ProductOfferingTerm> productOfferingTerm;
-
+  @XmlElement
   public List<ProductOfferingTerm> getProductOfferingTerm() {
     return productOfferingTerm;
   }
@@ -192,7 +194,7 @@ public class ProdOffering {
   }
 
   private List<CategoryRef> category;
-
+  @XmlElement
   public List<CategoryRef> getCategory() {
     return category;
   }
@@ -201,4 +203,13 @@ public class ProdOffering {
     this.category = value;
   }
 
+  private List<ProductOfferingPrice> productOfferingPrice;
+  @XmlElement
+  public List<ProductOfferingPrice> getProductOfferingPrice() {
+    return productOfferingPrice;
+  }
+
+  public void setProductOfferingPrice(List<ProductOfferingPrice> productOfferingPrice) {
+    this.productOfferingPrice = productOfferingPrice;
+  }
 }

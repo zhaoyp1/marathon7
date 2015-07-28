@@ -8,9 +8,7 @@ import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.response.ProdOffering;
 
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +51,17 @@ public class CatalogManagementResource {
         return resultList;
     }
 
-    private ProductCatalog getManagementProductCatalog(){
+    @POST
+    @Path("/productOffering")
+    @Consumes({"application/json"})
+    public ProdOffering publishOffering(ProdOffering prodOffering){
+        ProductCatalog catalog =getManagementProductCatalog();
+        CatalogManagementController catalogManagementController = new CatalogManagementController();
+        catalogManagementController.publishOffering(catalog,prodOffering);
+        return prodOffering;
+    }
+
+    private  ProductCatalog getManagementProductCatalog(){
         ProductCatalog productCatalog = null;
         try {
             CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
