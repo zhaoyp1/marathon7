@@ -14,6 +14,7 @@
 package com.digiwes.product.resource.response;
 
 import com.digiwes.basetype.TimePeriod;
+import com.digiwes.product.offering.BundledProductOffering;
 
 public class ProdOffering {
   private String id;
@@ -136,14 +137,14 @@ public class ProdOffering {
     this.serviceLevelAgreement = value;
   }
 
-  private BundledProductSpecification[] bundledProductSpecification;
+  private BundledProductOffering[] bundledProductOffering;
 
-  public BundledProductSpecification[] getBundledProductSpecification() {
-    return bundledProductSpecification;
+  public BundledProductOffering[] getBundledProductSpecification() {
+    return bundledProductOffering;
   }
 
-  public void setBundledProductSpecification(BundledProductSpecification[] value) {
-    this.bundledProductSpecification = value;
+  public void setBundledProductOffering(BundledProductOffering[] value) {
+    this.bundledProductOffering = value;
   }
 
   private ResourceCandidateRef resourceCandidate;

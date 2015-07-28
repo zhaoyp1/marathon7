@@ -13,6 +13,10 @@ public class SimpleProductOffering extends ProductOffering {
 
     private ProductSpecification productSpecification;
 
+    public ProductSpecification getProductSpecification() {
+        return productSpecification;
+    }
+
     /**
      * 
      * @param id
