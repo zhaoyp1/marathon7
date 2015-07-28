@@ -16,6 +16,7 @@ package com.digiwes.product.resource.response;
 import com.digiwes.basetype.TimePeriod;
 
 import javax.xml.bind.annotation.XmlElement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProdOffering {
@@ -99,7 +100,7 @@ public class ProdOffering {
     this.lifecycleStatus = value;
   }
 
-  private List<ChannelRef > channel;
+  private List<ChannelRef > channel = new ArrayList<ChannelRef>();
   @XmlElement
   public List<ChannelRef> getChannel() {
     return channel;
@@ -123,7 +124,7 @@ public class ProdOffering {
     this.productSpecification = productSpecification;
   }
 
-  private List<PlaceRef> place;
+  private List<PlaceRef> place = new ArrayList<PlaceRef>();
   @XmlElement
   public List<PlaceRef> getPlace() {
     return place;
@@ -153,7 +154,7 @@ public class ProdOffering {
     this.serviceLevelAgreement = value;
   }
 
-  private List<BundledProductOffering> bundledProductOffering;
+  private List<BundledProductOffering> bundledProductOffering =new ArrayList<BundledProductOffering>();
   @XmlElement
   public List<BundledProductOffering> getBundledProductOffering() {
     return bundledProductOffering;
@@ -163,7 +164,7 @@ public class ProdOffering {
     this.bundledProductOffering = value;
   }
 
-  private ResourceCandidateRef resourceCandidate;
+  private ResourceCandidateRef resourceCandidate ;
 
   public ResourceCandidateRef getResourceCandidate() {
     return resourceCandidate;
@@ -173,7 +174,7 @@ public class ProdOffering {
     this.resourceCandidate = value;
   }
 
-  private List<ProductOfferingTerm> productOfferingTerm;
+  private List<ProductOfferingTerm> productOfferingTerm =new ArrayList<ProductOfferingTerm>();
   @XmlElement
   public List<ProductOfferingTerm> getProductOfferingTerm() {
     return productOfferingTerm;
@@ -193,7 +194,7 @@ public class ProdOffering {
     this.validFor = value;
   }
 
-  private List<CategoryRef> category;
+  private List<CategoryRef> category =new ArrayList<CategoryRef>();
   @XmlElement
   public List<CategoryRef> getCategory() {
     return category;
@@ -203,7 +204,7 @@ public class ProdOffering {
     this.category = value;
   }
 
-  private List<ProductOfferingPrice> productOfferingPrice;
+  private List<ProductOfferingPrice> productOfferingPrice =new ArrayList<ProductOfferingPrice>();
   @XmlElement
   public List<ProductOfferingPrice> getProductOfferingPrice() {
     return productOfferingPrice;

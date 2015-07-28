@@ -2,6 +2,7 @@ package com.digiwes.product.spec;
 
 import java.util.*;
 
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonEnum;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecErrorCode;
@@ -196,51 +197,51 @@ public class ProductSpecCharacteristic {
      * @param minCardinality
      * @param maxCardinality
      */
-    public int specifyCardinality(int minCardinality, int maxCardinality) {
+    public BusinessCode specifyCardinality(int minCardinality, int maxCardinality) {
         if (minCardinality > maxCardinality) {
             logger.warn("maxCardinality is less than minCardinality.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_MAX_LESS_THAN_MIX.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_CARDINALITY_MAX_LT_MIN;
         }
         this.minCardinality = minCardinality;
         this.maxCardinality = maxCardinality;
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
     /**
      * 
      * @param charVal
      */
-    public int assignValue(ProductSpecCharacteristicValue charVal) {
+    public BusinessCode assignValue(ProductSpecCharacteristicValue charVal) {
         if (ParameterUtil.checkParameterIsNull(charVal)) {
             logger.warn("charVal must not be null.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUE_IS_NULL;
         }
         if (null != charVal.getValueType() && !this.getValueType().equals(charVal.getValueType())) {
             logger.warn("The valueType of Character and the valueType of CharacterValue are different.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_TYPE_DIFFERENT_CHAR_VALUE_TYPE.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUETYPE_DIFF_FROM_VALUE_VALUETYPE;
         }
         this.prodSpecCharValue.add(charVal);
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
     /**
      * 
      * @param charVal
      */
-    public int removeValue(ProductSpecCharacteristicValue charVal) {
+    public BusinessCode removeValue(ProductSpecCharacteristicValue charVal) {
         if (ParameterUtil.checkParameterIsNull(charVal)) {
             logger.warn("charValue must not be null.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUE_IS_NULL;
         }
         if (null != prodSpecCharValue && prodSpecCharValue.size() > 0) {
             if (prodSpecCharValue.contains(charVal)) {
                 prodSpecCharValue.remove(charVal);
-                return CommonErrorCode.SUCCESS.getCode();
+                return BusinessCode.SUCCESS;
             }
             logger.warn("The charValue do not belong to this char.");
         }
         logger.warn("Current Char without this charValue.");
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
     /**
@@ -264,18 +265,18 @@ public class ProductSpecCharacteristic {
      * 
      * @param defaultCharVal
      */
-    public int specifyDefaultValue(ProductSpecCharacteristicValue defaultCharVal) {
+    public BusinessCode specifyDefaultValue(ProductSpecCharacteristicValue defaultCharVal) {
         return changeDefaultValue(defaultCharVal, true);
     }
 
-    private int changeDefaultValue(ProductSpecCharacteristicValue defaultCharVal, boolean isDefault) {
+    private BusinessCode changeDefaultValue(ProductSpecCharacteristicValue defaultCharVal, boolean isDefault) {
         if (null == defaultCharVal) {
             logger.error("charVal must not be null.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUE_IS_NULL;
         }
         if (null == this.prodSpecCharValue || !prodSpecCharValue.contains(defaultCharVal)) {
             logger.warn("The charValue do not belong to this char.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_NOT_BELONG_TO_CHAR.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUE_NOT_BELONG_TO_CHAR;
         }
         for (ProductSpecCharacteristicValue charValue : prodSpecCharValue) {
             if (charValue.equals(defaultCharVal)) {
@@ -283,14 +284,14 @@ public class ProductSpecCharacteristic {
                 break;
             }
         }
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
     /**
      * 
      * @param value
      */
-    public int clearDefaultValue(ProductSpecCharacteristicValue value) {
+    public BusinessCode clearDefaultValue(ProductSpecCharacteristicValue value) {
         return changeDefaultValue(value, false);
     }
 
@@ -312,7 +313,7 @@ public class ProductSpecCharacteristic {
      * @param type
      * @param validFor
      */
-    public int associate(ProductSpecCharacteristic specChar, String type, TimePeriod validFor) {
+    public BusinessCode associate(ProductSpecCharacteristic specChar, String type, TimePeriod validFor) {
         return associate(specChar, type, validFor, -1);
     }
 
@@ -323,28 +324,28 @@ public class ProductSpecCharacteristic {
      * @param validFor
      * @param charSpecSeq
      */
-    public int associate(ProductSpecCharacteristic specChar, String type, TimePeriod validFor, int charSpecSeq) {
-        int validResult = checkAssociateParam(specChar, type, validFor);
-        if (CommonErrorCode.SUCCESS.getCode() != validResult) {
+    public BusinessCode associate(ProductSpecCharacteristic specChar, String type, TimePeriod validFor, int charSpecSeq) {
+        BusinessCode validResult = checkAssociateParam(specChar, type, validFor);
+        if (BusinessCode.SUCCESS != validResult) {
             return validResult;
         }
         ProductSpecCharRelationship productSpecCharValueRelationShip = new ProductSpecCharRelationship(this, specChar, type, validFor, charSpecSeq);
         this.prodSpecCharRelationship.add(productSpecCharValueRelationShip);
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
-    private int checkAssociateParam(ProductSpecCharacteristic specChar, String type, TimePeriod validFor) {
+    private BusinessCode checkAssociateParam(ProductSpecCharacteristic specChar, String type, TimePeriod validFor) {
         if (ParameterUtil.checkParameterIsNull(specChar)) {
             logger.warn("specChar must not be null.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_IS_NULL;
         }
         if (ParameterUtil.checkParameterIsNull(type)) {
             logger.warn("type must not be null.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_RELATIONSHIP_TYPE_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_RELATIONSHIP_TYPE_IS_NULL;
         }
         if (this.equals(specChar)) {
             logger.warn("The srcChar and targetCharValue is the same.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_EQUALS_TO_CURRENT.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_ASSOCIATE_WITH_ITSELF;
         }
         List<ProductSpecCharRelationship> relationship = retrieveRelatedCharacteristicByChar(specChar);
         if (relationship != null) {
@@ -352,11 +353,11 @@ public class ProductSpecCharacteristic {
             for (ProductSpecCharRelationship relate : relationship){
                 if (relate.getValidFor().isOverlap(validFor)) {
                     logger.warn("Characteristic has been established associate relationship in the specified time.");
-                    return ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT.getCode();
+                    return BusinessCode.PROD_SPEC_CHAR_RELATIONSHIP_EXISTED;
                 }
             }
         }
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
     private List<ProductSpecCharRelationship> retrieveRelatedCharacteristicByChar(ProductSpecCharacteristic characteristic ){
         ParameterUtil.checkParameterIsNulForException(characteristic,"ProductSpecCharacteristic");
@@ -375,10 +376,10 @@ public class ProductSpecCharacteristic {
      * 
      * @param specChar
      */
-    public int dissociate(ProductSpecCharacteristic specChar) {
+    public BusinessCode dissociate(ProductSpecCharacteristic specChar) {
         if ( ParameterUtil.checkParameterIsNull(specChar) ) {
             logger.error("specChar must not be null");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_IS_NULL;
         }
         if ( ParameterUtil.checkParameterIsNull(this.prodSpecCharRelationship) ) {
             logger.warn("The association has not been created");
@@ -390,7 +391,7 @@ public class ProductSpecCharacteristic {
                 break;
             }
         }
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
     /**
@@ -434,18 +435,18 @@ public class ProductSpecCharacteristic {
      * @param prodSpecChar
      * @param validFor
      */
-    public int modifyRelationshipValidPeriod(ProductSpecCharacteristic prodSpecChar, TimePeriod oldValidFor, TimePeriod validFor) {
+    public BusinessCode modifyRelationshipValidPeriod(ProductSpecCharacteristic prodSpecChar, TimePeriod oldValidFor, TimePeriod validFor) {
         if (ParameterUtil.checkParameterIsNull(prodSpecChar)) {
             logger.warn("prodSpecChar must not be null.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_IS_NULL;
         }
         if (ParameterUtil.checkParameterIsNull(oldValidFor)){
             logger.warn("oldValidFor must not be null.");
-            return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALIDPERIOD_IS_NULL;
         }
         if (ParameterUtil.checkParameterIsNull(validFor) ){
             logger.warn("validFor must not be null.");
-            return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALIDPERIOD_IS_NULL;
         }
 
         List<ProductSpecCharRelationship> relationship = retrieveRelatedCharacteristicByChar(prodSpecChar);
@@ -454,7 +455,7 @@ public class ProductSpecCharacteristic {
             for (ProductSpecCharRelationship relate : relationship){
                 if (relate.getValidFor().isOverlap(validFor)) {
                     logger.warn("Characteristic has been established associate relationship in the specified time.");
-                    return ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT.getCode();
+                    return BusinessCode.PROD_SPEC_CHAR_RELATIONSHIP_EXISTED;
                 }
             }
         }
@@ -463,12 +464,12 @@ public class ProductSpecCharacteristic {
             for (ProductSpecCharRelationship productSpecRelationship : this.prodSpecCharRelationship) {
                 if ( productSpecRelationship.getTargetProdSpecChar().equals(prodSpecChar) && productSpecRelationship.getValidFor().equals(oldValidFor) ) {
                     productSpecRelationship.setValidFor(validFor);
-                    return CommonErrorCode.SUCCESS.getCode();
+                    return BusinessCode.SUCCESS;
                 }
             }
         }
         logger.warn("the current Char has been to create associate relationships with the specified char.");
-        return ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT.getCode();
+        return BusinessCode.PROD_SPEC_CHAR_RELATIONSHIP_EXISTED;
     }
 
     @Override

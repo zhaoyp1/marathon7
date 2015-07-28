@@ -1,6 +1,7 @@
 package com.digiwes.product.offering;
 
 import com.digiwes.basetype.TimePeriod;
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
 import com.digiwes.product.spec.AtomicProductSpecification;
@@ -59,7 +60,7 @@ public class BundledProductOfferingTest {
 
         //normal
         rtnCode = bundledProdOffering.composeOf(offering, lowerLimit, upperLimit);
-        assertEquals("add an simpleOffering to bundleProductOffering", CommonErrorCode.SUCCESS.getCode(), rtnCode);
+        assertEquals("add an simpleOffering to bundleProductOffering", BusinessCode.SUCCESS, rtnCode);
         assertEquals("add an simpleOffering to bundleProductOffering", 1, bundledProdOffering.getBundledProdOfferOption().size());
         assertEquals("add an simpleOffering to bundleProductOffering", offering, bundledProdOffering.getBundledProdOfferOption().get(0).getProductOffering());
 

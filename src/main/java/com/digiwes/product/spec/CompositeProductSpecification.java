@@ -2,6 +2,7 @@ package com.digiwes.product.spec;
 
 import java.util.*;
 
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecErrorCode;
 import com.digiwes.common.utils.ParameterUtil;
@@ -40,12 +41,12 @@ public class CompositeProductSpecification extends ProductSpecification {
      * 
      * @param prodSpec
      */
-    public int composedOf(ProductSpecification prodSpec) {
+    public BusinessCode composedOf(ProductSpecification prodSpec) {
         if(this.equals(prodSpec)){
-            return ProdSpecErrorCode.PROD_SPEC_EQUALS_TO_CURRENT.getCode();
+            return BusinessCode.PROD_SPEC_COMPOSE_OF_ITSELF;
         }
         this.prodSpec.add(prodSpec);
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
 
     }
 

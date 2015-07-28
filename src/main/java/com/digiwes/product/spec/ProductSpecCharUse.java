@@ -1,6 +1,7 @@
 package com.digiwes.product.spec;
 
 import com.digiwes.basetype.TimePeriod;
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonEnum;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecErrorCode;
@@ -194,14 +195,14 @@ public class ProductSpecCharUse {
      * @param minCardinality
      * @param maxCardinality
      */
-    public int specifyCardinality(int minCardinality, int maxCardinality) {
+    public BusinessCode specifyCardinality(int minCardinality, int maxCardinality) {
         if(minCardinality > maxCardinality){
             logger.error("maxCardinality is less than minCardinality.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_MAX_LESS_THAN_MIX.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_CARDINALITY_MAX_LT_MIN;
         }
         this.minCardinality = minCardinality;
         this.maxCardinality = maxCardinality;
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
     /**
@@ -210,26 +211,26 @@ public class ProductSpecCharUse {
      * @param isDefault
      * @param validFor
      */
-    public int assignValue(ProductSpecCharacteristicValue charValue, boolean isDefault, TimePeriod validFor) {
+    public BusinessCode assignValue(ProductSpecCharacteristicValue charValue, boolean isDefault, TimePeriod validFor) {
         if(ParameterUtil.checkParameterIsNull(charValue)){
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUE_IS_NULL;
         }
         if(null != this.prodSpecChar.getProdSpecCharValue() && !this.prodSpecChar.getProdSpecCharValue().contains(charValue)){
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE;
         }
         if(!validFor.isInTimePeriod(charValue.getValidFor())){
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_USE_NOT_IN_VALUE.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUE_USE_VALIDPERIOD_NOT_IN_CHAR_VALUE_VALIDPERIOD;
         }
 
         for(ProdSpecCharValueUse prdSpecCharValueUse : this.prodSpecCharValue){
             if(prdSpecCharValueUse.getProdSpecCharValue().equals(charValue) && prdSpecCharValueUse.getValidFor().isOverlap(validFor)){
-                 return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_HAS_BEEN_USED.getCode();
+                 return BusinessCode.PROD_SPEC_CHAR_VALUE_EXISTED;
             }
         }
 
         ProdSpecCharValueUse prodSpecCharValueUse = new ProdSpecCharValueUse(charValue, isDefault, validFor);
         this.prodSpecCharValue.add(prodSpecCharValueUse);
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
     /**
@@ -245,24 +246,24 @@ public class ProductSpecCharUse {
      * 
      * @param defaultValue
      */
-    public int specifyDefaultValue(ProductSpecCharacteristicValue defaultValue) {
+    public BusinessCode specifyDefaultValue(ProductSpecCharacteristicValue defaultValue) {
         if(ParameterUtil.checkParameterIsNull(defaultValue)){
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUE_IS_NULL;
         }
         if(null != this.prodSpecCharValue){
             if(null != this.prodSpecChar.getProdSpecCharValue() && !this.prodSpecChar.getProdSpecCharValue().contains(defaultValue)){
-                return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
+                return BusinessCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE;
             }
             for(ProdSpecCharValueUse prodSpecCharValueUse : this.prodSpecCharValue){
                 if(prodSpecCharValueUse.getProdSpecCharValue().equals(defaultValue)){
                     prodSpecCharValueUse.setIsDefault(true);
-                    return CommonErrorCode.SUCCESS.getCode();
+                    return BusinessCode.SUCCESS;
                 }
             }
 
         }
         logger.warn("this value is not belong to current char.");
-        return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
+        return BusinessCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE;
     }
 
     public List<ProdSpecCharValueUse> retrieveDefaultValue() {
@@ -281,24 +282,24 @@ public class ProductSpecCharUse {
      * 
      * @param defaultValue
      */
-    public int clearDefaultValue(ProductSpecCharacteristicValue defaultValue) {
+    public BusinessCode clearDefaultValue(ProductSpecCharacteristicValue defaultValue) {
         if(ParameterUtil.checkParameterIsNull(defaultValue)){
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUE_IS_NULL;
         }
         if(null != this.prodSpecCharValue){
             if(null != this.prodSpecChar.getProdSpecCharValue() && !this.prodSpecChar.getProdSpecCharValue().contains(defaultValue)){
-                return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
+                return BusinessCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE;
             }
             for(ProdSpecCharValueUse prodSpecCharValueUse : this.prodSpecCharValue){
                 if(prodSpecCharValueUse.getProdSpecCharValue().equals(defaultValue)){
                     prodSpecCharValueUse.setIsDefault(false);
-                    return CommonErrorCode.SUCCESS.getCode();
+                    return BusinessCode.SUCCESS;
                 }
             }
 
         }
         logger.warn("this value is not belong to current char.");
-        return ProdSpecErrorCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE.getCode();
+        return BusinessCode.PROD_SPEC_CHAR_NOT_INCLUDE_VALUE;
     }
 
     /**

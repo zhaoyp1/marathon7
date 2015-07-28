@@ -11,6 +11,7 @@ import com.digiwes.product.resource.response.ProductSpecificationRef;
 import com.digiwes.product.spec.ProductSpecification;
 import org.apache.commons.lang.StringUtils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,10 +119,11 @@ public class ConvertUtil {
         {
             c = Class.forName(thisObj.getClass().getName());
             Method[] m = c.getMethods();
+            Field[] f=c.getFields();
             for (int i = 0; i < m.length; i++)
             {
                 String method = m[i].getName();
-                if (method.startsWith("get"))
+                if (method.startsWith("get") && !method.equals("getClass"))
                 {
                     try{
                         Object value = m[i].invoke(thisObj);

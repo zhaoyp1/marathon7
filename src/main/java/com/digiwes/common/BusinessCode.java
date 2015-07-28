@@ -39,8 +39,10 @@ public enum BusinessCode {
 	PROD_SPEC_CHAR_VALUE_USE_VALIDPERIOD_NOT_IN_CHAR_VALUE_VALIDPERIOD(0x2516,"The specify time not belong of ProductSPecifcationCharValue's validFor"),
 	PROD_SPEC_NOT_ATTACH_CHAR(0x2517,"The Characteristic is not used by the ProductSpecification"),
 	PROD_SPEC_CHAR_NOT_INCLUDE_VALUE(0x2518,"The char not include this value"),
-	PROD_SPEC_CHAR_VALUE_EXISTED(0x251A,"prodSpecCharValue has been used");
-
+	PROD_SPEC_CHAR_VALUE_EXISTED(0x251A,"prodSpecCharValue has been used"),
+	PROD_SPEC_CHAR_VALIDPERIOD_IS_NULL(0x251B,"VALIDFor is null"),
+	PROD_SPEC_VALIDPERIOD_IS_NULL(0x251C,"VALIDFor is null"),
+	PROD_SPEC_CHAR_VALUE_VALIDPERIOD_IS_NULL(0x251D,"VALIDFor is null");
     private int code;
     private String message;
 

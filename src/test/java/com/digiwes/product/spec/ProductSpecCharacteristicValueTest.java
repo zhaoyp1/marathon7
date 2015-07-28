@@ -1,6 +1,7 @@
 package com.digiwes.product.spec;
 
 import com.digiwes.basetype.TimePeriod;
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecEnum;
 import com.digiwes.common.enums.ProdSpecErrorCode;
@@ -38,51 +39,51 @@ public class ProductSpecCharacteristicValueTest {
     }
     @Test
     public void testAssociate() throws Exception {
-        int result = CommonErrorCode.SUCCESS.getCode();
+        BusinessCode result = BusinessCode.SUCCESS;
         List<ProdSpecCharValueRelationship> exceptProdSpecCharValueRelationships = new ArrayList<ProdSpecCharValueRelationship>();
         result=memoryCharValue.associate(null, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getName(), validFor);
-        assertEquals("add a related charValue,charValue is null", ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode(), result);
+        assertEquals("add a related charValue,charValue is null", BusinessCode.PROD_SPEC_CHAR_IS_NULL, result);
 
         result=memoryCharValue.associate(charValue,null, validFor);
-        assertEquals("add a related charValue,relationType is null",ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_RELATIONSHIP_TYPE_IS_NULL.getCode(), result);
+        assertEquals("add a related charValue,relationType is null",BusinessCode.PROD_SPEC_CHAR_VALUE_RELATIONSHIP_TYPE_IS_NULL, result);
 
         result=memoryCharValue.associate(memoryCharValue, ProdSpecEnum.ProdSpecRelationship.EXCLUSIBITY.getName(), validFor);
-        assertEquals("add a related charValue,the specify value is same with currentCharValue", ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_EQUALS_TO_CURRENT.getCode(), result);
+        assertEquals("add a related charValue,the specify value is same with currentCharValue", BusinessCode.PROD_SPEC_CHAR_VALUE_ASSOCIATE_WITH_ITSELF, result);
         assertEquals("add a related charValue,the specify value is same with currentCharValue", exceptProdSpecCharValueRelationships, memoryCharValue.getProdSpecCharValueRelationship());
 
         result=memoryCharValue.associate(charValue, ProdSpecEnum.ProdSpecRelationship.EXCLUSIBITY.getName(), validFor);
         ProdSpecCharValueRelationship specCharValueRelationShip = new ProdSpecCharValueRelationship(memoryCharValue,charValue, ProdSpecEnum.ProdSpecRelationship.EXCLUSIBITY.getName(), validFor);
         exceptProdSpecCharValueRelationships.add(specCharValueRelationShip);
-        assertEquals("add a related charValue", CommonErrorCode.SUCCESS.getCode(), result);
+        assertEquals("add a related charValue", BusinessCode.SUCCESS, result);
         assertEquals("add a related charValue", 1, memoryCharValue.getProdSpecCharValueRelationship().size());
         assertEquals("add a related charValue",exceptProdSpecCharValueRelationships, memoryCharValue.getProdSpecCharValueRelationship());
 
         result=memoryCharValue.associate(charValue, ProdSpecEnum.ProdSpecRelationship.EXCLUSIBITY.getName(), validFor);
-        assertEquals("add a related charValue,have created a exclusive relationship", ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_HAS_RELATED_TO_CURRENT.getCode(), result);
+        assertEquals("add a related charValue,have created a exclusive relationship", BusinessCode.PROD_SPEC_CHAR_VALUE_RELATIONSHIP_EXISTED, result);
         assertEquals("add a related charValue,have created a exclusive relationship", 1, memoryCharValue.getProdSpecCharValueRelationship().size());
         assertEquals("add a related charValue,have created a exclusive relationship",exceptProdSpecCharValueRelationships, memoryCharValue.getProdSpecCharValueRelationship());
 
         result=memoryCharValue.associate(charValue, ProdSpecEnum.ProdSpecRelationship.EXCLUSIBITY.getName(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-01-01 00:00:00"),DateUtils.datetimeFormat.parse("2015-01-29 23:59:59")));
         specCharValueRelationShip = new ProdSpecCharValueRelationship(memoryCharValue,charValue, ProdSpecEnum.ProdSpecRelationship.EXCLUSIBITY.getName(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-01-01 00:00:00"),DateUtils.datetimeFormat.parse("2015-01-29 23:59:59")));
         exceptProdSpecCharValueRelationships.add(specCharValueRelationShip);
-        Assert.assertEquals("add Related charValuehave create a aggregation relationship (time before )", CommonErrorCode.SUCCESS.getCode(), result);
+        Assert.assertEquals("add Related charValuehave create a aggregation relationship (time before )", BusinessCode.SUCCESS, result);
         Assert.assertEquals("add Related charValue.", 2, memoryCharValue.getProdSpecCharValueRelationship().size());
         Assert.assertEquals("add Related charValue.", exceptProdSpecCharValueRelationships, memoryCharValue.getProdSpecCharValueRelationship());
 
         result=memoryCharValue.associate(charValue, ProdSpecEnum.ProdSpecRelationship.EXCLUSIBITY.getName(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-01-01 00:00:00"), DateUtils.datetimeFormat.parse("2015-06-29 23:59:59")));
-        assertEquals("add Related charValuehave create a aggregation relationship (time in period  )", ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_HAS_RELATED_TO_CURRENT.getCode(), result);
+        assertEquals("add Related charValuehave create a aggregation relationship (time in period  )", BusinessCode.PROD_SPEC_CHAR_VALUE_RELATIONSHIP_EXISTED, result);
         assertEquals("add Related charValue.", 2, memoryCharValue.getProdSpecCharValueRelationship().size());
         assertEquals("add Related charValue.", exceptProdSpecCharValueRelationships, memoryCharValue.getProdSpecCharValueRelationship());
 
         specCharValueRelationShip = new ProdSpecCharValueRelationship(memoryCharValue,charValue, ProdSpecEnum.ProdSpecRelationship.EXCLUSIBITY.getName(),  new TimePeriod(DateUtils.datetimeFormat.parse("2015-09-01 23:59:59"), DateUtils.datetimeFormat.parse("2015-10-29 23:59:59")));
         exceptProdSpecCharValueRelationships.add(specCharValueRelationShip);
         result=memoryCharValue.associate(charValue, ProdSpecEnum.ProdSpecRelationship.EXCLUSIBITY.getName(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-09-01 23:59:59"), DateUtils.datetimeFormat.parse("2015-10-29 23:59:59")));
-        Assert.assertEquals("add Related charValuehave create a aggregation relationship (time after  )", CommonErrorCode.SUCCESS.getCode(), result);
+        Assert.assertEquals("add Related charValuehave create a aggregation relationship (time after  )", BusinessCode.SUCCESS, result);
         Assert.assertEquals("add Related charValue.", 3, memoryCharValue.getProdSpecCharValueRelationship().size());
         Assert.assertEquals("add Related charValue.", exceptProdSpecCharValueRelationships, memoryCharValue.getProdSpecCharValueRelationship());
 
         result=memoryCharValue.associate(charValue, ProdSpecEnum.ProdSpecRelationship.DEPENDENCY.getName(), validFor);
-        assertEquals("add a related charValue,have created a exclusive relationship",ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_HAS_RELATED_TO_CURRENT.getCode(), result);
+        assertEquals("add a related charValue,have created a exclusive relationship",BusinessCode.PROD_SPEC_CHAR_VALUE_RELATIONSHIP_EXISTED, result);
         assertEquals("add a related charValue,have created a exclusive relationship",charValue, memoryCharValue.getProdSpecCharValueRelationship().iterator().next().getProductSpecCharacteristicValue());
         assertEquals("add a related charValue,have created a exclusive relationship", exceptProdSpecCharValueRelationships, memoryCharValue.getProdSpecCharValueRelationship());
     }

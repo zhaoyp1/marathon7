@@ -2,6 +2,7 @@ package com.digiwes.product.offering;
 
 import java.util.*;
 
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdOfferingEnum;
 import com.digiwes.common.enums.ProdOfferingErrorCode;
@@ -120,7 +121,7 @@ public abstract class ProductOffering {
             return ProdOfferingErrorCode.PROD_OFFERING_RELATIONSHIP_ALREADY_EXISTING.getCode();
         }
         this.prodOfferingRelationship.add(offeringRelationship);
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS.getCode();
     }
 
     /**

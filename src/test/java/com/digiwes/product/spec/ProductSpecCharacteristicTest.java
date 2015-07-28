@@ -1,6 +1,7 @@
 package com.digiwes.product.spec;
 
 import com.digiwes.basetype.TimePeriod;
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecEnum;
 import com.digiwes.common.enums.ProdSpecErrorCode;
@@ -41,33 +42,33 @@ public class ProductSpecCharacteristicTest {
     @Test
     public void testAssignValue() throws Exception {
         Set<ProductSpecCharacteristicValue> exceptProductSpecCharacteristicValues=new HashSet<ProductSpecCharacteristicValue>();
-        int result = CommonErrorCode.SUCCESS.getCode();
+        BusinessCode result = BusinessCode.SUCCESS;
         ProductSpecCharacteristicValue prodSpecCharValue=null;
         result=prodSpecChar.assignValue(prodSpecCharValue);
-        assertEquals("productSpecCharValue is null", ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_IS_NULL.getCode(),result);
+        assertEquals("productSpecCharValue is null", BusinessCode.PROD_SPEC_CHAR_VALUE_IS_NULL,result);
         assertEquals("productSpecCharValue is null",exceptProductSpecCharacteristicValues,prodSpecChar.getProdSpecCharValue());
 
         prodSpecCharValue = new ProductSpecCharacteristicValue(ProdSpecEnum.ProdSpecType.TEXT.getName(),false, "GHz", validFor, "8", "", "");
         result=prodSpecChar.assignValue(prodSpecCharValue);
-        assertEquals("The value type of Character and CharacterValue value is different", ProdSpecErrorCode.PROD_SPEC_CHAR_TYPE_DIFFERENT_CHAR_VALUE_TYPE.getCode(),result);
+        assertEquals("The value type of Character and CharacterValue value is different", BusinessCode.PROD_SPEC_CHAR_VALUETYPE_DIFF_FROM_VALUE_VALUETYPE,result);
         assertEquals("The value type of Character and CharacterValue value is different",exceptProductSpecCharacteristicValues,prodSpecChar.getProdSpecCharValue());
 
         prodSpecCharValue = new ProductSpecCharacteristicValue(ProdSpecEnum.ProdSpecType.NUMERIC.getName(), true,"GHz", validFor, "8");
         exceptProductSpecCharacteristicValues.add(prodSpecCharValue) ;
         result=prodSpecChar.assignValue(prodSpecCharValue);
-        assertEquals("add a normal value", CommonErrorCode.SUCCESS.getCode(), result);
+        assertEquals("add a normal value", BusinessCode.SUCCESS, result);
         assertEquals("add a normal value", 1, prodSpecChar.getProdSpecCharValue().size());
         assertEquals("add a normal value",exceptProductSpecCharacteristicValues,prodSpecChar.getProdSpecCharValue());
 
 
         result= prodSpecChar.assignValue(prodSpecCharValue);
-        assertEquals("Add a duplicate value",CommonErrorCode.SUCCESS.getCode(),result);
+        assertEquals("Add a duplicate value",BusinessCode.SUCCESS,result);
         assertEquals("Add a duplicate value", 1, prodSpecChar.getProdSpecCharValue().size());
         assertEquals("Add a duplicate value",exceptProductSpecCharacteristicValues,prodSpecChar.getProdSpecCharValue());
 
         prodSpecCharValue = new ProductSpecCharacteristicValue(ProdSpecEnum.ProdSpecType.NUMERIC.getName(),true, "GHz", validFor, "8");
         result= prodSpecChar.assignValue(prodSpecCharValue);
-        assertEquals("Add a duplicate value ,Values are the same as before. ",CommonErrorCode.SUCCESS.getCode(),result);
+        assertEquals("Add a duplicate value ,Values are the same as before. ",BusinessCode.SUCCESS,result);
         assertEquals("Add a duplicate value ,Values are the same as before. ", 1, prodSpecChar.getProdSpecCharValue().size());
         assertEquals("Add a duplicate value ,Values are the same as before.",exceptProductSpecCharacteristicValues,prodSpecChar.getProdSpecCharValue());
     }
@@ -114,54 +115,54 @@ public class ProductSpecCharacteristicTest {
     public void testAssociate() throws Exception {
         ProductSpecCharacteristic targetChar = null;
         List<ProductSpecCharRelationship>  exceptProductSpecRelationship =new ArrayList<ProductSpecCharRelationship>();
-        int result = CommonErrorCode.SUCCESS.getCode();
+        BusinessCode result = BusinessCode.SUCCESS;
         result=prodSpecChar.associate(targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getName(), validFor);
-        assertEquals("add a empty targetProdSpec",ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode(),result);
+        assertEquals("add a empty targetProdSpec", BusinessCode.PROD_SPEC_CHAR_IS_NULL,result);
         assertEquals("add a empty targetProdSpec",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
 
         targetChar = new ProductSpecCharacteristic("2", "Size and weight", ProdSpecEnum.ProdSpecType.NUMERIC.getName(), validFor, "true", 1, 1, true, "compistchar", "");
         result = prodSpecChar.associate(targetChar, null, validFor);
-        assertEquals("add a empty type ",ProdSpecErrorCode.PROD_SPEC_CHAR_RELATIONSHIP_TYPE_IS_NULL.getCode(),result);
+        assertEquals("add a empty type ",BusinessCode.PROD_SPEC_CHAR_RELATIONSHIP_TYPE_IS_NULL,result);
         assertEquals("add a empty type",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
 
 
         result=prodSpecChar.associate(prodSpecChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getName(), validFor);
-        assertEquals("add Related SpecChar:The srcChar is the same as the targetChar.",ProdSpecErrorCode.PROD_SPEC_CHAR_EQUALS_TO_CURRENT.getCode(), result);
+        assertEquals("add Related SpecChar:The srcChar is the same as the targetChar.",BusinessCode.PROD_SPEC_CHAR_ASSOCIATE_WITH_ITSELF, result);
         assertEquals("add Related SpecChar:The srcChar is the same as the targetChar.",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
 
         result=prodSpecChar.associate(targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), validFor);
         ProductSpecCharRelationship productSpecCharValueRelationShip = new ProductSpecCharRelationship(prodSpecChar, targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), validFor);
         exceptProductSpecRelationship.add(productSpecCharValueRelationShip);
-        assertEquals("add Related SpecChar",  CommonErrorCode.SUCCESS.getCode(), result);
+        assertEquals("add Related SpecChar",  BusinessCode.SUCCESS, result);
         assertEquals("add Related SpecChar.", 1, prodSpecChar.getProdSpecCharRelationship().size());
         assertEquals("add Related SpecChar.",exceptProductSpecRelationship,prodSpecChar.getProdSpecCharRelationship());
 
         result=prodSpecChar.associate(targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), validFor);
-        assertEquals("add duplicat Relationship",ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT.getCode(), result);
+        assertEquals("add duplicat Relationship",BusinessCode.PROD_SPEC_CHAR_RELATIONSHIP_EXISTED, result);
         assertEquals("add duplicat Relationship.",1, prodSpecChar.getProdSpecCharRelationship().size());
         assertEquals("add duplicat Relationship.",exceptProductSpecRelationship,prodSpecChar.getProdSpecCharRelationship());
 
         result=prodSpecChar.associate(targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-01-01 00:00:00"), DateUtils.datetimeFormat.parse("2015-01-29 23:59:59")));
         productSpecCharValueRelationShip = new ProductSpecCharRelationship(prodSpecChar, targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-01-01 00:00:00"),DateUtils.datetimeFormat.parse("2015-01-29 23:59:59")));
         exceptProductSpecRelationship.add(productSpecCharValueRelationShip);
-        assertEquals("add Related SpecChar��have create a aggregation relationship (time before )", CommonErrorCode.SUCCESS.getCode(), result);
+        assertEquals("add Related SpecChar��have create a aggregation relationship (time before )", BusinessCode.SUCCESS, result);
         assertEquals("add Related SpecChar.", 2, prodSpecChar.getProdSpecCharRelationship().size());
         assertEquals("add Related SpecChar.",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
 
         result=prodSpecChar.associate(targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-01-01 00:00:00"), DateUtils.datetimeFormat.parse("2015-06-29 23:59:59")));
-        assertEquals("add Related SpecChar��have create a aggregation relationship (time in period  )",ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT.getCode(), result);
+        assertEquals("add Related SpecChar��have create a aggregation relationship (time in period  )",BusinessCode.PROD_SPEC_CHAR_RELATIONSHIP_EXISTED, result);
         assertEquals("add Related SpecChar��have create a aggregation relationship (time in period  )",2, prodSpecChar.getProdSpecCharRelationship().size());
         assertEquals("add Related SpecChar��have create a aggregation relationship (time in period  )",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
 
         result=prodSpecChar.associate(targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-09-01 23:59:59"), DateUtils.datetimeFormat.parse("2015-10-29 23:59:59")));
         productSpecCharValueRelationShip = new ProductSpecCharRelationship(prodSpecChar, targetChar, ProdSpecEnum.ProdSpecRelationship.AGGREGATION.getValue(), new TimePeriod(DateUtils.datetimeFormat.parse("2015-09-01 23:59:59"),DateUtils.datetimeFormat.parse("2015-10-29 23:59:59")));
         exceptProductSpecRelationship.add(productSpecCharValueRelationShip);
-        assertEquals("add Related SpecChar��have create a aggregation relationship (time after  )", CommonErrorCode.SUCCESS.getCode(), result);
+        assertEquals("add Related SpecChar��have create a aggregation relationship (time after  )", BusinessCode.SUCCESS, result);
         assertEquals("add Related SpecChar.have create a aggregation relationship (time after  )",3, prodSpecChar.getProdSpecCharRelationship().size());
         assertEquals("add Related SpecChar��have create a aggregation relationship (time after  )",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
 
         result=prodSpecChar.associate(targetChar, ProdSpecEnum.ProdSpecRelationship.DEPENDENCY.getValue(), validFor);
-        assertEquals("add Related SpecChar:have create other relationship", ProdSpecErrorCode.PROD_SPEC_CHAR_HAS_RELATED_TO_CURRENT.getCode(), result);
+        assertEquals("add Related SpecChar:have create other relationship", BusinessCode.PROD_SPEC_CHAR_RELATIONSHIP_EXISTED, result);
         assertEquals("add Related SpecChar��have create other relationship",3, prodSpecChar.getProdSpecCharRelationship().size());
         assertEquals("add Related SpecChar��have create a aggregation relationship (time after  )",exceptProductSpecRelationship, prodSpecChar.getProdSpecCharRelationship());
     }

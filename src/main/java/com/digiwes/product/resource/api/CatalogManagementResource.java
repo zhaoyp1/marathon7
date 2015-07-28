@@ -23,32 +23,19 @@ public class CatalogManagementResource {
     @GET
     @Path("/productOffering")
     public List<Map<String, Object>> retrieveProductOffering(@QueryParam("fields") String fields, @QueryParam("offeringName") String offeringName, @QueryParam("time") String time){
-        //return value
-        ProdOffering productOffering = new ProdOffering();
-
         //get the catalog
         ProductCatalog productCatalog = getManagementProductCatalog();
-
         //call the controller to get the return value
         CatalogManagementController catalogManagementController = new CatalogManagementController();
         List<ProdCatalogProdOffer> productOfferingUnderCatalog = catalogManagementController.retrieveProductOffering(productCatalog, offeringName, time);
-
-        List<ProdOffering> resultProdOfferingList = new ArrayList<ProdOffering>();
+        List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
         if(null != productOfferingUnderCatalog && productOfferingUnderCatalog.size()>0){
             for(ProdCatalogProdOffer prodCatalogProdOffer : productOfferingUnderCatalog){
                 ProdOffering prodOffering = ConvertUtil.convertToProdOffering(prodCatalogProdOffer);
-                resultProdOfferingList.add(prodOffering);
+                Map<String,Object> map = ConvertUtil.convertObjectToMap(prodOffering, fields, "id");
+                resultList.add(map);
             }
         }
-
-       List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
-       if(null != resultProdOfferingList && resultProdOfferingList.size()>0){
-           for(ProdOffering resultProdOffering :resultProdOfferingList){
-               Map<String,Object> map = ConvertUtil.convertObjectToMap(resultProdOffering, fields,"id");
-               resultList.add(map);
-           }
-       }
-
        return resultList;
     }
     @GET

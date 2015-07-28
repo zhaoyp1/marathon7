@@ -2,6 +2,7 @@ package com.digiwes.product.spec;
 
 import java.util.*;
 
+import com.digiwes.common.BusinessCode;
 import com.digiwes.common.enums.CommonErrorCode;
 import com.digiwes.common.enums.ProdSpecEnum;
 import com.digiwes.common.enums.ProdSpecErrorCode;
@@ -211,22 +212,22 @@ public class ProductSpecCharacteristicValue {
      * @param relationType
      * @param validFor
      */
-    public int associate(ProductSpecCharacteristicValue charValue, String relationType, TimePeriod validFor) {
+    public BusinessCode associate(ProductSpecCharacteristicValue charValue, String relationType, TimePeriod validFor) {
         if (ParameterUtil.checkParameterIsNull(relationType)) {
             logger.warn(" relationType must not be null.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_RELATIONSHIP_TYPE_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUE_RELATIONSHIP_TYPE_IS_NULL;
         }
         if(ParameterUtil.checkParameterIsNull(charValue)){
             logger.warn(" charValue must not be null.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_IS_NULL;
         }
         if(ParameterUtil.checkParameterIsNull(validFor)){
             logger.warn(" validFor must not be null.");
-            return CommonErrorCode.VALIDFOR_IS_NULL.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUE_VALIDPERIOD_IS_NULL;
         }
         if(this.equals(charValue)){
             logger.warn("can not create relationship whit itself.");
-            return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_EQUALS_TO_CURRENT.getCode();
+            return BusinessCode.PROD_SPEC_CHAR_VALUE_ASSOCIATE_WITH_ITSELF;
         }
         List<ProdSpecCharValueRelationship> productSpecCharValueRelationShip = retrieveRelatedCharacteristicValue(charValue);
         if(null != productSpecCharValueRelationShip){
@@ -234,14 +235,14 @@ public class ProductSpecCharacteristicValue {
             for(ProdSpecCharValueRelationship valueRelationship : productSpecCharValueRelationShip){
                 if(valueRelationship.getValidFor().isOverlap(validFor)){
                     logger.warn("CharacteristicValue have been created in the specified time");
-                    return ProdSpecErrorCode.PROD_SPEC_CHAR_VALUE_HAS_RELATED_TO_CURRENT.getCode();
+                    return BusinessCode.PROD_SPEC_CHAR_VALUE_RELATIONSHIP_EXISTED;
 
                 }
             }
         }
         ProdSpecCharValueRelationship specCharValueRelationShip = new ProdSpecCharValueRelationship(this,charValue, relationType, validFor);
         this.prodSpecCharValueRelationship.add( specCharValueRelationShip );
-        return CommonErrorCode.SUCCESS.getCode();
+        return BusinessCode.SUCCESS;
     }
 
     /**
