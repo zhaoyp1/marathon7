@@ -15,7 +15,7 @@ package com.digiwes.product.resource.response;
 
 import com.digiwes.basetype.TimePeriod;
 
-public class ProductOffering {
+public class ProdOffering {
   private String id;
 
   public String getId() {
