@@ -15,7 +15,7 @@ public enum BusinessCode {
 	PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT(0x260A,"publish offering's validFor is invalid"),
 	PROD_OFFERING_CATALOG_OFFERING_NOT_BE_PUBLISHED(0x260B,"offering has not be published"),
 	PROD_OFFERING_PUBLISHED_VALIDPERIOD_NOT_IN_OFFERING_VALIDPERIOD(0x260C,"publish offering validFor is invalid"),
-	PROD_OFFERING_VALIDFOR_IS_NULL(0x260C,"validFor is null"),
+	PROD_OFFERING_VALIDPERIOD_IS_NULL(0x260C,"validFor of offering is null"),
 	PROD_OFFERING_NOT_EXISTED(0x260D,"offering not existed"),
 	PROD_OFFERING_BUNDLED_OFFERING_NOT_EXISTED(0x260E,"bundled offering not existed"),
 	PROD_OFFERING_BUNDLED_SIZE_IS_DIFFERENT(0x260F,"bundled Offering size is defferent"),

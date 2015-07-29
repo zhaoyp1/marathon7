@@ -111,7 +111,7 @@ public abstract class ProductOffering {
             return BusinessCode.PROD_OFFERING_RELATIONSHIP_TYPE_IS_NULL_OR_EMPTY;
         }
         if(ParameterUtil.checkParameterIsNull(validFor)){
-            return BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL;
+            return BusinessCode.PROD_OFFERING_VALIDPERIOD_IS_NULL;
         }
         if(this.equals(offering)){
             return BusinessCode.PROD_OFFERING_ASSOCIATE_WITH_ITSELF;

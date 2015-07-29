@@ -44,7 +44,7 @@ public class ProductCatalogTest extends TestCase {
         assertEquals("publish a offering but it's null ,expectProdCatalogProdOffer compare to catalog's prodCatalogProdOffer.", expectProdCatalogProdOffer, catalog.getProdCatalogProdOffer());
 
         errorCode =  catalog.publish(productOffering,null);
-        assertEquals("publish a offering but it's validFor is null ,compare to return errorCode.", BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL.getCode(),errorCode.getCode());
+        assertEquals("publish a offering but it's validFor is null ,compare to return errorCode.", BusinessCode.PROD_OFFERING_VALIDPERIOD_IS_NULL.getCode(),errorCode.getCode());
         assertEquals("publish a offering but it's validFor is null ,expectProdCatalogProdOffer compare to catalog's prodCatalogProdOffer.", expectProdCatalogProdOffer, catalog.getProdCatalogProdOffer());
 
         TimePeriod validFor1 = new TimePeriod(new Date(),DateUtils.datetimeFormat.parse("2015-07-21 23:59:59"));
@@ -226,7 +226,7 @@ public class ProductCatalogTest extends TestCase {
         assertEquals("retired a offering but it's null,expectProdCatalogProdOffer compare to catalog's prodCatalogProdOffer.", expectProdCatalogProdOffer, catalog.getProdCatalogProdOffer());
 
         errorCode = catalog.retired(productOffering,null);
-        assertEquals("retired a offering but it's validFor is null,compare to return errorCode.", BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL.getCode(), errorCode.getCode());
+        assertEquals("retired a offering but it's validFor is null,compare to return errorCode.", BusinessCode.PROD_OFFERING_VALIDPERIOD_IS_NULL.getCode(), errorCode.getCode());
         assertEquals("retired a offering but it's validFor is null,expectProdCatalogProdOffer compare to catalog's prodCatalogProdOffer.", expectProdCatalogProdOffer, catalog.getProdCatalogProdOffer());
 
         SimpleProductOffering productOffering4 =new SimpleProductOffering("3","11-inch MacBook Pro","11-inch MacBook Pro", validFor,atomicProdSpec) ;
