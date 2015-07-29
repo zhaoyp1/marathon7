@@ -2,6 +2,7 @@ package com.digiwes.product.control;
 
 import com.digiwes.common.BusinessCode;
 import com.digiwes.common.utils.ParameterUtil;
+import com.digiwes.common.utils.TimeUtils;
 import com.digiwes.product.control.persistence.CatalogPersistence;
 import com.digiwes.product.control.persistence.PersistenceFactory;
 import com.digiwes.product.control.persistence.ProductOfferingPersistence;
@@ -11,13 +12,9 @@ import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.response.BundledProductOffering;
 import com.digiwes.product.resource.response.ProdOffering;
-import com.digiwes.product.resource.utils.ConvertUtil;
-import com.digiwes.product.resource.utils.DateAdapter;
 
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class CatalogManagementController {
 
@@ -86,9 +83,8 @@ public class CatalogManagementController {
 		//choice
 		Date offeringTime = null;
 		try {
-			DateAdapter dateAdapter = new DateAdapter();
 			if(!ParameterUtil.checkParameterIsNull(time)){
-				offeringTime = dateAdapter.unmarshal(time);
+				offeringTime = TimeUtils.parseDate(time, TimeUtils.Y4_MM_DD_TIME);
 			}
 		}catch (Exception e){
 
