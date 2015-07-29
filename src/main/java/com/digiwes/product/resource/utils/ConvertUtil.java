@@ -1,10 +1,11 @@
 package com.digiwes.product.resource.utils;
 
+import com.digiwes.basetype.TimePeriod;
 import com.digiwes.product.offering.BundledProdOfferOption;
+import com.digiwes.product.offering.BundledProductOffering;
 import com.digiwes.product.offering.ProductOffering;
 import com.digiwes.product.offering.SimpleProductOffering;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
-import com.digiwes.product.resource.response.BundledProductOffering;
 import com.digiwes.product.resource.response.ProdOffering;
 import com.digiwes.product.resource.response.ProductOfferingPrice;
 import com.digiwes.product.resource.response.ProductSpecificationRef;
@@ -70,6 +71,7 @@ public class ConvertUtil {
         prodSpecRef.setHref("");
         return prodSpecRef;
     }
+
     public static Map<String,Object> convertObjectToMap(Object thisObj,String fields,String requiredField)
     {
         Map map = new HashMap();
@@ -130,4 +132,6 @@ public class ConvertUtil {
         }
         return map;
     }
+
+
 }

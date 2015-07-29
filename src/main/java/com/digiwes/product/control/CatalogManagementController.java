@@ -5,9 +5,11 @@ import com.digiwes.common.utils.ParameterUtil;
 import com.digiwes.product.control.persistence.CatalogPersistence;
 import com.digiwes.product.control.persistence.PersistenceFactory;
 import com.digiwes.product.control.persistence.ProductOfferingPersistence;
+import com.digiwes.product.offering.BundledProdOfferOption;
 import com.digiwes.product.offering.ProductOffering;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
+import com.digiwes.product.resource.response.BundledProductOffering;
 import com.digiwes.product.resource.response.ProdOffering;
 import com.digiwes.product.resource.utils.ConvertUtil;
 import com.digiwes.product.resource.utils.DateAdapter;
@@ -23,27 +25,56 @@ public class CatalogManagementController {
 	 * 
 	 * @param productOffering
 	 */
-	public ProdOffering  publishOffering(ProductCatalog productCatalog, ProdOffering productOffering){
+	public BusinessCode  publishOffering(ProductCatalog productCatalog, ProdOffering productOffering){
 		if (null == productOffering ){
-
+			  return BusinessCode.PROD_OFFERING_IS_NULL;
 		}
 		ProductOfferingPersistence offeringPersistence = PersistenceFactory.getProdOfferingPersistence();
 		CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
 		ProductOffering exists = null;
+		boolean flag=false;//used to judge bundledOffering is right
+		BusinessCode result =BusinessCode.SUCCESS;
 		try{
 			exists =offeringPersistence.getOfferByName(productOffering.getName());
 			if(null == exists){
+				return BusinessCode.PROD_OFFERING_NOT_EXISTED;
+			}else{
+				if(exists instanceof com.digiwes.product.offering.BundledProductOffering){
+					List<BundledProductOffering> boundledProductOffeings=productOffering.getBundledProductOffering();
+					List<BundledProdOfferOption> bundledProdOfferOptions=((com.digiwes.product.offering.BundledProductOffering) exists).getBundledProdOfferOption();
+					if(null == boundledProductOffeings || null ==bundledProdOfferOptions ||boundledProductOffeings.size()!=bundledProdOfferOptions.size() ) {
+						return BusinessCode.PROD_OFFERING_BUNDLED_SIZE_IS_DIFFERENT;
+					} else{
+					   for(BundledProductOffering bundledProductOffering: boundledProductOffeings){
+						   ProductOffering offering=offeringPersistence.load(bundledProductOffering.getId());
+						   if(null !=offering){
+							   flag=false;
+							   for ( BundledProdOfferOption bundledProdOfferOption : bundledProdOfferOptions){
+								   if (bundledProdOfferOption.getProductOffering().getId().equals(offering.getId())){
+									   flag=true;
+								   }
+							   }
+							   if(!flag){
+								  return BusinessCode.PROD_OFFERING_BUNDLED_OFFERING_IS_DIFFERENT;
+							   }
+						   }else{
+							   return BusinessCode.PROD_OFFERING_BUNDLED_OFFERING_NOT_EXISTED;
+						   }
+
+					   }
+					}
+				}
+				result = productCatalog.publish(exists, productOffering.getValidFor());
+				catalogPersistence.save(productCatalog);
+				productOffering.setId(exists.getId());
+				productOffering.setHref("");
 
 			}
-			BusinessCode result = productCatalog.publish(exists, productOffering.getValidFor());
-			this.dealResult(result);
-			catalogPersistence.save(productCatalog);
+
 		}   catch (Exception e){
 			e.printStackTrace();
 		}
-		productOffering.setId(exists.getId());
-		productOffering.setHref("");
-		return productOffering;
+		return result;
 	}
 
 	/**

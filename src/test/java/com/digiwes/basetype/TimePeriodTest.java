@@ -97,46 +97,43 @@ public class TimePeriodTest {
         } catch (Exception e){
 
         }
-        //Case2: timePeriod =timePeriod2
+        //Case2: timePeriod =timePeriod1
         TimePeriod timePeriod1 =createTimePeriod("20150717","20150816");
         assertEquals("timePeriod equals timePeriod1",true,timePeriod.isOverlap(timePeriod1));
-        // case3: timePeriod.startDateTime> timePeriod1.startDateTime  && timePeriod.endDateTime<timePeriod1.endDateTime
+        // case3:
         timePeriod1 =createTimePeriod("20150715","20150716");
-        assertEquals(" ",false,timePeriod.isOverlap(timePeriod1));
+        assertEquals("timePeriod1.endDateTime<timePeriod.startDateTime",false,timePeriod.isOverlap(timePeriod1));
 
         //case3:
         timePeriod1 =createTimePeriod("20150715","20150718");
-        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        assertEquals("endDateTime1>startDateTime",true,timePeriod.isOverlap(timePeriod1));
         //case4:
         timePeriod1 =createTimePeriod("20150715","20150816");
-        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        assertEquals("startDateTime1<startDate &&endDateTime ==endDateTime1  ",true,timePeriod.isOverlap(timePeriod1));
         //case5:
         timePeriod1 =createTimePeriod("20150715","20150817");
-        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        assertEquals("startDateTime1<startDate &&endDateTime1>endDateTime  ",true,timePeriod.isOverlap(timePeriod1));
         //case6:
         timePeriod1 =createTimePeriod("20150717","20150717");
-        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        assertEquals("startDateTime1=startDate && endDateTime1=startDate",true,timePeriod.isOverlap(timePeriod1));
         //case7:
         timePeriod1 =createTimePeriod("20150715","20150717");
-        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        assertEquals("startDateTime1<startDate && endDateTime1=startDate",true,timePeriod.isOverlap(timePeriod1));
         //case8:
         timePeriod1 =createTimePeriod("20150717","20150719");
-        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
-        //case9:
-        timePeriod1 =createTimePeriod("20150717","20150816");
-        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        assertEquals("startDateTime1 ==startDate && endDateTime1>startDate&&endDateTime1<endDateTime",true,timePeriod.isOverlap(timePeriod1));
         //case10:
         timePeriod1 =createTimePeriod("20150717","20150817");
-        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        assertEquals("startDateTime1 ==startDate && endDateTime1>endDateTime",true,timePeriod.isOverlap(timePeriod1));
         //case11:
         timePeriod1 =createTimePeriod("20150816","20150816");
-        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        assertEquals("startDateTime1 ==endDateTime && endDateTime1=endDateTime",true,timePeriod.isOverlap(timePeriod1));
         //case12:
         timePeriod1 =createTimePeriod("20150816","20150817");
-        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        assertEquals("startDateTime1 == endDateTime && endDateTime1>endDateTime",true,timePeriod.isOverlap(timePeriod1));
         //case13:
         timePeriod1 =createTimePeriod("20150817","20150818");
-        assertEquals(" ",false,timePeriod.isOverlap(timePeriod1));
+        assertEquals("startDateTime1 == endDateTime && endDateTime1>endDateTime",false,timePeriod.isOverlap(timePeriod1));
     }
 
     @Test

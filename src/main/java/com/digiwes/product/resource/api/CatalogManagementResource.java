@@ -1,8 +1,11 @@
 package com.digiwes.product.resource.api;
 
+import com.digiwes.common.BusinessCode;
 import com.digiwes.product.control.CatalogManagementController;
 import com.digiwes.product.control.persistence.CatalogPersistence;
 import com.digiwes.product.control.persistence.PersistenceFactory;
+import com.digiwes.product.control.persistence.ProductOfferingPersistence;
+import com.digiwes.product.offering.ProductOffering;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.response.ProdOffering;
@@ -10,6 +13,7 @@ import com.digiwes.product.resource.utils.ConvertUtil;
 
 import javax.ws.rs.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,11 +59,24 @@ public class CatalogManagementResource {
     @POST
     @Path("/productOffering")
     @Consumes({"application/json"})
-    public ProdOffering publishOffering(ProdOffering prodOffering){
+    public Map<String ,Object> publishOffering(ProdOffering prodOffering){
         ProductCatalog catalog =getManagementProductCatalog();
         CatalogManagementController catalogManagementController = new CatalogManagementController();
-        catalogManagementController.publishOffering(catalog,prodOffering);
-        return prodOffering;
+        Map<String,Object> result=new HashMap<String, Object>();
+        try {
+            BusinessCode businessCode=catalogManagementController.publishOffering(catalog, prodOffering);
+            if(businessCode == BusinessCode.SUCCESS){
+                result.put("code",201);
+                result.put("message",businessCode.getMessage());
+                result.put("prodOffering",prodOffering);
+            } else{
+                result.put("code",500);
+                result.put("message",businessCode.getMessage());
+            }
+        }catch (Exception e){
+         e.printStackTrace();
+        }
+        return result;
     }
 
     private  ProductCatalog getManagementProductCatalog(){
