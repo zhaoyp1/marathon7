@@ -37,7 +37,7 @@ public class ProductCatalogController {
          if(BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL.getCode() == result.getCode()) {
              throw  new IllegalArgumentException(BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL.getMessage());
          }else if(BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT.getCode() == result.getCode()){
-             throw  new Exception(BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT.getMessage());
+             throw  new IllegalArgumentException(BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT.getMessage());
          }else if(BusinessCode.PROD_OFFERING_IS_NULL.getCode() == result.getCode()){
              throw  new IllegalArgumentException(BusinessCode.PROD_OFFERING_IS_NULL.getMessage());
          } else if(BusinessCode.PROD_OFFERING_PUBLISHED_VALIDPERIOD_NOT_IN_OFFERING_VALIDPERIOD.getCode() ==result.getCode()){

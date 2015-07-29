@@ -3,6 +3,7 @@ package com.digiwes.basetype;
 import com.digiwes.common.utils.TimeUtils;
 import org.junit.Test;
 
+import java.sql.Time;
 import java.util.Date;
 
 import static org.junit.Assert.*;
@@ -89,26 +90,104 @@ public class TimePeriodTest {
     @Test
     public void testIsOverlap() throws Exception {
         TimePeriod timePeriod = createTimePeriod("20150717","20150816");
-//        timePeriod.isOverlap()
+        //case1:parameter is null
+        try {
+            timePeriod.isOverlap(null);
+            fail("parameter is null");
+        } catch (Exception e){
+
+        }
+        //Case2: timePeriod =timePeriod2
+        TimePeriod timePeriod1 =createTimePeriod("20150717","20150816");
+        assertEquals("timePeriod equals timePeriod1",true,timePeriod.isOverlap(timePeriod1));
+        // case3: timePeriod.startDateTime> timePeriod1.startDateTime  && timePeriod.endDateTime<timePeriod1.endDateTime
+        timePeriod1 =createTimePeriod("20150715","20150716");
+        assertEquals(" ",false,timePeriod.isOverlap(timePeriod1));
+
+        //case3:
+        timePeriod1 =createTimePeriod("20150715","20150718");
+        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        //case4:
+        timePeriod1 =createTimePeriod("20150715","20150816");
+        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        //case5:
+        timePeriod1 =createTimePeriod("20150715","20150817");
+        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        //case6:
+        timePeriod1 =createTimePeriod("20150717","20150717");
+        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        //case7:
+        timePeriod1 =createTimePeriod("20150715","20150717");
+        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        //case8:
+        timePeriod1 =createTimePeriod("20150717","20150719");
+        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        //case9:
+        timePeriod1 =createTimePeriod("20150717","20150816");
+        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        //case10:
+        timePeriod1 =createTimePeriod("20150717","20150817");
+        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        //case11:
+        timePeriod1 =createTimePeriod("20150816","20150816");
+        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        //case12:
+        timePeriod1 =createTimePeriod("20150816","20150817");
+        assertEquals(" ",true,timePeriod.isOverlap(timePeriod1));
+        //case13:
+        timePeriod1 =createTimePeriod("20150817","20150818");
+        assertEquals(" ",false,timePeriod.isOverlap(timePeriod1));
     }
 
     @Test
     public void testIsInTimePeriod1() throws Exception {
+        TimePeriod timePeriod = createTimePeriod("20150717","20150816");
+        //case1:parameter is null
+        try {
+            timePeriod.isOverlap(null);
+            fail("parameter is null");
+        } catch (Exception e){
 
-    }
+        }
+        //Case2: timePeriod =timePeriod2
+        TimePeriod timePeriod1 =createTimePeriod("20150717","20150816");
+        assertEquals("timePeriod equals timePeriod1",true,timePeriod.isOverlap(timePeriod1));
+        // case3: timePeriod.startDateTime> timePeriod1.startDateTime  && timePeriod.endDateTime<timePeriod1.endDateTime
+        timePeriod1 =createTimePeriod("20150715","20150716");
+        assertEquals(" ",false,timePeriod.isInTimePeriod(timePeriod1));
 
-    @Test
-    public void testToString() throws Exception {
-
-    }
-
-    @Test
-    public void testEquals() throws Exception {
-
-    }
-
-    @Test
-    public void testHashCode() throws Exception {
-
+        //case3:
+        timePeriod1 =createTimePeriod("20150715","20150718");
+        assertEquals(" ",false,timePeriod.isInTimePeriod(timePeriod1));
+        //case4:
+        timePeriod1 =createTimePeriod("20150715","20150816");
+        assertEquals(" ",true,timePeriod.isInTimePeriod(timePeriod1));
+        //case5:
+        timePeriod1 =createTimePeriod("20150715","20150817");
+        assertEquals(" ",true,timePeriod.isInTimePeriod(timePeriod1));
+        //case6:
+        timePeriod1 =createTimePeriod("20150717","20150717");
+        assertEquals(" ",false,timePeriod.isInTimePeriod(timePeriod1));
+        //case7:
+        timePeriod1 =createTimePeriod("20150715","20150717");
+        assertEquals(" ",false,timePeriod.isInTimePeriod(timePeriod1));
+        //case8:
+        timePeriod1 =createTimePeriod("20150717","20150719");
+        assertEquals(" ",false,timePeriod.isInTimePeriod(timePeriod1));
+        //case9:
+        timePeriod1 =createTimePeriod("20150717","20150816");
+        assertEquals(" ",true,timePeriod.isInTimePeriod(timePeriod1));
+        //case10:
+        timePeriod1 =createTimePeriod("20150717","20150817");
+        assertEquals(" ",true,timePeriod.isInTimePeriod(timePeriod1));
+        //case11:
+        timePeriod1 =createTimePeriod("20150816","20150816");
+        assertEquals(" ",false,timePeriod.isInTimePeriod(timePeriod1));
+        //case12:
+        timePeriod1 =createTimePeriod("20150816","20150817");
+        assertEquals(" ",false,timePeriod.isInTimePeriod(timePeriod1));
+        //case13:
+        timePeriod1 =createTimePeriod("20150817","20150818");
+        assertEquals(" ",false,timePeriod.isInTimePeriod(timePeriod1));
     }
 }
