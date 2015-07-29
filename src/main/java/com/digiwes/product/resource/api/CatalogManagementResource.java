@@ -26,7 +26,7 @@ public class CatalogManagementResource {
 
     @GET
     @Path("/productOffering")
-    public List<Map<String, Object>> retrieveProductOffering(@QueryParam("fields") String fields, @QueryParam("offeringName") String offeringName, @QueryParam("time") String time){
+    public List<Map<String, Object>> retrieveProductOffering(@QueryParam("fields") String fields, @QueryParam("name") String offeringName, @QueryParam("time") String time){
         //get the catalog
         ProductCatalog productCatalog = getManagementProductCatalog();
         //call the controller to get the return value
