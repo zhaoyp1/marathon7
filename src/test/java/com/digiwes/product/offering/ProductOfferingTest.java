@@ -66,7 +66,7 @@ public class ProductOfferingTest {
         //validFor is null
         rtnCode = offering.associate(offeringTarget, ProdOfferingEnum.OfferingRelationshipType.AGGREGATION.getValue(), null);
         assertEquals("validFor is null", 0, offering.getProdOfferingRelationship().size());
-        assertEquals("validFor is null", BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL.getCode(), rtnCode.getCode());
+        assertEquals("validFor is null", BusinessCode.PROD_OFFERING_VALIDPERIOD_IS_NULL.getCode(), rtnCode.getCode());
 
         //can't create relationship to itself
         ProductOffering offeringTargetItself = new SimpleProductOffering("0001",  "11 pound MacBook Air 6,288",  "1.6GHz Intel Core i5 process��Turbo Boost 2.7GHz",  validFor,  prodSpec);

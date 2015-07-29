@@ -80,6 +80,9 @@ public class CatalogManagementController {
 	 * @param time
 	 */
 	public List<ProdCatalogProdOffer> retrieveProductOffering(ProductCatalog productCatalog, String offeringName, String time) {
+		//check productCatalog is null
+		ParameterUtil.checkParameterIsNulForException(productCatalog, "productCatalog");
+
 		//choice
 		Date offeringTime = null;
 		try {
@@ -105,8 +108,8 @@ public class CatalogManagementController {
 	}
 	public void dealResult(BusinessCode result){
 		try{
-			if(BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL == result) {
-				throw  new IllegalArgumentException(BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL.getMessage());
+			if(BusinessCode.PROD_OFFERING_VALIDPERIOD_IS_NULL == result) {
+				throw  new IllegalArgumentException(BusinessCode.PROD_OFFERING_VALIDPERIOD_IS_NULL.getMessage());
 			}else if(BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT.getCode() == result.getCode()){
 				throw  new Exception(BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT.getMessage());
 			}else if(BusinessCode.PROD_OFFERING_IS_NULL.getCode() == result.getCode()){

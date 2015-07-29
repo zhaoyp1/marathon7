@@ -97,7 +97,7 @@ public class ProductCatalog extends Catalog {
             return BusinessCode.PROD_OFFERING_IS_NULL;
         }
         if(ParameterUtil.checkParameterIsNull(validFor))  {
-            return BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL;
+            return BusinessCode.PROD_OFFERING_VALIDPERIOD_IS_NULL;
         }
         ProdCatalogProdOffer prodCatalogProdOffer = this.retrieveProdCatalogProdOffer(offering, validFor);
         if( null == prodCatalogProdOffer) {
@@ -300,7 +300,7 @@ public class ProductCatalog extends Catalog {
             return BusinessCode.PROD_OFFERING_IS_NULL;
         }
         if(ParameterUtil.checkParameterIsNull(validFor)) {
-            return BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL;
+            return BusinessCode.PROD_OFFERING_VALIDPERIOD_IS_NULL;
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date now = TimeUtils.truncDate(new Date());

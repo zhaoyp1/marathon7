@@ -34,8 +34,8 @@ public class ProductCatalogController {
          ProductCatalog catalog=catalogPersistence.load(prodCatalogId);
          ProductOffering offering=productOfferingPersistence.load(prodOfferingId);
          BusinessCode result =catalog.publish(offering, validFor);
-         if(BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL.getCode() == result.getCode()) {
-             throw  new IllegalArgumentException(BusinessCode.PROD_OFFERING_VALIDFOR_IS_NULL.getMessage());
+         if(BusinessCode.PROD_OFFERING_VALIDPERIOD_IS_NULL.getCode() == result.getCode()) {
+             throw  new IllegalArgumentException(BusinessCode.PROD_OFFERING_VALIDPERIOD_IS_NULL.getMessage());
          }else if(BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT.getCode() == result.getCode()){
              throw  new IllegalArgumentException(BusinessCode.PROD_OFFERING_PUBLISHED_STARTTIME_LT_CURRENT.getMessage());
          }else if(BusinessCode.PROD_OFFERING_IS_NULL.getCode() == result.getCode()){
