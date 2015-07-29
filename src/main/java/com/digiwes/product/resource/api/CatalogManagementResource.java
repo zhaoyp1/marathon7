@@ -12,10 +12,7 @@ import com.digiwes.product.resource.response.ProdOffering;
 import com.digiwes.product.resource.utils.ConvertUtil;
 
 import javax.ws.rs.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zhaoyp on 2015/7/28.
@@ -62,7 +59,7 @@ public class CatalogManagementResource {
     public Map<String ,Object> publishOffering(ProdOffering prodOffering){
         ProductCatalog catalog =getManagementProductCatalog();
         CatalogManagementController catalogManagementController = new CatalogManagementController();
-        Map<String,Object> result=new HashMap<String, Object>();
+        Map<String,Object> result=new TreeMap<String, Object>();
         try {
             BusinessCode businessCode=catalogManagementController.publishOffering(catalog, prodOffering);
             if(businessCode == BusinessCode.SUCCESS){

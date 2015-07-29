@@ -18,17 +18,20 @@ public class OfferingData {
     private final static int OFFER_ID = 0;
     private final static int OFFER_NAME = 1;
     private final static int OFFER_SPEC_ID = 2;
-    private final static int SIMPLE_OFFER_ID=2;
-    private final static int NUMBER_REL_OFFER_LOWER_LIMIT=3;
-    private final static int NUMBER_REL_OFFER_UPPER_LIMIT=4;
+    private final static int BUNDLE_OFFER_ID = 1;
+    private final static int NUMBER_REL_OFFER_LOWER_LIMIT=2;
+    private final static int NUMBER_REL_OFFER_UPPER_LIMIT=3;
 
     private static  String[][] offeringData = {
             {"off_1", "11-inch MacBook Air", "spec_1"},
             {"off_2", "13-inch MacBook Air", "spec_2"},
     };
     private static  String[][] bundledOfferingData={
-            {"bundOff_1","MacBookAir","off_1","1","1"}
-    }       ;
+            {"bundOff_1","MacBookAir"}
+    };
+    private static  String[][] bundledOfferingOption={
+            {"bundOff_1","off_1","1","1"}
+    };
     //offerID, price_id
     private final  static int OFFER_PRICE_OFFER_ID = 0;
     private final  static int OFFER_PRICE_PRICE_ID = 1;
@@ -45,6 +48,7 @@ public class OfferingData {
             try {
                 initOffering();
                 initBundledOffering();
+               bundledOfferingOption();
             } catch (Exception e) {
                 logger.error("Offering init error.", e);
             }
@@ -69,10 +73,20 @@ public class OfferingData {
                     offeringItem[OFFER_NAME],
                     offeringItem[OFFER_NAME],
                     validFor);
-            ProductOffering bundleOffering=PersistenceFactory.getProdOfferingPersistence().load(offeringItem[SIMPLE_OFFER_ID]);
-            offer.composeOf(bundleOffering,Integer.parseInt(offeringItem[NUMBER_REL_OFFER_LOWER_LIMIT]),Integer.parseInt(offeringItem[NUMBER_REL_OFFER_UPPER_LIMIT]));
             PersistenceFactory.getProdOfferingPersistence().save(offer);
-        }
+          }
+    }
+    public static  void bundledOfferingOption()throws  Exception{
+        for (String[] offeringItem : bundledOfferingOption) {
+            ProductOffering bundleOffering=PersistenceFactory.getProdOfferingPersistence().load(offeringItem[OFFER_ID]);
+            if(bundleOffering instanceof  BundledProductOffering){
+                ProductOffering offering=PersistenceFactory.getProdOfferingPersistence().load(offeringItem[BUNDLE_OFFER_ID]);
+                if(null !=offering){
+                    ((BundledProductOffering)bundleOffering).composeOf(offering, Integer.parseInt(offeringItem[NUMBER_REL_OFFER_LOWER_LIMIT]), Integer.parseInt(offeringItem[NUMBER_REL_OFFER_UPPER_LIMIT]));
+                    PersistenceFactory.getProdOfferingPersistence().save(bundleOffering);
+                }
+            }
+         }
     }
 
     private static void specifyPrice() throws Exception {
