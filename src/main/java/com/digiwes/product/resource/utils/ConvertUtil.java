@@ -28,13 +28,27 @@ public class ConvertUtil {
         ProdOffering prodOffering = null;
         if( null != prodCatalogProdOffer){
             prodOffering = new ProdOffering();
-            prodOffering.setId(prodCatalogProdOffer.getProdOffering().getId());
+            ProductOffering offering=prodCatalogProdOffer.getProdOffering();
+            prodOffering.setId(offering.getId());
             prodOffering.setValidFor(prodCatalogProdOffer.getValidFor());
-            prodOffering.setName(prodCatalogProdOffer.getProdOffering().getName());
-            prodOffering.setDescription(prodCatalogProdOffer.getProdOffering().getDescription());
+            prodOffering.setName(offering.getName());
+            prodOffering.setDescription(offering.getDescription());
             prodOffering.setLastUpdate(null);
-            prodOffering.setLifecycleStatus(prodCatalogProdOffer.getProdOffering().getStatus());
+            prodOffering.setLifecycleStatus(offering.getStatus());
             prodOffering.setVersion("1.0.0");
+            if(offering instanceof BundledProductOffering){
+               List< com.digiwes.product.resource.response.BundledProductOffering> bundledProductOfferingList =new ArrayList<com.digiwes.product.resource.response.BundledProductOffering>();
+               List<BundledProdOfferOption> bundledProdOfferOptions=((BundledProductOffering) offering).getBundledProdOfferOption();
+                for (BundledProdOfferOption bundledProdOfferOption :bundledProdOfferOptions){
+                    com.digiwes.product.resource.response.BundledProductOffering bundledProductOffering=new com.digiwes.product.resource.response.BundledProductOffering();
+                    bundledProductOffering.setId(bundledProdOfferOption.getProductOffering().getId());
+                    bundledProductOffering.setName(bundledProdOfferOption.getProductOffering().getName());
+                    bundledProductOffering.setLifecycleStatus(bundledProdOfferOption.getProductOffering().getStatus());
+                    bundledProductOffering.setHref("http://localhost:8080/marathon/catalogManagement/productOffering/" + bundledProdOfferOption.getProductOffering().getId());
+                    bundledProductOfferingList.add(bundledProductOffering);
+                }
+                prodOffering.setBundledProductOffering(bundledProductOfferingList);
+            }
             //price
             List<ProductOfferingPrice>  prodOfferingPriceResult = new ArrayList<ProductOfferingPrice>();
             List<com.digiwes.product.offering.price.ProductOfferingPrice> productOfferingPriceList = prodCatalogProdOffer.getProductOfferingPrice();
