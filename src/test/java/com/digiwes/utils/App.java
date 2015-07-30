@@ -1,9 +1,11 @@
+/*
 package com.digiwes.utils;
 
+import com.digiwes.product.resource.ProductCatalogResource;
 import com.digiwes.product.spec.data.CatalogData;
 import com.digiwes.product.spec.data.OfferingData;
-import com.digiwes.product.resource.ProductCatalogResource;
-import com.digiwes.product.spec.data.*;
+import com.digiwes.product.spec.data.SpecCharData;
+import com.digiwes.product.spec.data.SpecData;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.servlet.GrizzlyWebContainerFactory;
 import org.glassfish.jersey.server.ServerProperties;
@@ -17,9 +19,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+*/
 /**
  * @author ""
- */
+ *//*
+
 public class App {
 
     private static final URI BASE_URI = URI.create("http://localhost:8080/marathon/");
@@ -47,3 +51,4 @@ public class App {
         CatalogData.init();
     }
 }
+*/
