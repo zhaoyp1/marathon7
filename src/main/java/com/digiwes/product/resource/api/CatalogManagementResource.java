@@ -13,6 +13,7 @@ import com.digiwes.product.resource.utils.ConvertUtil;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+
 import java.net.URI;
 import java.util.*;
 
@@ -83,7 +84,8 @@ public class CatalogManagementResource {
     @Path("/test")
     @Consumes({"application/json"})
     public String test(){
-        return "aaaaaa";
+    	throw new IllegalArgumentException("333");
+        
     }
     private  ProductCatalog getManagementProductCatalog(){
         ProductCatalog productCatalog = null;
