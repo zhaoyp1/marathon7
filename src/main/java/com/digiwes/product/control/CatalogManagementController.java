@@ -24,7 +24,7 @@ public class CatalogManagementController {
 	 */
 	public BusinessCode  publishOffering(ProductCatalog productCatalog, ProdOffering productOffering){
 		if (null == productOffering ){
-			  throw new IllegalArgumentException("offering is null");
+			  return BusinessCode.PROD_OFFERING_IS_NULL;
 		}
 		ProductOfferingPersistence offeringPersistence = PersistenceFactory.getProdOfferingPersistence();
 		CatalogPersistence catalogPersistence = PersistenceFactory.getCatalogPersistence();
