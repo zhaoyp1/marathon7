@@ -4,6 +4,8 @@ import com.digiwes.common.BusinessCode;
 import com.digiwes.product.control.CatalogManagementController;
 import com.digiwes.product.control.persistence.CatalogPersistence;
 import com.digiwes.product.control.persistence.PersistenceFactory;
+import com.digiwes.product.control.persistence.ProductOfferingPersistence;
+import com.digiwes.product.offering.ProductOffering;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.response.ProdOffering;
@@ -11,12 +13,14 @@ import com.digiwes.product.resource.utils.ConvertUtil;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+
+import java.net.URI;
 import java.util.*;
 
 /**
  * Created by zhaoyp on 2015/7/28.
  */
-@Path("/catalogManagement")
+@Path("catalogManagement")
 @Produces({ "application/json"})
 public class CatalogManagementResource {
 
@@ -55,8 +59,8 @@ public class CatalogManagementResource {
     @POST
     @Path("/productOffering")
     @Consumes({"application/json"})
-    public Map<String ,Object> publishOffering(ProdOffering prodOffering){
-        ProductCatalog catalog = getManagementProductCatalog();
+    public Response publishOffering(ProdOffering prodOffering)throws  Exception{
+        ProductCatalog catalog =getManagementProductCatalog();
         CatalogManagementController catalogManagementController = new CatalogManagementController();
         Map<String,Object> result=new TreeMap<String, Object>();
         try {
@@ -72,28 +76,17 @@ public class CatalogManagementResource {
         }catch (Exception e){
          e.printStackTrace();
         }
-        return result;
-    }
-
-    //@MatrixParam("id") String id
-    @GET
-    @Path("{id}")
-    public Response getParamCode(@PathParam("id") String id, @MatrixParam("author") String author, @MatrixParam("country") String country) {
-
-        return Response .status(201) .entity("getParamCode is called, id : " + id
-                + ", author : " + author + ", country : " + country).build();
+       // return Response.created(new URI("http://www.baidu.com")).entity(result).build();
+        return Response.ok(result).build();
     }
 
     @GET
-    @Path("paramCodeNew")
-    public Map<String, Object> getParamCodeNew() {
-
-        Map<String, Object> result = new HashMap<String, Object>();
-        result.put("id",1);
-
-        return result;
+    @Path("/test")
+    @Consumes({"application/json"})
+    public String test(){
+    	throw new IllegalArgumentException("333");
+        
     }
-
     private  ProductCatalog getManagementProductCatalog(){
         ProductCatalog productCatalog = null;
         try {
