@@ -14,9 +14,7 @@ import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.Parameter.*;
 import com.digiwes.product.resource.Parameter.ProductOffering;
-import org.jvnet.hk2.annotations.Service;
 
-import javax.inject.Singleton;
 import javax.ws.rs.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,6 @@ import java.util.List;
 /**
  * Created by zhaoyp on 2015/7/19.
  */
-@Service
 @Path("/catalogManagement1")
 public class ProductCatalogResource {
 

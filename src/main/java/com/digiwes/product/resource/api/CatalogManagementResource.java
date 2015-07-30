@@ -12,12 +12,14 @@ import com.digiwes.product.resource.response.ProdOffering;
 import com.digiwes.product.resource.utils.ConvertUtil;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
+import java.net.URI;
 import java.util.*;
 
 /**
  * Created by zhaoyp on 2015/7/28.
  */
-@Path("/catalogManagement")
+@Path("catalogManagement")
 @Produces({ "application/json"})
 public class CatalogManagementResource {
 
@@ -56,7 +58,7 @@ public class CatalogManagementResource {
     @POST
     @Path("/productOffering")
     @Consumes({"application/json"})
-    public Map<String ,Object> publishOffering(ProdOffering prodOffering){
+    public Response publishOffering(ProdOffering prodOffering)throws  Exception{
         ProductCatalog catalog =getManagementProductCatalog();
         CatalogManagementController catalogManagementController = new CatalogManagementController();
         Map<String,Object> result=new TreeMap<String, Object>();
@@ -73,9 +75,16 @@ public class CatalogManagementResource {
         }catch (Exception e){
          e.printStackTrace();
         }
-        return result;
+       // return Response.created(new URI("http://www.baidu.com")).entity(result).build();
+        return Response.ok(result).build();
     }
 
+    @GET
+    @Path("/test")
+    @Consumes({"application/json"})
+    public String test(){
+        return "aaaaaa";
+    }
     private  ProductCatalog getManagementProductCatalog(){
         ProductCatalog productCatalog = null;
         try {

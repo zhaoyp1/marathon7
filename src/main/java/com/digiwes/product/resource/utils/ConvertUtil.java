@@ -48,6 +48,8 @@ public class ConvertUtil {
                     bundledProductOfferingList.add(bundledProductOffering);
                 }
                 prodOffering.setBundledProductOffering(bundledProductOfferingList);
+            } else{
+                prodOffering.setProductSpecification(convertToProdSpecRef((SimpleProductOffering) prodCatalogProdOffer.getProdOffering()));
             }
             //price
             List<ProductOfferingPrice>  prodOfferingPriceResult = new ArrayList<ProductOfferingPrice>();
@@ -59,11 +61,7 @@ public class ConvertUtil {
                 }
             }
             prodOffering.setProductOfferingPrice(prodOfferingPriceResult);
-            if(prodCatalogProdOffer.getProdOffering() instanceof SimpleProductOffering){
-                prodOffering.setProductSpecification(convertToProdSpecRef((SimpleProductOffering) prodCatalogProdOffer.getProdOffering()));
-            }else{
-                prodOffering.setProductSpecification(null);
-            }
+
         }
 
        return prodOffering;
