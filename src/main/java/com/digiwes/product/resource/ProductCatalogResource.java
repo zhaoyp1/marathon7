@@ -7,24 +7,20 @@ import com.digiwes.common.utils.TimeUtils;
 import com.digiwes.product.control.ProductCatalogController;
 import com.digiwes.product.control.persistence.CatalogPersistence;
 import com.digiwes.product.control.persistence.PersistenceFactory;
-import com.digiwes.product.control.persistence.ProductOfferingPersistence;
-import com.digiwes.product.control.persistence.impl.CatalogPersistenceSimpleImpl;
-import com.digiwes.product.offering.*;
 import com.digiwes.product.offering.catalog.ProdCatalogProdOffer;
 import com.digiwes.product.offering.catalog.ProductCatalog;
 import com.digiwes.product.resource.Parameter.*;
-import com.digiwes.product.resource.Parameter.ProductOffering;
-import org.jvnet.hk2.annotations.Service;
 
-import javax.inject.Singleton;
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by zhaoyp on 2015/7/19.
  */
-@Service
 @Path("/catalogManagement1")
 public class ProductCatalogResource {
 
