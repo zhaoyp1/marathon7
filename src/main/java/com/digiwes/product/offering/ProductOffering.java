@@ -15,7 +15,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * The presentation of one or more ProductSpecifications to the marketplace for sale, rental, or lease for a ProductOfferingPrice. A ProductOffering may target one or more MarketSegments, be included in one or more ProductCatalog, presented in support of one or more ProductStrategies, and made available in one or more Places. ProductOffering may represent a simple offering of a single ProductSpecification or could represent a bundling of one or more other ProductOffering.
  */
-public abstract class ProductOffering extends Entity {
+public abstract class ProductOffering{
 
     private List<ProductOfferingPrice> productOfferingPrice = new ArrayList<ProductOfferingPrice>();
     private List<ProductOfferingRelationship> prodOfferingRelationship = new ArrayList<ProductOfferingRelationship>();
