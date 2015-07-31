@@ -1,16 +1,16 @@
 package com.digiwes.product.offering;
 
-import java.util.*;
-
-import com.digiwes.common.BusinessCode;
-import com.digiwes.common.enums.CommonErrorCode;
-import com.digiwes.common.enums.ProdOfferingEnum;
-import com.digiwes.common.enums.ProdOfferingErrorCode;
-import com.digiwes.common.utils.ParameterUtil;
-import com.digiwes.product.offering.price.*;
 import com.digiwes.basetype.TimePeriod;
-import com.digiwes.product.resource.utils.Entity;
+import com.digiwes.common.BusinessCode;
+import com.digiwes.common.enums.ProdOfferingEnum;
+import com.digiwes.common.utils.ParameterUtil;
+import com.digiwes.product.offering.price.ProductOfferingPrice;
 import org.apache.commons.lang.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The presentation of one or more ProductSpecifications to the marketplace for sale, rental, or lease for a ProductOfferingPrice. A ProductOffering may target one or more MarketSegments, be included in one or more ProductCatalog, presented in support of one or more ProductStrategies, and made available in one or more Places. ProductOffering may represent a simple offering of a single ProductSpecification or could represent a bundling of one or more other ProductOffering.
