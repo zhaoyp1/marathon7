@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Nisx on 2015/7/10.
+ * Created by Nisx on 2015/7/10.ComponentProductPrice
  */
 public class PriceData {
     private static final int PRICE_ID = 0;
@@ -37,7 +37,7 @@ public class PriceData {
     private static void createPriceMap() {
         TimePeriod validFor = TimeUtil.creatTimePeriod("2015-06-01 00:00:00", "2015-08-01 00:00:00");
         for (String[] item : priceData) {
-            ProductOfferingPrice price = new ComponentProductPrice(item[PRICE_NAME],validFor, item[PRICE_PRICE]);
+            ProductOfferingPrice price = new ComponentProductPrice (item[PRICE_NAME],validFor, item[PRICE_PRICE]);
             priceMap.put(item[PRICE_ID], price);
         }
     }

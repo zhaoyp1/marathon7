@@ -16,6 +16,15 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>ConfigDataServlet</servlet-name>
+        <servlet-class>com.digiwes.product.control.ConfigDataServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConfigDataServlet</servlet-name>
+        <url-pattern>/config/*</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>marathon</servlet-name>
         <url-pattern>/rest/*</url-pattern>
