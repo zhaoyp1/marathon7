@@ -10,7 +10,6 @@ import java.io.IOException;
  */
 public class ConfigDataServlet extends HttpServlet{
     public void init(){
-        System.out.println("11111111111111111111111");
         SpecCharData.init();
         SpecData.init();
         OfferingData.init();

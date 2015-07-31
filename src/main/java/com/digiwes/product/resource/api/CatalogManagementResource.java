@@ -79,14 +79,6 @@ public class CatalogManagementResource {
        // return Response.created(new URI("http://www.baidu.com")).entity(result).build();
         return Response.ok(result).build();
     }
-
-    @GET
-    @Path("/test")
-    @Consumes({"application/json"})
-    public String test(){
-    	throw new IllegalArgumentException("333");
-        
-    }
     private  ProductCatalog getManagementProductCatalog(){
         ProductCatalog productCatalog = null;
         try {
